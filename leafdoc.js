@@ -116,21 +116,23 @@ Leafdoc.prototype.addStr = function(str) {
 				}
 			}
 		}
+		
+		if (lines.length) {
+			var block = {
+				type: lines[0][0],
+				name: lines[0][1],
+				content: lines.slice(1)
+			};
 
-		var block = {
-			type: lines[0][0],
-			name: lines[0][1],
-			content: lines.slice(1)
-		};
+			if (!this._namespaces.hasOwnProperty(ns)) {
+				this._namespaces[ns] = {};
+			}
+			if (!this._namespaces[ns].hasOwnProperty(sec)) {
+				this._namespaces[ns][sec] = [];
+			}
 
-		if (!this._namespaces.hasOwnProperty(ns)) {
-			this._namespaces[ns] = {};
+			this._namespaces[ns][sec].push(block);
 		}
-		if (!this._namespaces[ns].hasOwnProperty(sec)) {
-			this._namespaces[ns][sec] = [];
-		}
-
-		this._namespaces[ns][sec].push(block);
 // 		console.log(this._namespaces);
 	}
 
