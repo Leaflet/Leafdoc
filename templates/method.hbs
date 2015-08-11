@@ -1,0 +1,9 @@
+	<tr>
+		<td><code><b>{{name}}</b>(
+		{{~#each params~}}
+			<nobr>&lt;{{type}}&gt;</nobr> <i>{{name}}</i>
+			{{~#unless @last}}, {{/unless}}{{/each~}}
+		)</nobr></code></td>
+		<td><code>{{returns}}</code></td>
+		<td>{{{markdown description}}}</td>
+	</tr>

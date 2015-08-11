@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+	<link rel="stylesheet" href="http://leafletjs.com/docs/css/normalize.css" />
+	<link rel="stylesheet" href="http://leafletjs.com/docs/css/main.css" />
+	<script src="http://leafletjs.com/docs/highlight/highlight.pack.js"></script>
+	<link rel="stylesheet" href="http://leafletjs.com/docs/highlight/styles/github-gist.css" />
+	<link rel="stylesheet" href="http://leafletjs.com/dist/leaflet.css" />
+	<script src="http://leafletjs.com/dist/leaflet.js"></script>
+</head>
+<body>
+	<div class='container'>
+	<h2>Leafdoc</h2><h3></h3>
+<p>Represents the Leafdoc parser</p>
+<h3>Example</h3>
+<p>Output Leafdoc&#39;s own documentation to the console with:</p>
+<pre><code>var LeafDoc = require(&#39;./leafdoc.js&#39;);
+var doc = new LeafDoc();
+doc.addFile(&#39;leafdoc.js&#39;);
+console.log( doc.outputStr() );
+</code></pre><h3>Methods</h3>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+		<tr>
+		<td><code><b>addDir</b>(<nobr>&lt;String&gt;</nobr> <i>dirname</i>, <nobr>&lt;String&gt;</nobr> <i>extension</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Recursively scans a directory, and parses any files that match the given <code>extension</code><br>
+</td>
+	</tr>	<tr>
+		<td><code><b>addFile</b>(<nobr>&lt;String&gt;</nobr> <i>filename</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Parses the given file<br>
+</td>
+	</tr>	<tr>
+		<td><code><b>addBuffer</b>(<nobr>&lt;Buffer&gt;</nobr> <i>buf</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Parses the given buffer<br>
+</td>
+	</tr>	<tr>
+		<td><code><b>addStr</b>(<nobr>&lt;String&gt;</nobr> <i>str</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Parses the given string for Leafdoc comments<br>
+</td>
+	</tr>	<tr>
+		<td><code><b>outputStr</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td>Outputs the documentation to a string.<br>
+Use only after all the needed files have been parsed.
+</td>
+	</tr>
+</tbody></table>
+<h3>comment</h3>
+<p>undefined</p>
+
+	</div>
+</body></html>
