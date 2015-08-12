@@ -8,6 +8,15 @@ var template = require('./template');
  */
 function Leafdoc(){
 	this._namespaces = {};
+	this._knownDocumentables = [
+		'example',
+		'factory',
+		'option',
+		'event',
+		'method',
+		'function',
+		'property'
+	];
 };
 
 /*
@@ -68,7 +77,7 @@ Leafdoc.prototype.addBuffer = function(buf) {
 Leafdoc.prototype._commentBlockRegex = new RegExp(/\/\*([\s\S]*?)\*\//gm);
 
 // Inside a comment block, matches a line sans the leading spaces / asterisk(s)
-Leafdoc.prototype._commentLineRegex = new RegExp(/^(?:[\s\*]*)(.*)[\n$]/gm);
+Leafdoc.prototype._commentLineRegex = new RegExp(/^(?:[\s\*]*)(.*)\n?/gm);
 
 // Inside a line, matches the leaf directive
 Leafdoc.prototype._leafDirectiveRegex = new RegExp(/^🍂(\S*)(?:\s(.*))?$/);
@@ -84,6 +93,20 @@ Leafdoc.prototype.addStr = function(str) {
 
 	var ns = '__default';	// namespace (or class)
 	var sec = '__default';	// section
+	var dt = '';	// Type of documentable
+	var dc = '';	// Name of documentable
+
+	// Scope of the current line (parser state): ns, sec or dc.
+	// (namespace, section, documentable)
+	var scope = '';
+
+	var namespaces = this._namespaces;
+
+	var currentNamespace, currentSection, currentDocumentable;
+	// Temporal placeholder - section comments and AKAs are dangling until
+	// the documentable type is known
+	var sectionComments = [];
+	var sectionAKA = [];
 
 	// 1: Fetch comment blocks (in a regexp loop). For each block...
 	var match;
@@ -91,57 +114,158 @@ Leafdoc.prototype.addStr = function(str) {
 
 		var commentBlock = match[1];
 		var blockIsEmpty = true;
+// 		console.log('new block: ', commentBlock);
 // 		console.log('new block');
-
-		var lines = [];
 
 		// 2: Strip leading asterisk and whitespace and split into lines
 		while(match = this._commentLineRegex.exec(commentBlock)) {
 			var lineStr = match[1];
+			var validLine = false;
+			var directive, content;
 
 			// 3: Parse 🍂 directives
 			match = this._leafDirectiveRegex.exec(lineStr);
 			if (match) {
-				if (match[1] === 'class' || match[1] === 'namespace') {
-					ns = match[2];
+				// In "🍂param foo, bar", directive is "param" and content is "foo, bar"
+				directive = match[1];
+				content = match[2];
+				validLine = true;
+// 				console.log(match);
+				if (directive === 'class' || directive === 'namespace') {
+					ns = content;
+					scope = 'ns';
+				} else if (directive === 'section') {
+					sec = content || '__default';
+					scope = 'sec';
+				} else if (this._knownDocumentables.indexOf(directive) !== -1 ) {
+					scope = 'dc';
+					dt = directive;
+					dc = '';	// The name of the documentable will be set later
 				}
-				if (match[1] === 'section') {
-					currentSection = match[2];
-				}
-				lines.push([match[1], match[2]]);
+
 				blockIsEmpty = false;
 			} else {
 				if (!blockIsEmpty) {
-					lines.push(['comment', lineStr]);
+					directive = 'comment';
+					content = lineStr;
+					validLine = true;
 				}
 			}
-		}
-		
-		if (lines.length) {
-			var block = {
-				type: lines[0][0],
-				name: lines[0][1],
-				content: lines.slice(1)
-			};
 
-			if (!this._namespaces.hasOwnProperty(ns)) {
-				this._namespaces[ns] = {};
-			}
-			if (!this._namespaces[ns].hasOwnProperty(sec)) {
-				this._namespaces[ns][sec] = [];
+
+			if (validLine) {
+
+// 				console.log(scope, '-', directive, '-', content);
+
+
+				if (scope === 'ns') {
+					if (!namespaces.hasOwnProperty(ns)) {
+						namespaces[ns] = {
+							name: ns,
+							aka: [],
+							comments: [],
+							supersections: {}
+						};
+					}
+
+					if (directive === 'aka') {
+						namespaces[ns].aka.push(content);
+					}
+					if (directive === 'comment') {
+						namespaces[ns].comments.push(content);
+					}
+
+					currentNamespace = namespaces[ns];
+				}
+
+				if (scope === 'sec') {
+					if (directive === 'comment') {
+						sectionComments.push(content);
+					}
+					if (directive === 'aka') {
+						sectionAKA.push(content);
+					}
+				}
+
+				if (scope === 'dc') {
+					if (!currentNamespace.supersections.hasOwnProperty(dt)) {
+						currentNamespace.supersections[dt] = {
+							name: dt,
+							aka: [],
+							comments: [],
+							sections: {}
+						};
+					}
+					if (!currentNamespace.supersections[dt].sections.hasOwnProperty(sec)) {
+						currentNamespace.supersections[dt].sections[sec] = {
+							name: sec,
+							aka: sectionAKA,
+							comments: sectionComments,
+							documentables: {}
+						};
+						sectionAKA = [];
+						sectionComments = [];
+					}
+					currentSection = currentNamespace.supersections[dt].sections[sec];
+
+// 					console.log(currentSection);
+// 					console.log(directive);
+
+					if (this._knownDocumentables.indexOf(directive) !== -1 ) {
+						// Documentables might have more than their name as content.
+						// By default, type (or return type) is second, default value is third.
+						var split;
+						if (content) {
+							split = content.split(',');
+						} else {
+							split = ['__default'];
+						}
+						dc = split[0].trim();
+
+						if (!currentSection.documentables.hasOwnProperty(dc)) {
+							currentSection.documentables[dc] = {
+								name: dc,
+								aka: [],
+								comments: [],
+								params: {},	// Only for functions/methods/factories
+								type: (split[1] ? split[1].trim() : null),
+								defaultValue: (split[2] ? split[2].trim() : null)	// Only for options
+							}
+						}
+						currentDocumentable = currentSection.documentables[dc];
+
+					} else if (directive === 'param') {
+						// Params are param name, type.
+						/// TODO: Think about default values, or param explanation.
+						var split = content.split(',');
+						var paramName = split[0].trim();
+						var paramType = split[1] ? split[1].trim() : '';
+						currentDocumentable.params[paramName] = {name: paramName, type: paramType};
+
+					} else if (directive === 'aka') {
+						currentDocumentable.aka.push(content);
+					} else if (directive === 'comment') {
+// 						console.log('Doing stuff with a method comments: ', content);
+						currentDocumentable.comments.push(content);
+					}
+
+				}
+
 			}
 
-			this._namespaces[ns][sec].push(block);
 		}
-// 		console.log(this._namespaces);
+
 	}
 
-
 // 	console.log(this._namespaces.Leafdoc.__default[0]);
+// 	console.log(this._namespaces.Marker.__default[0]);
+// 	console.log(this._namespaces);
+// 	console.log(this._namespaces.Marker.supersections.method.sections.__default);
 // 	console.log('namespaces after addStr', this._namespaces);
 
 	return this;
 };
+
 
 
 /*
@@ -157,75 +281,73 @@ Leafdoc.prototype.outputStr = function() {
 
 // 		out += '<h2>' + ns + '</h2>';
 // 		console.log('outputting namespace', ns);
-		out += this._stringifyNamespace(ns, this._namespaces[ns]);
+		out += this._stringifyNamespace(this._namespaces[ns]);
 	}
 	
 	return (template('html'))({body: out});
 	
 };
 
-
-
-Leafdoc.prototype._stringifyNamespace = function(name, sections) {
-
+Leafdoc.prototype._stringifyNamespace = function(namespace) {
 	var out = '';
-	out += '<h2>' + name + '</h2>';
 
-	/* Loop through sections to get all methods, all options, all events, etc.,
-	 * go get all kinds of documentables together, then group them by
-	 * type of documentable, *then* by section.
-	 */
-	var types = {};
-	for (var sec in sections) {
-
-// 		out += this._stringifySections(sec, this._namespaces[ns]);
-
-		for (var i in sections[sec]) {
-			var documentable = sections[sec][i];
-			var type = documentable.type;
-
-// 			console.log('type:', type);
-
-			if (!types.hasOwnProperty(type)) {
-				types[type] = {};
-			}
-			if (!types[type].hasOwnProperty(sec)) {
-				types[type][sec] = [];
-			}
-
-			types[type][sec].push(documentable);
+	/// Ensure explicit order of the supersections (known types of documentable:
+	/// example, factory, options, events, methods, properties
+	for (var i in this._knownDocumentables) {
+		var s = this._knownDocumentables[i];
+		if (namespace.supersections.hasOwnProperty(s)) {
+			out += this._stringifySupersection(namespace.supersections[s]);
 		}
 	}
 
-	for (var type in types) {
+// 	console.log(namespace);
 
-		out += '<h3>' + this._stringifyType(type) + '</h3>\n';
+	return (template('namespace'))({
+		name: namespace.name,
+		comments: namespace.comments,
+		supersections: out
+	});
+};
 
-		for (var sec in types[type]) {
 
-			if (sec !== '__default') {
-				out += '<h4>' + sec + '</h4>\n';
-			}
 
-			var docs = types[type][sec]
-			
-			if (type === 'method') {
-				out += (require('./leafdoc.method'))(docs);
-			} else if (type === 'example') {
-				out += (require('./leafdoc.comments'))(docs);
-			} else if (type === 'class') {
-				out += (require('./leafdoc.comments'))(docs);
-				/// FIXME: Add the rest of documentable types (static functions, options, events)
-			} else {
-				for (var i in docs) {
-					var documentable = docs;
-					out += '<p>' + documentable.name + '</p>\n';
-				}
-			}
-		}
+Leafdoc.prototype._stringifySupersection = function(supersection) {
+	var out = '';
+
+	for (var s in supersection.sections) {
+		out += this._stringifySection(supersection.sections[s], supersection.name);
 	}
 
-	return out;
+	var name = supersection.name;
+
+	if (name === 'method') name = 'Methods';
+	if (name === 'function') name = 'Functions';
+	if (name === 'factory') name = 'Creation';
+	if (name === 'example') name = 'Usage example';
+	if (name === 'event') name = 'Events';
+	if (name === 'option') name = 'Options';
+	if (name === 'property') name = 'Properties';
+
+	return (template('supersection'))({
+		name: name,
+		comments: supersection.comments,
+		sections: out
+	});
+};
+
+
+Leafdoc.prototype._stringifySection = function(section, documentableType) {
+	var name = section.name === '__default' ? '' : section.name;
+
+// 	if (name) console.log('Named section:', name);
+	
+	return (template('section'))({
+		name: name,
+		comments: section.comments,
+		documentables:(template(documentableType))({
+			documentables: section.documentables
+		})
+	});
 };
 
 

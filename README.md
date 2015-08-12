@@ -32,10 +32,9 @@ The syntax is pretty much the tried-and-true directives-in-comment-blocks from J
 
 ```
 /*
- * 🍂method addDir
+ * 🍂method addDir, this
  * 🍂param dirname, String
  * 🍂param extension, String
- * 🍂returns this
  *
  * Recursively scans a directory, and parses any files that match the given `extension`
  */
@@ -47,10 +46,11 @@ The syntax is pretty much the tried-and-true directives-in-comment-blocks from J
 * `🍂class` and `🍂namespace` should be at the top of your files. They define the context of the rest of the directives. A namespace can be used in more than one file (for example, when plugging more functionality to an existing class).
 * `🍂example` lets some space to demonstrate how the class / namespace is meant to be used.
 * `🍂section` allows you to group several functions, events, methods or options together, thematically.
-* `🍂method` and `🍂function` are pretty much the same (one for instances, other for static funcs). Both can have zero or more `🍂param`s and one `🍂returns`.
+* `🍂method` and `🍂function` are pretty much the same (one for instances, other for static funcs). Both can have zero or more `🍂param`s.
+* `🍂factory`
+* namespaces, sections, methods, functions, factories can have `🍂aka` (Also Known As). This will help reference that thing with an alternate name in links.
 * I will implement `🍂event` and `🍂option` eventually.
 * Anything can have several `🍂comment`s, exmplaining the thing. The `🍂comment` directive can be ommited, because any line without an explicit directive equals to one (but only for comment blocks that already have a 🍂 directive - non-🍂 blocks are ignored).
-
 
 
 ### Customization
@@ -64,4 +64,12 @@ At some point in the future it shall be easy to use a different set of `handleba
 
 Run `apt-get install ttf-ancient-fonts` and don't ask why the fallback file for emojis is packaged as "ancient fonts".
 
+### I cannot type 🍂 in my keyboard!
 
+Write this into a plain text file:
+
+```
+keycode  46 = l L l L U1F342 Lstroke lstroke
+```
+
+Then run `xmodmap name-of-the-file`. Now 🍂 is mapped to `AltGr+l`.
