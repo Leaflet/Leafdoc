@@ -4,7 +4,8 @@ var LeafDoc = require('./leafdoc.js');
 var doc = new LeafDoc();
 
 
-doc.addFile('leafdoc.js');
+// doc.addFile('leafdoc.js');
+doc.addFile('../Leaflet/src/layer/marker/Marker.js');
 
 // console.log('internal namespaces are', doc._namespaces);
 
@@ -16,4 +17,4 @@ var out = doc.outputStr();
 
 
 
-console.log(out);
+// console.log(out);

@@ -8,6 +8,13 @@ var template = require('./template');
  */
 function Leafdoc(){
 	this._namespaces = {};
+	this._knownDocumentables = [
+		'method',
+		'function',
+		'event',
+		'option',
+		'factory'
+	];
 };
 
 /*
@@ -68,7 +75,7 @@ Leafdoc.prototype.addBuffer = function(buf) {
 Leafdoc.prototype._commentBlockRegex = new RegExp(/\/\*([\s\S]*?)\*\//gm);
 
 // Inside a comment block, matches a line sans the leading spaces / asterisk(s)
-Leafdoc.prototype._commentLineRegex = new RegExp(/^(?:[\s\*]*)(.*)[\n$]/gm);
+Leafdoc.prototype._commentLineRegex = new RegExp(/^(?:[\s\*]*)(.*)\n?/gm);
 
 // Inside a line, matches the leaf directive
 Leafdoc.prototype._leafDirectiveRegex = new RegExp(/^🍂(\S*)(?:\s(.*))?$/);
@@ -84,6 +91,18 @@ Leafdoc.prototype.addStr = function(str) {
 
 	var ns = '__default';	// namespace (or class)
 	var sec = '__default';	// section
+	var dt = '';	// Type of documentable
+	var dc = '';	// Name of documentable
+
+	// Scope of the current line (parser state): ns, sec or dc.
+	// (namespace, section, documentable)
+	var scope = '';
+
+	var namespaces = this._namespaces;
+
+	var currentNamespace, currentSection, currentDocumentable;
+	var sectionComments = [];
+	var sectionAKA = [];
 
 	// 1: Fetch comment blocks (in a regexp loop). For each block...
 	var match;
@@ -91,53 +110,196 @@ Leafdoc.prototype.addStr = function(str) {
 
 		var commentBlock = match[1];
 		var blockIsEmpty = true;
+// 		console.log('new block: ', commentBlock);
 // 		console.log('new block');
 
-		var lines = [];
+		// Temporal placeholder - section comments and AKAs are dangling until
+		// the documentable type is known
 
 		// 2: Strip leading asterisk and whitespace and split into lines
 		while(match = this._commentLineRegex.exec(commentBlock)) {
 			var lineStr = match[1];
+			var validLine = false;
+			var directive, content;
 
 			// 3: Parse 🍂 directives
 			match = this._leafDirectiveRegex.exec(lineStr);
 			if (match) {
-				if (match[1] === 'class' || match[1] === 'namespace') {
-					ns = match[2];
+				// In "🍂param foo, bar", directive is "param" and content is "foo, bar"
+				directive = match[1];
+				content = match[2];
+				validLine = true;
+// 				console.log(match);
+				if (directive === 'class' || directive === 'namespace') {
+					ns = content;
+					scope = 'ns';
+				} else if (directive === 'section') {
+					sec = content || '__default';
+					scope = 'sec';
+				} else if (this._knownDocumentables.indexOf(directive) !== -1 ) {
+					scope = 'dc';
+					dt = directive;
+					dc = '';	// The name of the documentable will be set later
 				}
-				if (match[1] === 'section') {
-					currentSection = match[2];
-				}
-				lines.push([match[1], match[2]]);
+
 				blockIsEmpty = false;
 			} else {
 				if (!blockIsEmpty) {
-					lines.push(['comment', lineStr]);
+					directive = 'comment';
+					content = lineStr;
+					validLine = true;
 				}
 			}
-		}
-		
-		if (lines.length) {
-			var block = {
-				type: lines[0][0],
-				name: lines[0][1],
-				content: lines.slice(1)
-			};
 
-			if (!this._namespaces.hasOwnProperty(ns)) {
-				this._namespaces[ns] = {};
-			}
-			if (!this._namespaces[ns].hasOwnProperty(sec)) {
-				this._namespaces[ns][sec] = [];
+
+			if (validLine) {
+
+// 				console.log(scope, '-', directive, '-', content);
+
+
+				if (scope === 'ns') {
+					if (!namespaces.hasOwnProperty(ns)) {
+						namespaces[ns] = {
+							name: ns,
+							aka: [],
+							comments: [],
+							supersections: {}
+						};
+					}
+
+					if (directive === 'aka') {
+						namespaces[ns].aka.push(content);
+					}
+					if (directive === 'comment') {
+						namespaces[ns].comments.push(content);
+					}
+
+					currentNamespace = namespaces[ns];
+				}
+
+				if (scope === 'sec') {
+					if (directive === 'comment') {
+						sectionComments.push(content);
+					}
+					if (directive === 'aka') {
+						sectionAKA.push(content);
+					}
+				}
+
+				if (scope === 'dc') {
+					if (!currentNamespace.supersections.hasOwnProperty(dt)) {
+						currentNamespace.supersections[dt] = {
+							name: dt,
+							aka: [],
+							comments: [],
+							sections: {}
+						};
+					}
+					if (!currentNamespace.supersections[dt].sections.hasOwnProperty(sec)) {
+						currentNamespace.supersections[dt].sections[sec] = {
+							name: sec,
+							aka: sectionAKA,
+							comments: sectionComments,
+							documentables: {}
+						};
+						sectionAKA = [];
+						sectionComments = [];
+					}
+					currentSection = currentNamespace.supersections[dt].sections[sec];
+
+// 					console.log(currentSection);
+
+// 					console.log(directive);
+
+					if (this._knownDocumentables.indexOf(directive) !== -1 ) {
+						// Documentables might have more than their name as content.
+						// By default, type (or return type) is second, default value is third.
+						var split = content.split(',');
+						dc = split[0].trim();
+
+						if (!currentSection.documentables.hasOwnProperty(dc)) {
+							currentSection.documentables[dc] = {
+								name: dc,
+								aka: [],
+								comments: [],
+								params: {},	// Only for functions/methods/factories
+								type: (split[1] ? split[1].trim() : null),
+								defaultValue: (split[2] ? split[2].trim() : null)	// Only for options
+							}
+						}
+						currentDocumentable = currentSection.documentables[dc];
+
+					} else if (directive === 'param') {
+						// Params are param name, type.
+						/// TODO: Think about default values, or param explanation.
+						var split = content.split(',');
+						var paramName = split[0].trim();
+						var paramType = split[1].trim();
+						currentDocumentable.params[paramName] = paramType;
+
+					} else if (directive === 'aka') {
+						currentDocumentable.aka.push(content);
+					} else if (directive === 'comment') {
+// 						console.log('Doing stuff with a method comments: ', content);
+						currentDocumentable.comments.push(content);
+					}
+
+
+				}
+//
+// 				console.log('line: ', line);
+//
+// 				if (scope === 'ns') {
+//
+// 				}
+// 				namespaces[ns][sec].push(line);
 			}
 
-			this._namespaces[ns][sec].push(block);
+
 		}
+
+
+		// 4: Organize all parsed directives into documentables
+		// 5: Add documentables to the global namespaces
+
+		/// TODO: Manage AKAs
+		/// TODO: Assign unique IDs to every namespace, section and documentable
+
+// 		for (var ns in namespaces) {
+//
+// 			// Assign comments to this namespace
+//
+// 			for (var sec in namespaces[ns]) {
+//
+// 				// What is the first type of documentable in this section?
+// 				// We need to know that to apply comments.
+//
+// 			}
+// 		}
+
+
+// 		if (lines.length) {
+// // 			var block = {
+// // 				type: lines[0][0],
+// // 				name: lines[0][1],
+// // 				content: lines.slice(1)
+// // 			};
+// //
+// 		}
+
+
+
+
+// 		console.log(lines);
+
 // 		console.log(this._namespaces);
 	}
 
 
 // 	console.log(this._namespaces.Leafdoc.__default[0]);
+// 	console.log(this._namespaces.Marker.__default[0]);
+	console.log(this._namespaces);
+	console.log(this._namespaces.Marker.supersections.method.sections.__default);
 // 	console.log('namespaces after addStr', this._namespaces);
 
 	return this;
