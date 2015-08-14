@@ -77,10 +77,10 @@ Leafdoc.prototype.addBuffer = function(buf) {
 Leafdoc.prototype._commentBlockRegex = new RegExp(/\/\*([\s\S]*?)\*\//gm);
 
 // Inside a comment block, matches a line sans the leading spaces / asterisk(s)
-Leafdoc.prototype._commentLineRegex = new RegExp(/^(?:[\s\*]*)(.*)\n?/gm);
+Leafdoc.prototype._commentLineRegex = new RegExp(/^(?:\s*\* ?)?(.*)\n?/gm);
 
 // Inside a line, matches the leaf directive
-Leafdoc.prototype._leafDirectiveRegex = new RegExp(/^🍂(\S*)(?:\s(.*))?$/);
+Leafdoc.prototype._leafDirectiveRegex = new RegExp(/^\s?🍂(\S*)(?:\s(.*))?$/);
 
 
 /*
@@ -115,7 +115,7 @@ Leafdoc.prototype.addStr = function(str) {
 
 		var commentBlock = match[1];
 		var blockIsEmpty = true;
-// 		console.log('new block: ', commentBlock);
+// 		console.error('new block: ', commentBlock);
 // 		console.log('new block');
 
 		// 2: Strip leading asterisk and whitespace and split into lines
@@ -146,7 +146,7 @@ Leafdoc.prototype.addStr = function(str) {
 
 				blockIsEmpty = false;
 			} else {
-				if (!blockIsEmpty) {
+				if (!blockIsEmpty && lineStr) {
 					directive = 'comment';
 					content = lineStr;
 					validLine = true;
@@ -351,15 +351,6 @@ Leafdoc.prototype._stringifySection = function(section, documentableType) {
 			documentables: section.documentables
 		})
 	});
-};
-
-
-Leafdoc.prototype._stringifyType = function(type) {
-	if (type === 'method') return 'Methods';
-	if (type === 'example') return 'Example';
-	if (type === 'class') return '';	// Because the class/namespace name is an <h2> already.
-	
-	return type;
 };
 
 

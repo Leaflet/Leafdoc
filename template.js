@@ -16,6 +16,18 @@ module.exports = function(templateName) {
 var marked = require('marked');
 
 
+/// TODO: Catch all code blocks and check if the contents is a known class, namespace or AKA
+
+// marked.setOptions({
+// 	highlight: function (code) {
+// 		return require('highlight').highlight(code).value;
+// 	}
+// });
+
+
+
+
+
 /// TODO: Research highlighting as per `marked`'s examples:
 
 // var markdownString = '```js\n console.log("hello"); \n```';

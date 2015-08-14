@@ -9,8 +9,28 @@
 	<link rel="stylesheet" href="http://leafletjs.com/dist/leaflet.css" />
 	<script src="http://leafletjs.com/dist/leaflet.js"></script>
 </head>
-<body>
+<body class='api-page'>
 	<div class='container'>
+
 	{{{ body }}}
+
 	</div>
+	<script>
+	hljs.configure({tabReplace: '    '});
+	hljs.initHighlightingOnLoad();
+
+	(function () {
+		var headers = document.getElementsByTagName('h2');
+
+		for (var i = 0, len = headers.length; i < len; i++) {
+			if (headers[i].id) {
+				headers[i].onclick = function(e) {
+					if (e.offsetX < 0) {
+						window.location.hash = '#' + this.id;
+					}
+				};
+			}
+		}
+	})();
+</script>
 </body></html>
