@@ -2,13 +2,12 @@
 # Leafdoc
 
 
-Leafdoc (or 🍂📄 for short) is custom NaturalDocs-like documentation parser to produce Leaflet-style documentation.
+Leafdoc (or 🍂📄 for short) is a NaturalDocs- and JSdoc-like documentation generator.
 
-Very much a WIP right now.
-
-The goal is to produce documentation that looks exactly the same as the LeafletJS current one.
-
-Markdown is supported for long comments and example blocks.
+Leafdoc's goals are to help produce documentation which is:
+* **Concise**: If you need half a page to describe what a function does, then Leafdoc is probably not for you.
+* **Non-intrusive**: Allow devs to write the minimum possible amount of documentation lines. A two-line function shouldn't need 15 lines of docs.
+* **Narrative**: Forget about exhaustive code introspection, and focus into providing human-readable explanations and per-class code examples using Markdown to do the heavy lifting.
 
 
 ## Try
@@ -46,10 +45,16 @@ The syntax is pretty much the tried-and-true directives-in-comment-blocks from J
 * `🍂class` and `🍂namespace` should be at the top of your files. They define the context of the rest of the directives. A namespace can be used in more than one file (for example, when plugging more functionality to an existing class).
 * `🍂example` lets some space to demonstrate how the class / namespace is meant to be used.
 * `🍂section` allows you to group several functions, events, methods or options together, thematically.
-* `🍂method` and `🍂function` are pretty much the same (one for instances, other for static funcs). Both can have zero or more `🍂param`s.
-* `🍂factory`
-* namespaces, sections, methods, functions, factories can have `🍂aka` (Also Known As). This will help reference that thing with an alternate name in links.
-* I will implement `🍂event` and `🍂option` eventually.
+* Methods, functions, options, etc are a generic thing internally named "documentable":
+	* `🍂method (name), (return type)`
+		* Has zero or more `🍂param (name), (type)`
+	* `🍂function (name), (return type)`
+		* Has zero or more `🍂param (name), (type)`
+	* `🍂factory (name)`
+		* Has zero or more `🍂param (name), (type)`
+Z	* `🍂option (name), (type), (default value)`
+	* `🍂event (name), (type)`
+* Classes, namespaces and documentables can have `🍂aka (alternative name)`, (short for Also Known As). This allows to create links to the same thing using different names.
 * Anything can have several `🍂comment`s, exmplaining the thing. The `🍂comment` directive can be ommited, because any line without an explicit directive equals to one (but only for comment blocks that already have a 🍂 directive - non-🍂 blocks are ignored).
 
 
@@ -66,7 +71,7 @@ Run `apt-get install ttf-ancient-fonts` and don't ask why the fallback file for 
 
 ### I cannot type 🍂 in my keyboard!
 
-Write this into a plain text file:
+(Linux only) Write this into a plain text file:
 
 ```
 keycode  46 = l L l L U1F342 Lstroke lstroke
