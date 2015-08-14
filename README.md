@@ -64,4 +64,12 @@ At some point in the future it shall be easy to use a different set of `handleba
 
 Run `apt-get install ttf-ancient-fonts` and don't ask why the fallback file for emojis is packaged as "ancient fonts".
 
+### I cannot type 🍂 in my keyboard!
 
+Write this into a plain text file:
+
+```
+keycode  46 = l L l L U1F342 Lstroke lstroke
+```
+
+Then run `xmodmap name-of-the-file`. Now 🍂 is mapped to `AltGr+l`.

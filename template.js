@@ -46,15 +46,30 @@ var marked = require('marked');
 
 
 
+/// TODO: Create another helper for data types, with access to a list of already defined types.
+/// This should automatically create a link to the appropiate section. Use AKAs to do so.
+
+/// TODO: Make the big markdown functions also automatically link to stuff.
+
+
 Handlebars.registerHelper('markdown', function(str) {
-	return marked(str)
+	if (!str) return;
+	if (str instanceof Array) {
+		str = str.join('\n');
+	}
+	return marked(str.trim())
+		.trim()
 		.replace('<p>','')
 		.replace('</p>','')
 		.replace('\n','<br>\n');
 });
 
 Handlebars.registerHelper('rawmarkdown', function(str) {
-	return marked(str);
+	if (!str) return;
+	if (str instanceof Array) {
+		str = str.join('\n');
+	}
+	return marked(str.trim());
 });
 
 
