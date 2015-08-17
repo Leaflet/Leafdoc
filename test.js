@@ -19,6 +19,11 @@ doc.addFile('../Leaflet/src/layer/Layer.js');
 var out = doc.outputStr();
 
 
+var sander = require('sander');
+
+
+sander.writeFileSync('Leaflet-docs.html', out);
+
 // console.log(out);
 
 // console.log(doc._AKAs);

@@ -78,19 +78,20 @@ Leafdoc.prototype.addBuffer = function(buf) {
 
 
 // Matches each comment block
-// ^\s*\/\/([ \f\r\t\v\S]*(?:\n[ \f\r\t\v]*\/\/*.*)+)   Matches multiple single-line // comments
-// ^\s*\/\*([\s\S]*?)\*\/   Matches single multiple-line /* */ comment
-// ^\s*(?:\/\/\s?([ \f\r\t\v\S]*(?:\n\s*\/\/*.*)+)|\/\*([\s\S]*?)\*\/)    Matches either single- or multi-line comments.
-Leafdoc.prototype._commentBlockRegex = new RegExp(/^\s*(?:\/\/([ \f\r\t\v\S]*(?:\n[ \f\r\t\v]*\/\/*.*)+)|\/\*([\s\S]*?)\*\/)/gm);
+// [ \f\r\t\v] matches any whitespace character but newline
+// ^([ \t]*\/{2,}[ \t]?(?:.*)\n)+   Matches multiple single-line // comments
+// ^[ \t]*\/\*([\s\S]*?)\*\/   Matches single multiple-line /* */ comment
+// ^([ \t]*\/{2,}[ \t]?(?:.*)\n)+|[ \t]*\/\*([\s\S]*?)\*\/)    Matches either single- or multi-line comments.
+Leafdoc.prototype._commentBlockRegex = new RegExp(/^((?:[ \t]*\/{2,}[ \t]*.*\n)+)|(?:[ \t]*\/\*([\s\S]*?)\*\/)/gm);
 
 // Inside a comment /* */ block, matches a line sans the leading spaces / asterisk(s)
 Leafdoc.prototype._leadingBlockRegex = new RegExp(/^(?:\s*\* ?)?(.*)\n?/gm);
 
 // Inside a multiple // block, matches a line sans the leading //
-Leafdoc.prototype._leadingLineRegex = new RegExp(/^(?:\s*\/\/ ?)?(.*)\n?/g);
+Leafdoc.prototype._leadingLineRegex = new RegExp(/^(?:\s*\/\/)?(?: ?)(.+)\n?/gm);
 
 // Inside a line, matches the leaf directive
-Leafdoc.prototype._leafDirectiveRegex = new RegExp(/^\s?🍂(\S*)(?:\s(.*))?$/);
+Leafdoc.prototype._leafDirectiveRegex = new RegExp(/^\s?🍂(\S*)(?:\s(.+))?$/);
 
 
 /*
@@ -100,6 +101,10 @@ Leafdoc.prototype._leafDirectiveRegex = new RegExp(/^\s?🍂(\S*)(?:\s(.*))?$/);
  * Parses the given string for Leafdoc comments
  */
 Leafdoc.prototype.addStr = function(str) {
+
+	// Leaflet files use DOS line feeds, which screw up things.
+	str = str.replace(/\r\n?/g, '\n');
+
 
 	var ns = '__default';	// namespace (or class)
 	var sec = '__default';	// section
@@ -130,20 +135,24 @@ Leafdoc.prototype.addStr = function(str) {
 // 		console.error('new block: ', commentBlock);
 // 		console.log('new block');
 
-		if (multilineComment) {
-			console.log('multiline comment', multilineComment);
-		} else {
-// 			console.log('block comment', blockComment);
-		}
+// 		if (multilineComment) {
+// 			console.log('multiline block: {{{\n', multilineComment , '}}}');
+// 		} else {
+// 			console.log('block comment: {{{\n', blockComment , '}}}');
+// 		}
 
 		// Which regex should we use to clean each line?
 		var regex = multilineComment ? this._leadingLineRegex : this._leadingBlockRegex;
 
-		// 2: Strip leading asterisk and whitespace and split into lines
+		// 2: Strip leading asterisk/slashes and whitespace and split into lines
 		while(match = regex.exec(commentBlock)) {
 			var lineStr = match[1];
 			var validLine = false;
 			var directive, content;
+
+// 			if (multilineComment) {
+// 				console.log('line in multiline comment', blockIsEmpty, lineStr);
+// 			}
 
 			// 3: Parse 🍂 directives
 			match = this._leafDirectiveRegex.exec(lineStr);
@@ -152,9 +161,10 @@ Leafdoc.prototype.addStr = function(str) {
 				directive = match[1];
 				content = match[2];
 				validLine = true;
-// 				console.log(match);
+// 				if (multilineComment) console.log(directive, match);
 				if (directive === 'class' || directive === 'namespace') {
 					ns = content.trim();
+					sec = '__default';
 					scope = 'ns';
 				} else if (directive === 'section') {
 					sec = content || '__default';
@@ -178,7 +188,6 @@ Leafdoc.prototype.addStr = function(str) {
 			if (validLine) {
 
 // 				console.log(scope, '-', directive, '-', content);
-
 
 				if (scope === 'ns') {
 					if (!namespaces.hasOwnProperty(ns)) {
