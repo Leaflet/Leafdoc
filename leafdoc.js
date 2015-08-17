@@ -160,6 +160,7 @@ Leafdoc.prototype.addStr = function(str) {
 				// In "🍂param foo, bar", directive is "param" and content is "foo, bar"
 				directive = match[1];
 				content = match[2];
+				if (content) {content = content.trimRight(); }
 				validLine = true;
 // 				if (multilineComment) console.log(directive, match);
 				if (directive === 'class' || directive === 'namespace') {
@@ -398,6 +399,7 @@ Leafdoc.prototype._resolveAKAs = function() {
 		var namespace = this._namespaces[ns];
 		namespace.id = this._normalizeName(namespace.name);
 		this._assignAKAs(namespace.id, namespace.aka);
+		this._assignAKAs(namespace.id, [namespace.name]);
 // 		console.log('Resolve namespace AKAs: ', namespace.id, namespace.name, namespace.aka);
 
 		for (var ss in namespace.supersections) {
@@ -427,7 +429,7 @@ Leafdoc.prototype._resolveAKAs = function() {
 	}
 
 	template.setAKAs(this._AKAs);
-
+// 	console.log(this._AKAs);
 };
 
 
