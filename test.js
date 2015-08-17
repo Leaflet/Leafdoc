@@ -7,6 +7,7 @@ var doc = new LeafDoc();
 // doc.addFile('leafdoc.js');
 doc.addFile('../Leaflet/src/layer/marker/Marker.js');
 doc.addFile('../Leaflet/src/layer/marker/Marker.Drag.js');
+doc.addFile('../Leaflet/src/layer/Popup.js');
 doc.addFile('../Leaflet/src/layer/Layer.js');
 
 // console.log('internal namespaces are', doc._namespaces);
@@ -18,6 +19,6 @@ doc.addFile('../Leaflet/src/layer/Layer.js');
 var out = doc.outputStr();
 
 
-console.log(out);
+// console.log(out);
 
 // console.log(doc._AKAs);
