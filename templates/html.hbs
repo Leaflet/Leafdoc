@@ -19,18 +19,23 @@
 	hljs.configure({tabReplace: '    '});
 	hljs.initHighlightingOnLoad();
 
-	(function () {
-		var headers = document.getElementsByTagName('h2');
+	var elems = document.querySelectorAll('h2, h3, h4, tr');
 
-		for (var i = 0, len = headers.length; i < len; i++) {
-			if (headers[i].id) {
-				headers[i].onclick = function(e) {
-					if (e.offsetX < 0) {
-						window.location.hash = '#' + this.id;
-					}
-				};
+	for (var i = 0, len = elems.length; i < len; i++) {
+		var el = elems[i];
+
+		if (el.id) {
+			var anchor = document.createElement('a');
+			anchor.setAttribute('anchor', el.id);
+			if (!el.children.length) {
+				// For headers, insert the anchor before.
+				el.parentNode.insertBefore(anchor, el);
+			} else {
+				// For table rows, insert the anchor after the last <td>
+				el.appendChild(anchor);
 			}
 		}
-	})();
+	}
+
 </script>
 </body></html>

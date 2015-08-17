@@ -1,5 +1,7 @@
 var sander = require('sander');
-var template = require('./template');
+
+var template = require('./template'),
+    getTemplate = template.getTemplate;
 
 
 /*
@@ -17,6 +19,7 @@ function Leafdoc(){
 		'function',
 		'property'
 	];
+	this._AKAs = {};
 };
 
 /*
@@ -279,6 +282,8 @@ Leafdoc.prototype.addStr = function(str) {
  */
 Leafdoc.prototype.outputStr = function() {
 
+	this._resolveAKAs();
+
 	var out = '';
 	for (var ns in this._namespaces) {
 
@@ -287,7 +292,7 @@ Leafdoc.prototype.outputStr = function() {
 		out += this._stringifyNamespace(this._namespaces[ns]);
 	}
 	
-	return (template('html'))({body: out});
+	return (getTemplate('html'))({body: out});
 	
 };
 
@@ -305,8 +310,9 @@ Leafdoc.prototype._stringifyNamespace = function(namespace) {
 
 // 	console.log(namespace);
 
-	return (template('namespace'))({
+	return (getTemplate('namespace'))({
 		name: namespace.name,
+		id: namespace.id,
 		comments: namespace.comments,
 		supersections: out
 	});
@@ -331,8 +337,9 @@ Leafdoc.prototype._stringifySupersection = function(supersection) {
 	if (name === 'option') name = 'Options';
 	if (name === 'property') name = 'Properties';
 
-	return (template('supersection'))({
+	return (getTemplate('supersection'))({
 		name: name,
+		id: supersection.id,
 		comments: supersection.comments,
 		sections: out
 	});
@@ -342,16 +349,75 @@ Leafdoc.prototype._stringifySupersection = function(supersection) {
 Leafdoc.prototype._stringifySection = function(section, documentableType) {
 	var name = section.name === '__default' ? '' : section.name;
 
-// 	if (name) console.log('Named section:', name);
+// 	if (name) console.log('Named section:', section);
+// 	console.log('Section:', section);
 	
-	return (template('section'))({
+	return (getTemplate('section'))({
 		name: name,
+		id: section.id,
 		comments: section.comments,
-		documentables:(template(documentableType))({
+		documentables:(getTemplate(documentableType))({
 			documentables: section.documentables
 		})
 	});
 };
+
+
+
+// Loop through all the documentables, create an _anchor property, and
+// return a plain object containing a map of all valid link names to their anchors.
+Leafdoc.prototype._resolveAKAs = function() {
+	for (var ns in this._namespaces) {
+		var namespace = this._namespaces[ns];
+		namespace.id = this._normalizeName(namespace.name);
+		this._assignAKAs(namespace.id, namespace.aka);
+// 		console.log('Resolve namespace AKAs: ', namespace.id, namespace.name, namespace.aka);
+
+		for (var ss in namespace.supersections) {
+// 			console.log(namespace.supersections[ss]);
+			var supersection = namespace.supersections[ss];
+			var documentableType = supersection.name;
+			supersection.id = this._normalizeName(namespace.name, supersection.name);
+
+			this._assignAKAs(supersection.id, [supersection.id + 's'])
+
+			for (var s in supersection.sections) {
+				var section = supersection.sections[s];
+				section.id = this._normalizeName(namespace.name, section.name === '__default' ? documentableType : section.name);
+				this._assignAKAs(section.id, section.aka);
+// 				console.log('Resolve section AKAs: ', section.id, section.name, section.aka);
+				for (var d in section.documentables) {
+					var doc = section.documentables[d];
+
+					if (doc.name !== '__default') {	// Skip comments and examples
+						doc.id = this._normalizeName(namespace.name, doc.name);
+						this._assignAKAs(doc.id, doc.aka);
+// 						console.log('Resolve doc AKAs: ', doc.id, doc.name, doc.aka);
+					}
+				}
+			}
+		}
+	}
+
+	template.setAKAs(this._AKAs);
+
+};
+
+
+Leafdoc.prototype._normalizeName = function(namespace, name) {
+	var id = namespace + (name ? '-' + name : '');
+	id = id.trim().replace(/\s/g, '-');
+	return id.toLowerCase();
+};
+
+Leafdoc.prototype._assignAKAs = function(id, akas) {
+	this._AKAs[id] = id;
+	for (var i in akas) {
+		this._AKAs[akas[i].trim()] = id;
+	}
+};
+
+
 
 
 

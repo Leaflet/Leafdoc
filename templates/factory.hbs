@@ -5,10 +5,10 @@
 	</tr>
 	</thead><tbody>
 	{{#each documentables}}
-	<tr>
+	<tr id='{{id}}'>
 		<td><code><b>{{name}}</b>(
 		{{~#each params~}}
-			<nobr>&lt;{{type}}&gt;</nobr> <i>{{name}}</i>
+			<nobr>&lt;{{{type type}}}&gt;</nobr> <i>{{name}}</i>
 			{{~#unless @last}}, {{/unless}}{{/each~}}
 		)</nobr></code></td>
 		<td>{{{markdown description}}}</td>

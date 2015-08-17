@@ -4,10 +4,19 @@
 var sander = require('sander');
 var Handlebars = require('handlebars');
 
-module.exports = function(templateName) {
+module.exports.getTemplate = function(templateName) {
 	
 	return Handlebars.compile(sander.readFileSync('templates/' + templateName + '.hbs').toString());
 	
+};
+
+
+var _AKAs = {};
+
+module.exports.setAKAs = function(akas){
+
+// 	console.log('Template thing updating AKAs');
+	_AKAs = akas;
 };
 
 
@@ -27,41 +36,23 @@ var marked = require('marked');
 
 
 
-
-/// TODO: Research highlighting as per `marked`'s examples:
-
-// var markdownString = '```js\n console.log("hello"); \n```';
-
-// // Async highlighting with pygmentize-bundled
-// marked.setOptions({
-//   highlight: function (code, lang, callback) {
-//     require('pygmentize-bundled')({ lang: lang, format: 'html' }, code, function (err, result) {
-//       callback(err, result.toString());
-//     });
-//   }
-// });
-// 
-// // Using async version of marked
-// marked(markdownString, function (err, content) {
-//   if (err) throw err;
-//   console.log(content);
-// });
-// 
-// // Synchronous highlighting with highlight.js
-// marked.setOptions({
-//   highlight: function (code) {
-//     return require('highlight.js').highlightAuto(code).value;
-//   }
-// });
-// 
-// console.log(marked(markdownString));
-
-
-
-/// TODO: Create another helper for data types, with access to a list of already defined types.
-/// This should automatically create a link to the appropiate section. Use AKAs to do so.
-
 /// TODO: Make the big markdown functions also automatically link to stuff.
+
+// Helper to replace AKAs in markdown links.
+function replaceAKAs(str) {
+	str = str.trim();
+	for (var i in _AKAs) {
+
+		// [...](#a) → [...](#b)
+		str = str.replace('(#' + i + ')', '(#' + _AKAs[i] + ')');
+
+		// `a` → [`a`](#b)
+		str = str.replace('`' + i + '`', '[`' + i + '`](#' + _AKAs[i] + ')');
+
+	}
+	return str;
+}
+
 
 
 Handlebars.registerHelper('markdown', function(str) {
@@ -69,7 +60,7 @@ Handlebars.registerHelper('markdown', function(str) {
 	if (str instanceof Array) {
 		str = str.join('\n');
 	}
-	return marked(str.trim())
+	return marked(replaceAKAs(str))
 		.trim()
 		.replace('<p>','')
 		.replace('</p>','')
@@ -77,11 +68,27 @@ Handlebars.registerHelper('markdown', function(str) {
 });
 
 Handlebars.registerHelper('rawmarkdown', function(str) {
-	if (!str) return;
+	if (!str) { return; }
 	if (str instanceof Array) {
 		str = str.join('\n');
 	}
-	return marked(str.trim());
+	return marked(replaceAKAs(str));
 });
+
+
+// Automatically link to AKAs, mostly used on method/function/param/option data types.
+Handlebars.registerHelper('type', function(str) {
+	if (!str) { return; }
+	if ( str in _AKAs ) {
+		var id = _AKAs[str];
+		return "<a href='#" + id + "'>" + str + "</a>"
+	} else {
+		// Should be a built-in type
+		return str;
+	}
+});
+
+
+
 
 
