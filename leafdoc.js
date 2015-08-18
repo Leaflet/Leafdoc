@@ -198,7 +198,8 @@ Leafdoc.prototype.addStr = function(str) {
 							name: ns,
 							aka: [],
 							comments: [],
-							supersections: {}
+							supersections: {},
+							inherits: []
 						};
 					}
 
@@ -207,6 +208,9 @@ Leafdoc.prototype.addStr = function(str) {
 					}
 					if (directive === 'comment') {
 						namespaces[ns].comments.push(content);
+					}
+					if (directive === 'inherits') {
+						namespaces[ns].inherits.push(content);
 					}
 
 					currentNamespace = namespaces[ns];
@@ -350,12 +354,14 @@ Leafdoc.prototype.outputStr = function() {
 Leafdoc.prototype._stringifyNamespace = function(namespace) {
 	var out = '';
 
+	var inheritances = this._flattenInheritances(namespace.name);
+
 	/// Ensure explicit order of the supersections (known types of documentable:
 	/// example, factory, options, events, methods, properties
 	for (var i in this._knownDocumentables) {
 		var s = this._knownDocumentables[i];
 		if (namespace.supersections.hasOwnProperty(s)) {
-			out += this._stringifySupersection(namespace.supersections[s]);
+			out += this._stringifySupersection(namespace.supersections[s], inheritances, namespace.name);
 		}
 	}
 
@@ -371,44 +377,146 @@ Leafdoc.prototype._stringifyNamespace = function(namespace) {
 
 
 
-Leafdoc.prototype._stringifySupersection = function(supersection) {
-	var out = '';
+Leafdoc.prototype._stringifySupersection = function(supersection, ancestors, namespacename) {
+	var sections = '';
+	var inheritances = '';
 
 	for (var s in supersection.sections) {
-		out += this._stringifySection(supersection.sections[s], supersection.name);
+		sections += this._stringifySection(supersection.sections[s], supersection.name, false);
 	}
 
 	var name = supersection.name;
 
-	if (name === 'method') name = 'Methods';
-	if (name === 'function') name = 'Functions';
-	if (name === 'factory') name = 'Creation';
-	if (name === 'example') name = 'Usage example';
-	if (name === 'event') name = 'Events';
-	if (name === 'option') name = 'Options';
-	if (name === 'property') name = 'Properties';
+	var label = name;
+	if (name === 'method')   { label = 'Methods';       }
+	if (name === 'function') { label = 'Functions';     }
+	if (name === 'factory')  { label = 'Creation';      }
+	if (name === 'example')  { label = 'Usage example'; }
+	if (name === 'event')    { label = 'Events';        }
+	if (name === 'option')   { label = 'Options';       }
+	if (name === 'property') { label = 'Properties';    }
+
+
+	// Calculate inherited documentables.
+	// In the order of the ancestors, check if each documentable has already been
+	// selected for output, skip it if so. Group rest into inherited sections.
+	if (name === 'method' ||
+	    name === 'function' ||
+	    name === 'event' ||
+	    name === 'option' ||
+	    name === 'property') {
+
+		if (ancestors.length) {
+// 			inheritances += 'Inherits stuff from: ' + inheritances.join(',');
+
+			var inheritedSections = [];
+
+			// Build a list of the documentables which have been already outputted
+			var skip = [];
+			for (var s in supersection.sections) {
+				var section = supersection.sections[s];
+				for (var d in section.documentables) {
+					skip.push(d);
+				}
+			}
+// 			console.log('Will skip: ', skip);
+
+			for (var i in ancestors) {
+				var id = [];	// Inherited documentables
+				var parent = ancestors[i];
+
+// 				console.log('Processing ancestor ', parent);
+
+				if (this._namespaces[parent].supersections.hasOwnProperty(name)) {
+					var parentSupersection = this._namespaces[parent].supersections[name];
+					for (var s in parentSupersection.sections) {
+
+						var parentSection = parentSupersection.sections[s];
+						if (parentSection) {
+							var inheritedSection = {
+								name: parentSection.name === '__default' ? label : parentSection.name,
+								parent: parent,
+								documentables: [],
+								id: parentSection.id
+							};
+
+							for (var d in parentSection.documentables) {
+// 								console.log('Checking if should show inherited ', d);
+								if (skip.indexOf(d) === -1) {
+									skip.push(d);
+									inheritedSection.documentables.push(parentSection.documentables[d]);
+								}
+							}
+
+// 							console.log(inheritedSection.documentables);
+
+							if (inheritedSection.documentables.length) {
+								inheritedSections.push(inheritedSection);
+							} else {
+// 								console.log('Everything from inherited section has been overwritten', parent, name);
+							}
+						}
+					}
+				}
+			}
+
+			// Inherited sections have been calculated, template them away.
+			for (var i in inheritedSections) {
+				var inheritedSection = inheritedSections[i];
+				inheritances += (getTemplate('inherited'))({
+					name: inheritedSection.name,
+					ancestor: inheritedSection.parent,
+					inherited: this._stringifySection(inheritedSection, supersection.name, namespacename),
+					id: inheritedSection.id
+				});
+			}
+		}
+	}
+
 
 	return (getTemplate('supersection'))({
-		name: name,
+		name: label,
 		id: supersection.id,
 		comments: supersection.comments,
-		sections: out
+		sections: sections,
+		inheritances: inheritances
 	});
 };
 
 
-Leafdoc.prototype._stringifySection = function(section, documentableType) {
-	var name = section.name === '__default' ? '' : section.name;
+
+Leafdoc.prototype._stringifySection = function(section, documentableType, inheritingNamespace) {
+	var name = (section.name === '__default' || inheritingNamespace) ? '' : section.name;
 
 // 	if (name) console.log('Named section:', section);
 // 	console.log('Section:', section);
-	
+
+
+	// If inheriting, recreate the documentable changing the ID.
+	var docs = section.documentables;
+	if (inheritingNamespace) {
+		docs = [];
+		for (var i in section.documentables) {
+			var oldDoc = section.documentables[i];
+			docs.push({
+				name: oldDoc.name,
+				comments: oldDoc.comments,
+				params: oldDoc.params,
+				type: oldDoc.type,
+				defaultValue: oldDoc.defaultValue,
+				id: this._normalizeName(inheritingNamespace, oldDoc.name)
+			});
+		}
+
+// 		console.log(docs);
+	}
+
 	return (getTemplate('section'))({
 		name: name,
 		id: section.id,
 		comments: section.comments,
 		documentables:(getTemplate(documentableType))({
-			documentables: section.documentables
+			documentables: docs
 		})
 	});
 };
@@ -467,6 +575,30 @@ Leafdoc.prototype._assignAKAs = function(id, akas) {
 	for (var i in akas) {
 		this._AKAs[akas[i].trim()] = id;
 	}
+};
+
+
+// Given a class/namespace, recurse through inherited classes to build
+// up an ordered list of clases/namespaces this class inherits from.
+Leafdoc.prototype._flattenInheritances = function(classname, inheritancesSoFar) {
+
+	if (!inheritancesSoFar) {
+// 		console.log('Resolving inheritances for ', classname);
+		inheritancesSoFar = [];
+	}
+
+	for (var i in this._namespaces[classname].inherits) {
+		var parent = this._namespaces[classname].inherits[i];
+		if (inheritancesSoFar.indexOf(parent) === -1) {
+			inheritancesSoFar.push(parent);
+			inheritancesSoFar = this._flattenInheritances(parent, inheritancesSoFar);
+		}
+	}
+
+// 	console.log(classname, '→', inheritancesSoFar);
+// 	console.log(this._namespaces[classname].inherits);
+
+	return inheritancesSoFar;
 };
 
 

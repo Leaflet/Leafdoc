@@ -52,7 +52,7 @@ The syntax is pretty much the tried-and-true directives-in-comment-blocks from J
 		* Has zero or more `🍂param (name), (type)`
 	* `🍂factory (name)`
 		* Has zero or more `🍂param (name), (type)`
-Z	* `🍂option (name), (type), (default value)`
+	* `🍂option (name), (type), (default value)`
 	* `🍂event (name), (type)`
 * Classes, namespaces and documentables can have `🍂aka (alternative name)`, (short for Also Known As). This allows to create links to the same thing using different names.
 * Anything can have several `🍂comment`s, exmplaining the thing. The `🍂comment` directive can be ommited, because any line without an explicit directive equals to one (but only for comment blocks that already have a 🍂 directive - non-🍂 blocks are ignored).
@@ -70,7 +70,7 @@ Z	* `🍂option (name), (type), (default value)`
   */
   ```
   In this example, the two alternatives are `on(type, fn)` and `on(fnMap)`. They will be shown as two different documentables.
-
+* `🍂inherits` means that a class or namespace inherits all documentables from another class or namespace.
 
 
 

@@ -3,7 +3,7 @@
 <head>
 	<title>{{ title }}</title>
 	<meta charset="utf-8">
-	
+
 	<link rel="stylesheet" href="http://leafletjs.com/docs/css/normalize.css" />
 	<link rel="stylesheet" href="http://leafletjs.com/docs/css/main.css" />
 	<script src="http://leafletjs.com/docs/highlight/highlight.pack.js"></script>
@@ -151,11 +151,97 @@
 				// For headers, insert the anchor before.
 				el.parentNode.insertBefore(anchor, el);
 			} else {
-				// For table rows, insert the anchor after the last <td>
-				el.appendChild(anchor);
+				// For table rows, insert the anchor inside the first <td>
+				el.querySelector('td').appendChild(anchor);
 			}
 		}
 	}
 
+	elems = document.querySelectorAll('div.accordion');
+	for (var i = 0, len = elems.length; i < len; i++) {
+		var el = elems[i];
+
+		el.querySelector('label').addEventListener('click', function(c){
+			return function() {
+				if (c.className === 'accordion expanded') {
+					c.className = 'accordion collapsed';
+				} else {
+					c.className = 'accordion expanded';
+				}
+				console.log(c);
+			};
+		}(el));
+
+// 		el.className = 'accordion collapsed';
+// 		el.querySelector('.accordion-content').style.display = 'none';
+	}
+
 </script>
+<style>
+	div.accordion {
+		width: 100%;
+		overflow: hidden;
+	}
+
+	div.accordion > label {
+		width: 100%;
+		cursor: pointer;
+		display: block;
+		background: #EEE;
+		padding: 0.5em 1em;
+		font-weight: bold;
+		font-size: 12px;
+	}
+
+	div.accordion > div.accordion-content {
+		max-height: 0;
+		display: none;
+	}
+
+	div.accordion.collapsed > div.accordion-content {
+		animation-duration: 0.4s;
+		animation-name: collapse;
+/* 		height: 0; */
+		max-height: 0;
+		display: block;
+	}
+
+	div.accordion.expanded > div.accordion-content {
+		animation-duration: 0.4s;
+		animation-name: expand;
+/* 		height: auto; */
+		max-height: none;
+		display: block;
+	}
+
+	@keyframes collapse {
+		0% { max-height: 100vh; }
+/* 		99% { max-height: 0; } */
+		100% { max-height: 0; height:0;}
+	}
+
+	@keyframes expand {
+		0% { max-height: 0; }
+		99% { max-height: 100vh; }
+/* 		100% { max-height: none; } */
+	}
+
+/*	div.accordion > div.accordion-content {
+		transition: max-height 0.4s ease-out 0s;
+	}*/
+
+	div.accordion.expanded > label > span.expander {
+		transform: rotate(90deg);
+	}
+
+	div.accordion > label > span.expander {
+		transition: transform 0.4s ease-out 0s;
+		display: inline-block;
+	}
+
+	table {
+		margin-bottom: 0;
+	}
+
+</style>
 </body></html>
