@@ -56,6 +56,22 @@ Z	* `🍂option (name), (type), (default value)`
 	* `🍂event (name), (type)`
 * Classes, namespaces and documentables can have `🍂aka (alternative name)`, (short for Also Known As). This allows to create links to the same thing using different names.
 * Anything can have several `🍂comment`s, exmplaining the thing. The `🍂comment` directive can be ommited, because any line without an explicit directive equals to one (but only for comment blocks that already have a 🍂 directive - non-🍂 blocks are ignored).
+* If a function (or any other documentable) has several alternative uses, use the `🍂alternative` directive after to re-defining the documentable, e.g.:
+  ```
+  /*
+  🍂method on, this
+  🍂param type, String
+  🍂param fn, Function
+  Adds the function `fn` as an event handler for the `type` event.
+
+  🍂alternative
+  🍂param fnMap, Object
+  Adds a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`.
+  */
+  ```
+  In this example, the two alternatives are `on(type, fn)` and `on(fnMap)`. They will be shown as two different documentables.
+
+
 
 
 ### Customization

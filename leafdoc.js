@@ -110,6 +110,7 @@ Leafdoc.prototype.addStr = function(str) {
 	var sec = '__default';	// section
 	var dt = '';	// Type of documentable
 	var dc = '';	// Name of documentable
+	var alt = 0;	// Will auto-increment for documentables with 🍂alternative
 
 	// Scope of the current line (parser state): ns, sec or dc.
 	// (namespace, section, documentable)
@@ -174,6 +175,7 @@ Leafdoc.prototype.addStr = function(str) {
 					scope = 'dc';
 					dt = directive;
 					dc = '';	// The name of the documentable will be set later
+					alt = 0;
 				}
 
 				blockIsEmpty = false;
@@ -220,6 +222,7 @@ Leafdoc.prototype.addStr = function(str) {
 				}
 
 				if (scope === 'dc') {
+
 					if (!currentNamespace.supersections.hasOwnProperty(dt)) {
 						currentNamespace.supersections[dt] = {
 							name: dt,
@@ -262,10 +265,30 @@ Leafdoc.prototype.addStr = function(str) {
 								comments: [],
 								params: {},	// Only for functions/methods/factories
 								type: (split[1] ? split[1].trim() : null),
-								defaultValue: (split[2] ? split[2].trim() : null)	// Only for options
+								defaultValue: (split[2] ? split.slice(2).join(',').trim() : null)	// Only for options
 							}
 						}
 						currentDocumentable = currentSection.documentables[dc];
+
+					} else if (directive === 'alternative') {
+						if (!dc) {
+							console.error('🍂alternative directive called before documentable was defined.');
+						}
+						alt++;
+						var key = dc + '-alternative-' + alt;
+						// An alternative will always inherit the (return) type and default
+						// value from the original.
+						if (!currentSection.documentables.hasOwnProperty(key)) {
+							currentSection.documentables[key] = {
+								name: dc,
+								aka: [],
+								comments: [],
+								params: {},	// Only for functions/methods/factories
+								type: currentDocumentable.type,
+								defaultValue: currentDocumentable.defaultValue	// Only for options
+							}
+						}
+						currentDocumentable = currentSection.documentables[key];
 
 					} else if (directive === 'param') {
 						// Params are param name, type.
