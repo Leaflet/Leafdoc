@@ -566,7 +566,7 @@ Leafdoc.prototype._resolveAKAs = function() {
 
 Leafdoc.prototype._normalizeName = function(namespace, name) {
 	var id = namespace + (name ? '-' + name : '');
-	id = id.trim().replace(/\s/g, '-');
+	id = id.trim().replace(/[\s\.]/g, '-');
 	return id.toLowerCase();
 };
 
