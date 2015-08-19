@@ -1,0 +1,2816 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+
+	<link rel="stylesheet" href="http://leafletjs.com/docs/css/normalize.css" />
+	<link rel="stylesheet" href="http://leafletjs.com/docs/css/main.css" />
+	<script src="http://leafletjs.com/docs/highlight/highlight.pack.js"></script>
+	<link rel="stylesheet" href="http://leafletjs.com/docs/highlight/styles/github-gist.css" />
+	<link rel="stylesheet" href="http://leafletjs.com/dist/leaflet.css" />
+	<script src="http://leafletjs.com/dist/leaflet.js"></script>
+</head>
+<body class='api-page'>
+	<div class='container'>
+
+
+	<h2>Leaflet API reference</h2>
+	<div id="toc" class="clearfix">
+		<div class="toc-col map-col">
+			<h4>Map</h4>
+			<ul>
+<!-- 				<li><a href="#map-usage">Usage example</a></li> -->
+<!-- 				<li><a href="#map-constructor">Creation</a></li> -->
+				<li><a href="#map-options">Options</a></li>
+				<li><a href="#map-events">Events</a></li>
+			</ul>
+			<h4>Map Methods</h4>
+			<ul>
+<!-- 				<li><a href="#map-set-methods">Modifying map state</a></li> -->
+<!-- 				<li><a href="#map-get-methods">Getting map state</a></li> -->
+				<li><a href="#map-methods-for-layers-and-controls">Layers and controls</a></li>
+<!-- 				<li><a href="#map-conversion-methods">Conversion methods</a></li> -->
+<!-- 				<li><a href="#map-misc-methods">Other methods</a></li> -->
+			</ul>
+			<h4>Map Misc</h4>
+			<ul>
+<!-- 				<li><a href="#map-properties">Properties</a></li> -->
+<!-- 				<li><a href="#map-panes">Panes</a></li> -->
+			</ul>
+		</div>
+		<div class="toc-col">
+			<h4>UI Layers</h4>
+			<ul>
+				<li><a href="#marker">Marker</a></li>
+				<li><a href="#popup">Popup</a></li>
+			</ul>
+			<h4>Raster Layers</h4>
+			<ul>
+				<li><a href="#tilelayer">TileLayer</a></li>
+				<li><a href="#tilelayer-wms">TileLayer.WMS</a></li>
+<!-- 				<li><a href="#imageoverlay">ImageOverlay</a></li> -->
+			</ul>
+			<h4>Vector Layers</h4>
+			<ul>
+<!-- 				<li><a href="#path">Path</a></li> -->
+<!-- 				<li><a href="#polyline">Polyline</a></li> -->
+<!-- 				<li><a href="#polygon">Polygon</a></li> -->
+<!-- 				<li><a href="#rectangle">Rectangle</a></li> -->
+<!-- 				<li><a href="#circle">Circle</a></li> -->
+<!-- 				<li><a href="#circlemarker">CircleMarker</a></li> -->
+			</ul>
+		</div>
+		<div class="toc-col">
+			<h4>Other Layers</h4>
+			<ul>
+<!-- 				<li><a href="#layergroup">LayerGroup</a></li> -->
+<!-- 				<li><a href="#featuregroup">FeatureGroup</a></li> -->
+<!-- 				<li><a href="#geojson">GeoJSON</a></li> -->
+				<li><a href="#gridlayer">GridLayer</a></li>
+			</ul>
+			<h4>Basic Types</h4>
+			<ul>
+<!-- 				<li><a href="#latlng">LatLng</a></li> -->
+<!-- 				<li><a href="#latlngbounds">LatLngBounds</a></li> -->
+<!-- 				<li><a href="#point">Point</a></li> -->
+<!-- 				<li><a href="#bounds">Bounds</a></li> -->
+<!-- 				<li><a href="#icon">Icon</a></li> -->
+<!-- 				<li><a href="#divicon">DivIcon</a></li> -->
+			</ul>
+			<h4>Controls</h4>
+			<ul>
+<!-- 				<li><a href="#control-zoom">Zoom</a></li> -->
+<!-- 				<li><a href="#control-attribution">Attribution</a></li> -->
+<!-- 				<li><a href="#control-layers">Layers</a></li> -->
+<!-- 				<li><a href="#control-scale">Scale</a></li> -->
+			</ul>
+		</div>
+		<div class="toc-col">
+			<h4>Shared Methods</h4>
+			<ul>
+				<li><a href="#evented">Event</a></li>
+<!-- 				<li><a href="#layers">Layer</a></li> -->
+				<li><a href="#popup">Popup</a></li>
+			</ul>
+			<h4>Utility</h4>
+			<ul>
+<!-- 				<li><a href="#browser">Browser</a></li> -->
+<!-- 				<li><a href="#util">Util</a></li> -->
+<!-- 				<li><a href="#transformation">Transformation</a></li> -->
+<!-- 				<li><a href="#lineutil">LineUtil</a></li> -->
+<!-- 				<li><a href="#polyutil">PolyUtil</a></li> -->
+			</ul>
+			<h4>DOM Utility</h4>
+			<ul>
+<!-- 				<li><a href="#domevent">DomEvent</a></li> -->
+<!-- 				<li><a href="#domutil">DomUtil</a></li> -->
+<!-- 				<li><a href="#posanimation">PosAnimation</a></li> -->
+<!-- 				<li><a href="#draggable">Draggable</a></li> -->
+			</ul>
+		</div>
+		<div class="toc-col last-col">
+			<h4>Base Classes</h4>
+			<ul>
+<!-- 				<li><a href="#class">Class</a></li> -->
+<!-- 				<li><a href="#evented">Evented</a></li> -->
+				<li><a href="#layer">Layer</a></li>
+<!-- 				<li><a href="#control">Control</a></li> -->
+<!-- 				<li><a href="#handler">Handler</a></li> -->
+				<!--<li><a class="nodocs" href="#">IFeature</a></li>-->
+<!-- 				<li><a href="#projection">Projection</a></li> -->
+<!-- 				<li><a href="#crs">CRS</a></li> -->
+			</ul>
+
+			<h4>Misc</h4>
+			<ul>
+<!-- 				<li><a href="#event-objects">Event objects</a></li> -->
+<!-- 				<li><a href="#global">global switches</a></li> -->
+<!-- 				<li><a href="#noconflict">noConflict</a></li> -->
+<!-- 				<li><a href="#version">version</a></li> -->
+			</ul>
+		</div>
+	</div>
+
+	<h2 id='marker'>Marker</h2>
+<p>L.Marker is used to display clickable/draggable icons on the map. Extends <a href="#layer"><code>Layer</code></a>.</p>
+
+<h3 id='marker-example'>Usage example</h3>
+
+
+
+
+<pre><code class="lang-js">L.marker([50.5, 30.5]).addTo(map);
+</code></pre>
+
+
+
+<h3 id='marker-factory'>Creation</h3>
+
+
+
+<table><thead>
+	<tr>
+		<th>Factory</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='marker-l-marker'>
+		<td><code><b>L.marker</b>(<nobr>&lt;LatLng&gt;</nobr> <i>latlng</i>, <nobr>&lt;Marker options&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td>Instantiates a Marker object given a geographical point and optionally an options object.</td>
+	</tr>
+</tbody></table>
+
+<h3 id='marker-option'>Options</h3>
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='marker-icon'>
+		<td><code><b>icon</b></code></td>
+		<td><code>L.Icon</code>
+		<td><code>*</code></td>
+		<td>Icon class to use for rendering the marker. See <a href="#L.Icon">Icon documentation</a> for details on how to customize the marker icon. Set to new <code>L.Icon.Default()</code> by default.</td>
+	</tr>
+	<tr id='marker-interactive'>
+		<td><code><b>interactive</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>If <code>false</code>, the marker will not emit mouse events and will act as a part of the underlying map.</td>
+	</tr>
+	<tr id='marker-draggable'>
+		<td><code><b>draggable</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>Whether the marker is draggable with mouse/touch or not.</td>
+	</tr>
+	<tr id='marker-keyboard'>
+		<td><code><b>keyboard</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.</td>
+	</tr>
+	<tr id='marker-title'>
+		<td><code><b>title</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;&#x27;</code></td>
+		<td>Text for the browser tooltip that appear on marker hover (no tooltip by default).</td>
+	</tr>
+	<tr id='marker-alt'>
+		<td><code><b>alt</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;&#x27;</code></td>
+		<td>Text for the <code>alt</code> attribute of the icon image (useful for accessibility).</td>
+	</tr>
+	<tr id='marker-zindexoffset'>
+		<td><code><b>zIndexOffset</b></code></td>
+		<td><code>Number</code>
+		<td><code>0</code></td>
+		<td>By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like <code>1000</code> (or high negative value, respectively).</td>
+	</tr>
+	<tr id='marker-opacity'>
+		<td><code><b>opacity</b></code></td>
+		<td><code>Number</code>
+		<td><code>1.0</code></td>
+		<td>The opacity of the marker.</td>
+	</tr>
+	<tr id='marker-riseonhover'>
+		<td><code><b>riseOnHover</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>If <code>true</code>, the marker will get on top of others when you hover the mouse over it.</td>
+	</tr>
+	<tr id='marker-riseoffset'>
+		<td><code><b>riseOffset</b></code></td>
+		<td><code>Number</code>
+		<td><code>250</code></td>
+		<td>The z-index offset used for the <code>riseOnHover</code> feature.</td>
+	</tr>
+	<tr id='marker-pane'>
+		<td><code><b>pane</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;markerPane&#x27;</code></td>
+		<td><code>Map pane</code> where the markers icon will be added.</td>
+	</tr>
+</tbody></table>
+
+<h3 id='marker-event'>Events</h3>
+
+
+You can subscribe to the following events using <a href="#evented-method">these methods</a>.
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='marker-click'>
+		<td><code><b>click</b>
+		<td><code>MouseEvent</code></td>
+		<td>Fired when the user clicks (or taps) the marker.</td>
+	</tr>
+	<tr id='marker-dblclick'>
+		<td><code><b>dblclick</b>
+		<td><code>MouseEvent</code></td>
+		<td>Fired when the user double-clicks (or double-taps) the marker.</td>
+	</tr>
+	<tr id='marker-mousedown'>
+		<td><code><b>mousedown</b>
+		<td><code>MouseEvent</code></td>
+		<td>Fired when the user pushes the mouse button on the marker.</td>
+	</tr>
+	<tr id='marker-mouseover'>
+		<td><code><b>mouseover</b>
+		<td><code>MouseEvent</code></td>
+		<td>Fired when the mouse enters the marker.</td>
+	</tr>
+	<tr id='marker-mouseout'>
+		<td><code><b>mouseout</b>
+		<td><code>MouseEvent</code></td>
+		<td>Fired when the mouse leaves the marker.</td>
+	</tr>
+	<tr id='marker-contextmenu'>
+		<td><code><b>contextmenu</b>
+		<td><code>MouseEvent</code></td>
+		<td>Fired when the user right-clicks on the marker.</td>
+	</tr>
+	<tr id='marker-move'>
+		<td><code><b>move</b>
+		<td><code>Event</code></td>
+		<td>Fired when the marker is moved via <code>setLatLng</code>. Old and new coordinates are included in event arguments as <code>oldLatLng</code>, <code>latlng</code>.</td>
+	</tr>
+</tbody></table><h4 id='marker-dragging-events'>Dragging events</h4>
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='marker-dragstart'>
+		<td><code><b>dragstart</b>
+		<td><code>Event</code></td>
+		<td>Fired when the user starts dragging the marker.</td>
+	</tr>
+	<tr id='marker-drag'>
+		<td><code><b>drag</b>
+		<td><code>Event</code></td>
+		<td>Fired repeatedly while the user drags the marker.</td>
+	</tr>
+	<tr id='marker-dragend'>
+		<td><code><b>dragend</b>
+		<td><code>DragEndEvent</code></td>
+		<td>Fired when the user stops dragging the marker.</td>
+	</tr>
+</tbody></table>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#layer-popup-events'>Popup events from Layer</a>.</label> -->
+	<label><span class='expander'>▶</span> Popup events inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='marker-popupopen'>
+		<td><code><b>popupopen</b>
+		<td><code>PopupEvent</code></td>
+		<td>Fired when a popup bound to this layer is opened</td>
+	</tr>
+	<tr id='marker-popupclose'>
+		<td><code><b>popupclose</b>
+		<td><code>PopupEvent</code></td>
+		<td>Fired when a popup bound to this layer is closed</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#layer-event'>Events from Layer</a>.</label> -->
+	<label><span class='expander'>▶</span> Events inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='marker-add'>
+		<td><code><b>add</b>
+		<td><code>Event</code></td>
+		<td>Fired after the layer is added to a map</td>
+	</tr>
+	<tr id='marker-remove'>
+		<td><code><b>remove</b>
+		<td><code>Event</code></td>
+		<td>Fired after the layer is removed from a map</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<h3 id='marker-method'>Methods</h3>
+
+
+In addition to <a href="#layer">shared layer methods</a> like <code>addTo()</code> and <code>remove()</code> and <a href="#popup">popup methods</a> like bindPopup() you can also use the following methods:
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='marker-getlatlng'>
+		<td><code><b>getLatLng</b>()</nobr></code></td>
+		<td><code>LatLng</code></td>
+		<td>Returns the current geographical position of the marker.</td>
+	</tr>
+	<tr id='marker-setlatlng'>
+		<td><code><b>setLatLng</b>(<nobr>&lt;LatLng&gt;</nobr> <i>latlng</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Changes the marker position to the given point.</td>
+	</tr>
+	<tr id='marker-setzindexoffset'>
+		<td><code><b>setZIndexOffset</b>(<nobr>&lt;Number&gt;</nobr> <i>offset</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Changes the <a href="#marker-zindexoffset">zIndex offset</a> of the marker.</td>
+	</tr>
+	<tr id='marker-seticon'>
+		<td><code><b>setIcon</b>(<nobr>&lt;Icon&gt;</nobr> <i>icon</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Changes the marker icon.</td>
+	</tr>
+	<tr id='marker-setopacity'>
+		<td><code><b>setOpacity</b>(<nobr>&lt;Number&gt;</nobr> <i>opacity</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Changes the opacity of the marker.</td>
+	</tr>
+</tbody></table>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#layer-method'>Methods from Layer</a>.</label> -->
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='marker-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds the layer to the given map</td>
+	</tr>
+	<tr id='marker-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the layer from the map it is currently active on.</td>
+	</tr>
+	<tr id='marker-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the layer from the given map</td>
+	</tr>
+	<tr id='marker-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#layer-extension-methods'>Extension methods from Layer</a>.</label> -->
+	<label><span class='expander'>▶</span> Extension methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='marker-onadd'>
+		<td><code><b>onAdd</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Should contain code that creates DOM elements for the layer, adds them to <code>map panes</code> where they should belong and puts listeners on relevant map events. Called on <a href="#map-addlayer"><code>map.addLayer(layer)</code></a>.</td>
+	</tr>
+	<tr id='marker-onremove'>
+		<td><code><b>onRemove</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Should contain all clean up code that removes the layer&#39;s elements from the DOM and removes listeners previously added in <a href="#layer-onadd"><code>onAdd</code></a>. Called on <a href="#map-removelayer"><code>map.removeLayer(layer)</code></a>.</td>
+	</tr>
+	<tr id='marker-getevents'>
+		<td><code><b>getEvents</b>()</nobr></code></td>
+		<td><code>Object</code></td>
+		<td>This optional method should return an object like <code>{ viewreset: this._reset }</code> for <a href="#event-addeventlistener"><code>addEventListener</code></a>. These events will be automatically added and removed from the map with your layer.</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#evented-method'>Methods from Evented</a>.</label> -->
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='marker-on'>
+		<td><code><b>on</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. <code>&#39;click dblclick&#39;</code>).</td>
+	</tr>
+	<tr id='marker-on'>
+		<td><code><b>on</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></td>
+	</tr>
+	<tr id='marker-off'>
+		<td><code><b>off</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn?</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to <code>on</code>, you must pass the same context to <code>off</code> in order to remove the listener.</td>
+	</tr>
+	<tr id='marker-off'>
+		<td><code><b>off</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a set of type/listener pairs.</td>
+	</tr>
+	<tr id='marker-off'>
+		<td><code><b>off</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes all listeners to all events on the object.</td>
+	</tr>
+	<tr id='marker-fire'>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Fires an event of the specified type. You can optionally provide an data object — the first argument of the listener function will contain its properties.</td>
+	</tr>
+	<tr id='marker-listens'>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if a particular event type has any listeners attached to it.</td>
+	</tr>
+	<tr id='marker-once'>
+		<td><code><b>once</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Behaves as <a href="#evented-on"><code>on(…)</code></a>, except the listener will only get fired once and then removed.</td>
+	</tr>
+	<tr id='marker-addeventlistener'>
+		<td><code><b>addEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-on"><code>on(…)</code></a></td>
+	</tr>
+	<tr id='marker-removeeventlistener'>
+		<td><code><b>removeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-off"><code>off(…)</code></a></td>
+	</tr>
+	<tr id='marker-clearalleventlisteners'>
+		<td><code><b>clearAllEventListeners</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-off"><code>off()</code></a></td>
+	</tr>
+	<tr id='marker-addonetimeeventlistener'>
+		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-once"><code>once(…)</code></a></td>
+	</tr>
+	<tr id='marker-fireevent'>
+		<td><code><b>fireEvent</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-fire"><code>fire(…)</code></a></td>
+	</tr>
+	<tr id='marker-haseventlisteners'>
+		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-listens"><code>listens(…)</code></a></td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<h3 id='marker-property'>Properties</h3>
+
+<h4 id='marker-interaction-handlers'>Interaction handlers</h4>
+Interaction handlers are properties of a marker instance that allow you to control interaction behavior in runtime, enabling or disabling certain features such as dragging (see <code>IHandler</code> methods). Example:<br>
+<pre><code class="lang-js">marker.dragging.disable();
+</code></pre>
+<table><thead>
+	<tr>
+		<th>Property</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='marker-dragging'>
+		<td><code><b>dragging</b>
+		<td><code>IHandler</code></td>
+		<td>Marker dragging handler (by both mouse and touch).</td>
+	</tr>
+</tbody></table>
+
+<h2 id='popup'>Popup</h2>
+<p>Used to open popups in certain places of the map. Use <a href="#map-openpopup">Map.openPopup</a> to
+open popups while making sure that only one popup is open at one time
+(recommended for usability), or use <a href="#map-addlayer">Map.addLayer</a> to open as many as you want.</p>
+
+<h3 id='popup-example'>Usage example</h3>
+
+
+
+
+<p>If you want to just bind a popup to marker click and then open it, it&#39;s really easy:</p>
+<pre><code class="lang-js">marker.bindPopup(popupContent).openPopup();
+</code></pre>
+<p>Path overlays like polylines also have a <code>bindPopup</code> method.
+Here&#39;s a more complicated way to open a popup on a map:</p>
+<pre><code class="lang-js">var popup = L.popup()
+    .setLatLng(latlng)
+    .setContent(&#39;&lt;p&gt;Hello world!&lt;br /&gt;This is a nice popup.&lt;/p&gt;&#39;)
+    .openOn(map);
+</code></pre>
+
+
+
+<h3 id='popup-factory'>Creation</h3>
+
+
+
+<table><thead>
+	<tr>
+		<th>Factory</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='popup-l-popup'>
+		<td><code><b>L.popup</b>(<nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>, <nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>source?</i>)</nobr></code></td>
+		<td>Instantiates a Popup object given an optional <code>options</code> object that describes its appearance and location and an optional <code>source</code> object that is used to tag the popup with a reference to the Layer to which it refers.</td>
+	</tr>
+</tbody></table>
+
+<h3 id='popup-option'>Options</h3>
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='popup-maxwidth'>
+		<td><code><b>maxWidth</b></code></td>
+		<td><code>Number</code>
+		<td><code>300</code></td>
+		<td>Max width of the popup, in pixels.</td>
+	</tr>
+	<tr id='popup-minwidth'>
+		<td><code><b>minWidth</b></code></td>
+		<td><code>Number</code>
+		<td><code>50</code></td>
+		<td>Min width of the popup, in pixels.</td>
+	</tr>
+	<tr id='popup-maxheight'>
+		<td><code><b>maxHeight</b></code></td>
+		<td><code>Number</code>
+		<td><code>null</code></td>
+		<td>If set, creates a scrollable container of the given height<br>
+inside a popup if its content exceeds it.</td>
+	</tr>
+	<tr id='popup-autopan'>
+		<td><code><b>autoPan</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>Set it to <code>false</code> if you don&#39;t want the map to do panning animation<br>
+to fit the opened popup.</td>
+	</tr>
+	<tr id='popup-autopanpaddingtopleft'>
+		<td><code><b>autoPanPaddingTopLeft</b></code></td>
+		<td><code>Point</code>
+		<td><code>null</code></td>
+		<td>The margin between the popup and the top left corner of the map<br>
+view after autopanning was performed.
+The margin between the popup and the bottom right corner of the map
+view after autopanning was performed.</td>
+	</tr>
+	<tr id='popup-autopanpadding'>
+		<td><code><b>autoPanPadding</b></code></td>
+		<td><code>Point</code>
+		<td><code>Point(5, 5)</code></td>
+		<td>Equivalent of setting both top left and bottom right autopan padding to the same value.</td>
+	</tr>
+	<tr id='popup-keepinview'>
+		<td><code><b>keepInView</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>Set it to <code>true</code> if you want to prevent users from panning the popup<br>
+off of the screen while it is open.</td>
+	</tr>
+	<tr id='popup-closebutton'>
+		<td><code><b>closeButton</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>Controls the presence of a close button in the popup.</td>
+	</tr>
+	<tr id='popup-offset'>
+		<td><code><b>offset</b></code></td>
+		<td><code>Point</code>
+		<td><code>Point(0, 7)</code></td>
+		<td>The offset of the popup position. Useful to control the anchor<br>
+of the popup when opening it on some overlays.</td>
+	</tr>
+	<tr id='popup-autoclose'>
+		<td><code><b>autoClose</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>Set it to <code>false</code> if you want to override the default behavior of<br>
+the popup closing when user clicks the map (set globally by
+the Map&#39;s <a href="#map-closepopuponclick">closePopupOnClick</a> option).</td>
+	</tr>
+	<tr id='popup-zoomanimation'>
+		<td><code><b>zoomAnimation</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>Whether to animate the popup on zoom. Disable it if you have<br>
+problems with Flash content inside popups.</td>
+	</tr>
+	<tr id='popup-classname'>
+		<td><code><b>className</b></code></td>
+		<td><code></code>
+		<td><code></code></td>
+		<td>A custom CSS class name to assign to the popup.</td>
+	</tr>
+	<tr id='popup-pane'>
+		<td><code><b>pane</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;popupPane&#x27;</code></td>
+		<td><code>Map pane</code> where the popup will be added.</td>
+	</tr>
+</tbody></table>
+
+<h3 id='popup-method'>Methods</h3>
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='popup-openon'>
+		<td><code><b>openOn</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds the popup to the map and closes the previous one. The same as <code>map.openPopup(popup)</code>.</td>
+	</tr>
+	<tr id='popup-getlatlng'>
+		<td><code><b>getLatLng</b>()</nobr></code></td>
+		<td><code>LatLng</code></td>
+		<td>Returns the geographical point of popup.</td>
+	</tr>
+	<tr id='popup-setlatlng'>
+		<td><code><b>setLatLng</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Sets the geographical point where the popup will open.</td>
+	</tr>
+	<tr id='popup-getcontent'>
+		<td><code><b>getContent</b>()</nobr></code></td>
+		<td><code>String|HTMLElement</code></td>
+		<td>Returns the content of the popup.</td>
+	</tr>
+	<tr id='popup-setcontent'>
+		<td><code><b>setContent</b>(<nobr>&lt;String|HTMLElement|Function&gt;</nobr> <i>htmlContent</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Sets the HTML content of the popup. If a function is passed the source layer will be passed to the function. The function should return a <code>String</code> or <code>HTMLElement</code> to be used in the popup.</td>
+	</tr>
+	<tr id='popup-getelement'>
+		<td><code><b>getElement</b>()</nobr></code></td>
+		<td><code>String|HTMLElement</code></td>
+		<td>Alias for <a href="#popup-getcontent">getContent()</a></td>
+	</tr>
+	<tr id='popup-update'>
+		<td><code><b>update</b>()</nobr></code></td>
+		<td><code></code></td>
+		<td>Updates the popup content, layout and position. Useful for updating the popup after something inside changed, e.g. image loaded.</td>
+	</tr>
+	<tr id='popup-isopen'>
+		<td><code><b>isOpen</b>()</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> when the popup is visible on the map.</td>
+	</tr>
+</tbody></table>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#layer-method'>Methods from Layer</a>.</label> -->
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='popup-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds the layer to the given map</td>
+	</tr>
+	<tr id='popup-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the layer from the map it is currently active on.</td>
+	</tr>
+	<tr id='popup-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the layer from the given map</td>
+	</tr>
+	<tr id='popup-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#layer-extension-methods'>Extension methods from Layer</a>.</label> -->
+	<label><span class='expander'>▶</span> Extension methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='popup-onadd'>
+		<td><code><b>onAdd</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Should contain code that creates DOM elements for the layer, adds them to <code>map panes</code> where they should belong and puts listeners on relevant map events. Called on <a href="#map-addlayer"><code>map.addLayer(layer)</code></a>.</td>
+	</tr>
+	<tr id='popup-onremove'>
+		<td><code><b>onRemove</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Should contain all clean up code that removes the layer&#39;s elements from the DOM and removes listeners previously added in <a href="#layer-onadd"><code>onAdd</code></a>. Called on <a href="#map-removelayer"><code>map.removeLayer(layer)</code></a>.</td>
+	</tr>
+	<tr id='popup-getevents'>
+		<td><code><b>getEvents</b>()</nobr></code></td>
+		<td><code>Object</code></td>
+		<td>This optional method should return an object like <code>{ viewreset: this._reset }</code> for <a href="#event-addeventlistener"><code>addEventListener</code></a>. These events will be automatically added and removed from the map with your layer.</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#evented-method'>Methods from Evented</a>.</label> -->
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='popup-on'>
+		<td><code><b>on</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. <code>&#39;click dblclick&#39;</code>).</td>
+	</tr>
+	<tr id='popup-on'>
+		<td><code><b>on</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></td>
+	</tr>
+	<tr id='popup-off'>
+		<td><code><b>off</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn?</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to <code>on</code>, you must pass the same context to <code>off</code> in order to remove the listener.</td>
+	</tr>
+	<tr id='popup-off'>
+		<td><code><b>off</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a set of type/listener pairs.</td>
+	</tr>
+	<tr id='popup-off'>
+		<td><code><b>off</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes all listeners to all events on the object.</td>
+	</tr>
+	<tr id='popup-fire'>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Fires an event of the specified type. You can optionally provide an data object — the first argument of the listener function will contain its properties.</td>
+	</tr>
+	<tr id='popup-listens'>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if a particular event type has any listeners attached to it.</td>
+	</tr>
+	<tr id='popup-once'>
+		<td><code><b>once</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Behaves as <a href="#evented-on"><code>on(…)</code></a>, except the listener will only get fired once and then removed.</td>
+	</tr>
+	<tr id='popup-addeventlistener'>
+		<td><code><b>addEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-on"><code>on(…)</code></a></td>
+	</tr>
+	<tr id='popup-removeeventlistener'>
+		<td><code><b>removeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-off"><code>off(…)</code></a></td>
+	</tr>
+	<tr id='popup-clearalleventlisteners'>
+		<td><code><b>clearAllEventListeners</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-off"><code>off()</code></a></td>
+	</tr>
+	<tr id='popup-addonetimeeventlistener'>
+		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-once"><code>once(…)</code></a></td>
+	</tr>
+	<tr id='popup-fireevent'>
+		<td><code><b>fireEvent</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-fire"><code>fire(…)</code></a></td>
+	</tr>
+	<tr id='popup-haseventlisteners'>
+		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-listens"><code>listens(…)</code></a></td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<h2 id='map'>Map</h2>
+
+<h3 id='map-option'>Options</h3>
+
+<h4 id='map-interaction-options'>Interaction Options</h4>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-closepopuponclick'>
+		<td><code><b>closePopupOnClick</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>Set it to <code>false</code> if you don&#39;t want popups to close when user clicks the map.</td>
+	</tr>
+</tbody></table>
+
+<h3 id='map-event'>Events</h3>
+
+<h4 id='map-popup-events'>Popup events</h4>
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-popupopen'>
+		<td><code><b>popupopen</b>
+		<td><code>PopupEvent</code></td>
+		<td>Fired when a popup is opened in the map</td>
+	</tr>
+	<tr id='map-popupclose'>
+		<td><code><b>popupclose</b>
+		<td><code>PopupEvent</code></td>
+		<td>Fired when a popup in the map is closed</td>
+	</tr>
+</tbody></table><h4 id='map-layer-events'>Layer events</h4>
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-layeradd'>
+		<td><code><b>layeradd</b>
+		<td><code>LayerEvent</code></td>
+		<td>Fired when a new layer is added to the map.</td>
+	</tr>
+	<tr id='map-layerremove'>
+		<td><code><b>layerremove</b>
+		<td><code>LayerEvent</code></td>
+		<td>Fired when some layer is removed from the map</td>
+	</tr>
+</tbody></table>
+
+<h3 id='map-method'>Methods</h3>
+
+<h4 id='map-methods-for-layers-and-controls'>Methods for Layers and Controls</h4>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-openpopup'>
+		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#popup'>Popup</a>&gt;</nobr> <i>popup</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).</td>
+	</tr>
+	<tr id='map-openpopup'>
+		<td><code><b>openPopup</b>(<nobr>&lt;String|HTMLElement&gt;</nobr> <i>content</i>, <nobr>&lt;LatLng&gt;</nobr> <i>latlng</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Creates a popup with the specified content and options and opens it in the given point on a map.</td>
+	</tr>
+	<tr id='map-closepopup'>
+		<td><code><b>closePopup</b>(<nobr>&lt;<a href='#popup'>Popup</a>&gt;</nobr> <i>popup?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Closes the popup previously opened with <a href="#map-openpopup">openPopup</a> (or the given one).</td>
+	</tr>
+	<tr id='map-addlayer'>
+		<td><code><b>addLayer</b>(<nobr>&lt;<a href='#layer'>ILayer</a>&gt;</nobr> <i>layer</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds the given layer to the map</td>
+	</tr>
+	<tr id='map-removelayer'>
+		<td><code><b>removeLayer</b>(<nobr>&lt;<a href='#layer'>ILayer</a>&gt;</nobr> <i>layer</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the given layer from the map.</td>
+	</tr>
+	<tr id='map-haslayer'>
+		<td><code><b>hasLayer</b>(<nobr>&lt;<a href='#layer'>ILayer</a>&gt;</nobr> <i>layer</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if the given layer is currently added to the map</td>
+	</tr>
+	<tr id='map-eachlayer'>
+		<td><code><b>eachLayer</b>(<nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Iterates over the layers of the map, optionally specifying context of the iterator function.<br>
+<pre><code>map.eachLayer(function(layer){
+    layer.bindPopup(&#39;Hello&#39;);
+});
+</code></pre></td>
+	</tr>
+</tbody></table>
+
+<h2 id='layer'>Layer</h2>
+<p>A set of methods from the Layer base class that all Leaflet layers use.
+Inherits all methods, options and events from <a href="#evented"><code>L.Evented</code></a>.</p>
+
+<h3 id='layer-example'>Usage example</h3>
+
+
+
+
+<pre><code class="lang-js">var layer = L.Marker(latlng).addTo(map);
+layer.addTo(map);
+layer.remove();
+</code></pre>
+
+
+
+<h3 id='layer-option'>Options</h3>
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='layer-pane'>
+		<td><code><b>pane</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;overlayPane&#x27;</code></td>
+		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
+	</tr>
+</tbody></table>
+
+<h3 id='layer-event'>Events</h3>
+
+<h4 id='layer-popup-events'>Popup events</h4>
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='layer-popupopen'>
+		<td><code><b>popupopen</b>
+		<td><code>PopupEvent</code></td>
+		<td>Fired when a popup bound to this layer is opened</td>
+	</tr>
+	<tr id='layer-popupclose'>
+		<td><code><b>popupclose</b>
+		<td><code>PopupEvent</code></td>
+		<td>Fired when a popup bound to this layer is closed</td>
+	</tr>
+</tbody></table>
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='layer-add'>
+		<td><code><b>add</b>
+		<td><code>Event</code></td>
+		<td>Fired after the layer is added to a map</td>
+	</tr>
+	<tr id='layer-remove'>
+		<td><code><b>remove</b>
+		<td><code>Event</code></td>
+		<td>Fired after the layer is removed from a map</td>
+	</tr>
+</tbody></table>
+
+<h3 id='layer-method'>Methods</h3>
+
+
+Classes extending <a href="#layer"><code>L.Layer</code></a> will inherit the following methods:
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='layer-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds the layer to the given map</td>
+	</tr>
+	<tr id='layer-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the layer from the map it is currently active on.</td>
+	</tr>
+	<tr id='layer-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the layer from the given map</td>
+	</tr>
+	<tr id='layer-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</td>
+	</tr>
+</tbody></table><h4 id='layer-extension-methods'>Extension methods</h4>
+Every layer should extend from <a href="#layer"><code>L.Layer</code></a> and (re-)implement the following methods.
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='layer-onadd'>
+		<td><code><b>onAdd</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Should contain code that creates DOM elements for the layer, adds them to <code>map panes</code> where they should belong and puts listeners on relevant map events. Called on <a href="#map-addlayer"><code>map.addLayer(layer)</code></a>.</td>
+	</tr>
+	<tr id='layer-onremove'>
+		<td><code><b>onRemove</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Should contain all clean up code that removes the layer&#39;s elements from the DOM and removes listeners previously added in <a href="#layer-onadd"><code>onAdd</code></a>. Called on <a href="#map-removelayer"><code>map.removeLayer(layer)</code></a>.</td>
+	</tr>
+	<tr id='layer-getevents'>
+		<td><code><b>getEvents</b>()</nobr></code></td>
+		<td><code>Object</code></td>
+		<td>This optional method should return an object like <code>{ viewreset: this._reset }</code> for <a href="#event-addeventlistener"><code>addEventListener</code></a>. These events will be automatically added and removed from the map with your layer.</td>
+	</tr>
+</tbody></table>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#evented-method'>Methods from Evented</a>.</label> -->
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='layer-on'>
+		<td><code><b>on</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. <code>&#39;click dblclick&#39;</code>).</td>
+	</tr>
+	<tr id='layer-on'>
+		<td><code><b>on</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></td>
+	</tr>
+	<tr id='layer-off'>
+		<td><code><b>off</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn?</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to <code>on</code>, you must pass the same context to <code>off</code> in order to remove the listener.</td>
+	</tr>
+	<tr id='layer-off'>
+		<td><code><b>off</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a set of type/listener pairs.</td>
+	</tr>
+	<tr id='layer-off'>
+		<td><code><b>off</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes all listeners to all events on the object.</td>
+	</tr>
+	<tr id='layer-fire'>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Fires an event of the specified type. You can optionally provide an data object — the first argument of the listener function will contain its properties.</td>
+	</tr>
+	<tr id='layer-listens'>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if a particular event type has any listeners attached to it.</td>
+	</tr>
+	<tr id='layer-once'>
+		<td><code><b>once</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Behaves as <a href="#evented-on"><code>on(…)</code></a>, except the listener will only get fired once and then removed.</td>
+	</tr>
+	<tr id='layer-addeventlistener'>
+		<td><code><b>addEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-on"><code>on(…)</code></a></td>
+	</tr>
+	<tr id='layer-removeeventlistener'>
+		<td><code><b>removeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-off"><code>off(…)</code></a></td>
+	</tr>
+	<tr id='layer-clearalleventlisteners'>
+		<td><code><b>clearAllEventListeners</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-off"><code>off()</code></a></td>
+	</tr>
+	<tr id='layer-addonetimeeventlistener'>
+		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-once"><code>once(…)</code></a></td>
+	</tr>
+	<tr id='layer-fireevent'>
+		<td><code><b>fireEvent</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-fire"><code>fire(…)</code></a></td>
+	</tr>
+	<tr id='layer-haseventlisteners'>
+		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-listens"><code>listens(…)</code></a></td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<h2 id='evented'>Evented</h2>
+<p>A set of methods shared between event-powered classes (like <a href="#map"><code>Map</code></a> and <a href="#marker"><code>Marker</code></a>). Generally, events allow you to execute some function when something happens with an object (e.g. the user clicks on the map, causing the map to fire <code>&#39;click&#39;</code> event).</p>
+
+<h3 id='evented-example'>Usage example</h3>
+
+
+
+
+<pre><code class="lang-js">map.on(&#39;click&#39;, function(e) {
+    alert(e.latlng);
+} );
+</code></pre>
+<p>Leaflet deals with event listeners by reference, so if you want to add a listener and then remove it, define it as a function:</p>
+<pre><code class="lang-js">function onClick(e) { ... }
+map.on(&#39;click&#39;, onClick);
+map.off(&#39;click&#39;, onClick);
+</code></pre>
+
+
+
+<h3 id='evented-method'>Methods</h3>
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='evented-on'>
+		<td><code><b>on</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. <code>&#39;click dblclick&#39;</code>).</td>
+	</tr>
+	<tr id='evented-on'>
+		<td><code><b>on</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></td>
+	</tr>
+	<tr id='evented-off'>
+		<td><code><b>off</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn?</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to <code>on</code>, you must pass the same context to <code>off</code> in order to remove the listener.</td>
+	</tr>
+	<tr id='evented-off'>
+		<td><code><b>off</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a set of type/listener pairs.</td>
+	</tr>
+	<tr id='evented-off'>
+		<td><code><b>off</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes all listeners to all events on the object.</td>
+	</tr>
+	<tr id='evented-fire'>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Fires an event of the specified type. You can optionally provide an data object — the first argument of the listener function will contain its properties.</td>
+	</tr>
+	<tr id='evented-listens'>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if a particular event type has any listeners attached to it.</td>
+	</tr>
+	<tr id='evented-once'>
+		<td><code><b>once</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Behaves as <a href="#evented-on"><code>on(…)</code></a>, except the listener will only get fired once and then removed.</td>
+	</tr>
+	<tr id='evented-addeventlistener'>
+		<td><code><b>addEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-on"><code>on(…)</code></a></td>
+	</tr>
+	<tr id='evented-removeeventlistener'>
+		<td><code><b>removeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-off"><code>off(…)</code></a></td>
+	</tr>
+	<tr id='evented-clearalleventlisteners'>
+		<td><code><b>clearAllEventListeners</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-off"><code>off()</code></a></td>
+	</tr>
+	<tr id='evented-addonetimeeventlistener'>
+		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-once"><code>once(…)</code></a></td>
+	</tr>
+	<tr id='evented-fireevent'>
+		<td><code><b>fireEvent</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-fire"><code>fire(…)</code></a></td>
+	</tr>
+	<tr id='evented-haseventlisteners'>
+		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-listens"><code>listens(…)</code></a></td>
+	</tr>
+</tbody></table>
+
+<h2 id='gridlayer'>GridLayer</h2>
+<p>Generic class for handling a tiled grid of HTML elements. This is the base class for all tile layers and replaces <code>TileLayer.Canvas</code>.
+GridLayer can be extended to create a tiled grid of HTML Elements like <code>&lt;canvas&gt;</code>, <code>&lt;img&gt;</code> or <code>&lt;div&gt;</code>. GridLayer will handle creating and animating these DOM elements for you.</p>
+
+<h3 id='gridlayer-example'>Usage example</h3>
+
+<h4 id='gridlayer-synchronous-usage'>Synchronous usage</h4>
+
+
+<p>To create a custom layer, extend GridLayer and impliment the <code>createTile()</code> method, which will be passed a <code>Point</code> object with the <code>x</code>, <code>y</code>, and <code>z</code> (zoom level) coordinates to draw your tile.</p>
+<pre><code class="lang-js">var CanvasLayer = L.GridLayer.extend({
+    createTile: function(coords){
+        // create a &lt;canvas&gt; element for drawing
+        var tile = L.DomUtil.create(&#39;canvas&#39;, &#39;leaflet-tile&#39;);
+        // setup tile width and height according to the options
+        var size = this.getTileSize();
+        tile.width = size.x;
+        tile.height = size.y;
+        // get a canvas context and draw something on it using coords.x, coords.y and coords.z
+        var ctx = canvas.getContext(&#39;2d&#39;);
+        // return the tile so it can be rendered on screen
+        return tile;
+    }
+});
+</code></pre>
+
+<h4 id='gridlayer-asynchrohous-usage'>Asynchrohous usage</h4>
+
+
+<p>Tile creation can also be asyncronous, this is useful when using a third-party drawing library. Once the tile is finsihed drawing it can be passed to the done() callback.</p>
+<pre><code class="lang-js">var CanvasLayer = L.GridLayer.extend({
+    createTile: function(coords, done){
+        var error;
+        // create a &lt;canvas&gt; element for drawing
+        var tile = L.DomUtil.create(&#39;canvas&#39;, &#39;leaflet-tile&#39;);
+        // setup tile width and height according to the options
+        var size = this.getTileSize();
+        tile.width = size.x;
+        tile.height = size.y;
+        // draw something and pass the tile to the done() callback
+        done(error, tile);
+    }
+});
+</code></pre>
+
+
+
+<h3 id='gridlayer-factory'>Creation</h3>
+
+
+
+<table><thead>
+	<tr>
+		<th>Factory</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='gridlayer-l-gridlayer'>
+		<td><code><b>L.gridLayer</b>(<nobr>&lt;GridLayer options&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td>Creates a new instance of GridLayer with the supplied options.</td>
+	</tr>
+</tbody></table>
+
+<h3 id='gridlayer-option'>Options</h3>
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='gridlayer-tilesize'>
+		<td><code><b>tileSize</b></code></td>
+		<td><code>Number|Point</code>
+		<td><code>256</code></td>
+		<td>Width and height of tiles in the grid. Use a number if width and height are equal, or <code>L.point(width, height)</code> otherwise.</td>
+	</tr>
+	<tr id='gridlayer-opacity'>
+		<td><code><b>opacity</b></code></td>
+		<td><code>Number</code>
+		<td><code>1.0</code></td>
+		<td>Opacity of the tiles. Can be used in the <code>createTile()</code> function.</td>
+	</tr>
+	<tr id='gridlayer-updatewhenidle'>
+		<td><code><b>updateWhenIdle</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>depends</code></td>
+		<td>If <code>false</code>, new tiles are loaded during panning, otherwise only after it (for better performance). <code>true</code> by default on mobile browsers, otherwise <code>false</code>.</td>
+	</tr>
+	<tr id='gridlayer-updateinterval'>
+		<td><code><b>updateInterval</b></code></td>
+		<td><code>Number</code>
+		<td><code>200</code></td>
+		<td>Tiles will not update more than once every <code>updateInterval</code> milliseconds.</td>
+	</tr>
+	<tr id='gridlayer-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
+	</tr>
+	<tr id='gridlayer-zindex'>
+		<td><code><b>zIndex</b></code></td>
+		<td><code>Number</code>
+		<td><code>null</code></td>
+		<td>The explicit zIndex of the tile layer. Not set by default.</td>
+	</tr>
+	<tr id='gridlayer-bounds'>
+		<td><code><b>bounds</b></code></td>
+		<td><code>LatLngBounds</code>
+		<td><code>null</code></td>
+		<td>If set, tiles will only be loaded inside inside the set <code>LatLngBounds</code>.</td>
+	</tr>
+	<tr id='gridlayer-minzoom'>
+		<td><code><b>minZoom</b></code></td>
+		<td><code>Number</code>
+		<td><code>0</code></td>
+		<td>The minimum zoom level that tiles will be loaded at. By default the entire map.</td>
+	</tr>
+	<tr id='gridlayer-maxzoom'>
+		<td><code><b>maxZoom</b></code></td>
+		<td><code>Number</code>
+		<td><code>null</code></td>
+		<td>The maximum zoom level that tiles will be loaded at.</td>
+	</tr>
+	<tr id='gridlayer-pane'>
+		<td><code><b>pane</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;tilePane&#x27;</code></td>
+		<td><code>Map pane</code> where the grid layer will be added.</td>
+	</tr>
+</tbody></table>
+
+<h3 id='gridlayer-event'>Events</h3>
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='gridlayer-loading'>
+		<td><code><b>loading</b>
+		<td><code>Event</code></td>
+		<td>Fired when the grid layer starts loading tiles</td>
+	</tr>
+	<tr id='gridlayer-tileunload'>
+		<td><code><b>tileunload</b>
+		<td><code>TileEvent</code></td>
+		<td>Fired when a tile is removed (e.g. when a tile goes off the screen).</td>
+	</tr>
+	<tr id='gridlayer-tileloadstart'>
+		<td><code><b>tileloadstart</b>
+		<td><code>TileEvent</code></td>
+		<td>Fired when a tile is requested and starts loading.</td>
+	</tr>
+	<tr id='gridlayer-tileerror'>
+		<td><code><b>tileerror</b>
+		<td><code>TileEvent</code></td>
+		<td>Fired when there is an error loading a tile.</td>
+	</tr>
+	<tr id='gridlayer-tileload'>
+		<td><code><b>tileload</b>
+		<td><code>TileEvent</code></td>
+		<td>Fired when a tile loads.</td>
+	</tr>
+	<tr id='gridlayer-load'>
+		<td><code><b>load</b>
+		<td><code>TileEvent</code></td>
+		<td>Fired when the grid layer loaded all visible tiles.</td>
+	</tr>
+</tbody></table>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#layer-popup-events'>Popup events from Layer</a>.</label> -->
+	<label><span class='expander'>▶</span> Popup events inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='gridlayer-popupopen'>
+		<td><code><b>popupopen</b>
+		<td><code>PopupEvent</code></td>
+		<td>Fired when a popup bound to this layer is opened</td>
+	</tr>
+	<tr id='gridlayer-popupclose'>
+		<td><code><b>popupclose</b>
+		<td><code>PopupEvent</code></td>
+		<td>Fired when a popup bound to this layer is closed</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#layer-event'>Events from Layer</a>.</label> -->
+	<label><span class='expander'>▶</span> Events inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='gridlayer-add'>
+		<td><code><b>add</b>
+		<td><code>Event</code></td>
+		<td>Fired after the layer is added to a map</td>
+	</tr>
+	<tr id='gridlayer-remove'>
+		<td><code><b>remove</b>
+		<td><code>Event</code></td>
+		<td>Fired after the layer is removed from a map</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<h3 id='gridlayer-method'>Methods</h3>
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='gridlayer-bringtofront'>
+		<td><code><b>bringToFront</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Brings the tile layer to the top of all tile layers.</td>
+	</tr>
+	<tr id='gridlayer-bringtoback'>
+		<td><code><b>bringToBack</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Brings the tile layer to the bottom of all tile layers.</td>
+	</tr>
+	<tr id='gridlayer-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</td>
+	</tr>
+	<tr id='gridlayer-getcontainer'>
+		<td><code><b>getcontainer</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td>Returns the HTML element that contains the tiles for this layer.</td>
+	</tr>
+	<tr id='gridlayer-setopacity'>
+		<td><code><b>setOpacity</b>(<nobr>&lt;Number&gt;</nobr> <i>opacity</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Changes the <a href="#gridlayer-opacity">opacity</a> of the grid layer.</td>
+	</tr>
+	<tr id='gridlayer-setzindex'>
+		<td><code><b>setZIndex</b>(<nobr>&lt;Number&gt;</nobr> <i>zIndex</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Changes the <a href="#gridlayer-zindex">zIndex</a> of the grid layer.</td>
+	</tr>
+	<tr id='gridlayer-isloading'>
+		<td><code><b>isLoading</b>()</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if any tile in the grid layer has not finished loading.</td>
+	</tr>
+	<tr id='gridlayer-redraw'>
+		<td><code><b>redraw</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Causes the layer to clear all the tiles and request them again.</td>
+	</tr>
+	<tr id='gridlayer-createtile'>
+		<td><code><b>createTile</b>(<nobr>&lt;Object&gt;</nobr> <i>coords</i>, <nobr>&lt;Function&gt;</nobr> <i>done?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>Called only internally, must be overriden by classes extending <a href="#gridlayer"><code>GridLayer</code></a>.<br>
+Returns the <code>HTMLElement</code> corresponding to the given <code>coords</code>. If the <code>done</code> callback
+is specified, it must be called when the tile has finished loading and drawing.</td>
+	</tr>
+	<tr id='gridlayer-gettilesize'>
+		<td><code><b>getTileSize</b>()</nobr></code></td>
+		<td><code>Point</code></td>
+		<td>Normalizes the <a href="#gridlayer-tilesize">tileSize option</a> into a point. Used by the <code>createTile()</code> method.</td>
+	</tr>
+</tbody></table>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#layer-method'>Methods from Layer</a>.</label> -->
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='gridlayer-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds the layer to the given map</td>
+	</tr>
+	<tr id='gridlayer-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the layer from the map it is currently active on.</td>
+	</tr>
+	<tr id='gridlayer-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the layer from the given map</td>
+	</tr>
+	<tr id='gridlayer-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#layer-extension-methods'>Extension methods from Layer</a>.</label> -->
+	<label><span class='expander'>▶</span> Extension methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='gridlayer-onadd'>
+		<td><code><b>onAdd</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Should contain code that creates DOM elements for the layer, adds them to <code>map panes</code> where they should belong and puts listeners on relevant map events. Called on <a href="#map-addlayer"><code>map.addLayer(layer)</code></a>.</td>
+	</tr>
+	<tr id='gridlayer-onremove'>
+		<td><code><b>onRemove</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Should contain all clean up code that removes the layer&#39;s elements from the DOM and removes listeners previously added in <a href="#layer-onadd"><code>onAdd</code></a>. Called on <a href="#map-removelayer"><code>map.removeLayer(layer)</code></a>.</td>
+	</tr>
+	<tr id='gridlayer-getevents'>
+		<td><code><b>getEvents</b>()</nobr></code></td>
+		<td><code>Object</code></td>
+		<td>This optional method should return an object like <code>{ viewreset: this._reset }</code> for <a href="#event-addeventlistener"><code>addEventListener</code></a>. These events will be automatically added and removed from the map with your layer.</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#evented-method'>Methods from Evented</a>.</label> -->
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='gridlayer-on'>
+		<td><code><b>on</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. <code>&#39;click dblclick&#39;</code>).</td>
+	</tr>
+	<tr id='gridlayer-on'>
+		<td><code><b>on</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></td>
+	</tr>
+	<tr id='gridlayer-off'>
+		<td><code><b>off</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn?</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to <code>on</code>, you must pass the same context to <code>off</code> in order to remove the listener.</td>
+	</tr>
+	<tr id='gridlayer-off'>
+		<td><code><b>off</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a set of type/listener pairs.</td>
+	</tr>
+	<tr id='gridlayer-off'>
+		<td><code><b>off</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes all listeners to all events on the object.</td>
+	</tr>
+	<tr id='gridlayer-fire'>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Fires an event of the specified type. You can optionally provide an data object — the first argument of the listener function will contain its properties.</td>
+	</tr>
+	<tr id='gridlayer-listens'>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if a particular event type has any listeners attached to it.</td>
+	</tr>
+	<tr id='gridlayer-once'>
+		<td><code><b>once</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Behaves as <a href="#evented-on"><code>on(…)</code></a>, except the listener will only get fired once and then removed.</td>
+	</tr>
+	<tr id='gridlayer-addeventlistener'>
+		<td><code><b>addEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-on"><code>on(…)</code></a></td>
+	</tr>
+	<tr id='gridlayer-removeeventlistener'>
+		<td><code><b>removeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-off"><code>off(…)</code></a></td>
+	</tr>
+	<tr id='gridlayer-clearalleventlisteners'>
+		<td><code><b>clearAllEventListeners</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-off"><code>off()</code></a></td>
+	</tr>
+	<tr id='gridlayer-addonetimeeventlistener'>
+		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-once"><code>once(…)</code></a></td>
+	</tr>
+	<tr id='gridlayer-fireevent'>
+		<td><code><b>fireEvent</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-fire"><code>fire(…)</code></a></td>
+	</tr>
+	<tr id='gridlayer-haseventlisteners'>
+		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-listens"><code>listens(…)</code></a></td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<h2 id='tilelayer'>TileLayer</h2>
+<p>Used to load and display tile layers on the map. Extends <a href="#gridlayer"><code>GridLayer</code></a>.</p>
+
+<h3 id='tilelayer-example'>Usage example</h3>
+
+
+
+
+<pre><code class="lang-js">L.tileLayer(&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png?{foo}&#39;, {foo: &#39;bar&#39;}).addTo(map);
+</code></pre>
+
+<h4 id='tilelayer-url-template'>URL template</h4>
+
+
+<p>A string of the following form:</p>
+<pre><code>&#39;http://{s}.somedomain.com/blabla/{z}/{x}/{y}{r}.png&#39;
+</code></pre><p><code>{s}</code> means one of the available subdomains (used sequentially to help with browser parallel requests per domain limitation; subdomain values are specified in options; <code>a</code>, <code>b</code> or <code>c</code> by default, can be omitted), <code>{z}</code> — zoom level, <code>{x}</code> and <code>{y}</code> — tile coordinates. <code>{r}</code> can be used to add @2x to the URL to load retina tiles.
+You can use custom keys in the template, which will be <a href="#util-template">evaluated</a> from TileLayer options, like this:</p>
+<pre><code>L.tileLayer(&#39;http://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png&#39;, {foo: &#39;bar&#39;});
+</code></pre>
+
+
+<h3 id='tilelayer-factory'>Creation</h3>
+
+
+
+<table><thead>
+	<tr>
+		<th>Factory</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-l-tilelayer'>
+		<td><code><b>L.tilelayer</b>(<nobr>&lt;String&gt;</nobr> <i>urlTemplate</i>, <nobr>&lt;TileLayer options&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td>Instantiates a tile layer object given a <code>URL template</code> and optionally an options object.</td>
+	</tr>
+</tbody></table>
+
+<h3 id='tilelayer-option'>Options</h3>
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-minzoom'>
+		<td><code><b>minZoom</b></code></td>
+		<td><code>Number</code>
+		<td><code>0</code></td>
+		<td>Minimum zoom number.</td>
+	</tr>
+	<tr id='tilelayer-maxzoom'>
+		<td><code><b>maxZoom</b></code></td>
+		<td><code>Number</code>
+		<td><code>18</code></td>
+		<td>Maximum zoom number.</td>
+	</tr>
+	<tr id='tilelayer-maxnativezoom'>
+		<td><code><b>maxNativeZoom</b></code></td>
+		<td><code>Number</code>
+		<td><code>null</code></td>
+		<td>Maximum zoom number the tiles source has available. If it is specified, the tiles on all zoom levels higher than <code>maxNativeZoom</code> will be loaded from <code>maxZoom</code> level and auto-scaled.</td>
+	</tr>
+	<tr id='tilelayer-subdomains'>
+		<td><code><b>subdomains</b></code></td>
+		<td><code>String|String[]</code>
+		<td><code>&#x27;abc&#x27;</code></td>
+		<td>Subdomains of the tile service. Can be passed in the form of one string (where each letter is a subdomain name) or an array of strings.</td>
+	</tr>
+	<tr id='tilelayer-errortileurl'>
+		<td><code><b>errorTileUrl</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;&#x27;</code></td>
+		<td>URL to the tile image to show in place of the tile that failed to load.</td>
+	</tr>
+	<tr id='tilelayer-zoomoffset'>
+		<td><code><b>zoomOffset</b></code></td>
+		<td><code>Number</code>
+		<td><code>0</code></td>
+		<td>The zoom number used in tile URLs will be offset with this value.</td>
+	</tr>
+	<tr id='tilelayer-tms'>
+		<td><code><b>tms</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>If <code>true</code>, inverses Y axis numbering for tiles (turn this on for TMS services).</td>
+	</tr>
+	<tr id='tilelayer-zoomreverse'>
+		<td><code><b>zoomReverse</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>If set to true, the zoom number used in tile URLs will be reversed (<code>maxZoom - zoom</code> instead of <code>zoom</code>)</td>
+	</tr>
+	<tr id='tilelayer-detectretina'>
+		<td><code><b>detectRetina</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>If <code>true</code> and user is on a retina display, it will request four tiles of half the specified size and a bigger zoom level in place of one to utilize the high resolution.</td>
+	</tr>
+	<tr id='tilelayer-crossorigin'>
+		<td><code><b>crossOrigin</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>If true, all tiles will have their crossOrigin attribute set to &#39;&#39;. This is needed if you want to access tile pixel data.</td>
+	</tr>
+</tbody></table>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#gridlayer-option'>Options from GridLayer</a>.</label> -->
+	<label><span class='expander'>▶</span> Options inherited from <a href='#gridlayer'>GridLayer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-tilesize'>
+		<td><code><b>tileSize</b></code></td>
+		<td><code>Number|Point</code>
+		<td><code>256</code></td>
+		<td>Width and height of tiles in the grid. Use a number if width and height are equal, or <code>L.point(width, height)</code> otherwise.</td>
+	</tr>
+	<tr id='tilelayer-opacity'>
+		<td><code><b>opacity</b></code></td>
+		<td><code>Number</code>
+		<td><code>1.0</code></td>
+		<td>Opacity of the tiles. Can be used in the <code>createTile()</code> function.</td>
+	</tr>
+	<tr id='tilelayer-updatewhenidle'>
+		<td><code><b>updateWhenIdle</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>depends</code></td>
+		<td>If <code>false</code>, new tiles are loaded during panning, otherwise only after it (for better performance). <code>true</code> by default on mobile browsers, otherwise <code>false</code>.</td>
+	</tr>
+	<tr id='tilelayer-updateinterval'>
+		<td><code><b>updateInterval</b></code></td>
+		<td><code>Number</code>
+		<td><code>200</code></td>
+		<td>Tiles will not update more than once every <code>updateInterval</code> milliseconds.</td>
+	</tr>
+	<tr id='tilelayer-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
+	</tr>
+	<tr id='tilelayer-zindex'>
+		<td><code><b>zIndex</b></code></td>
+		<td><code>Number</code>
+		<td><code>null</code></td>
+		<td>The explicit zIndex of the tile layer. Not set by default.</td>
+	</tr>
+	<tr id='tilelayer-bounds'>
+		<td><code><b>bounds</b></code></td>
+		<td><code>LatLngBounds</code>
+		<td><code>null</code></td>
+		<td>If set, tiles will only be loaded inside inside the set <code>LatLngBounds</code>.</td>
+	</tr>
+	<tr id='tilelayer-pane'>
+		<td><code><b>pane</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;tilePane&#x27;</code></td>
+		<td><code>Map pane</code> where the grid layer will be added.</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<h3 id='tilelayer-method'>Methods</h3>
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-seturl'>
+		<td><code><b>setUrl</b>(<nobr>&lt;String&gt;</nobr> <i>url</i>, <nobr>&lt;Boolean&gt;</nobr> <i>noRedraw?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Updates the layer&#39;s URL template and redraws it (unless <code>noRedraw</code> is set to <code>true</code>).</td>
+	</tr>
+	<tr id='tilelayer-createtile'>
+		<td><code><b>createTile</b>(<nobr>&lt;Object&gt;</nobr> <i>coords</i>, <nobr>&lt;Function&gt;</nobr> <i>done?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>Called only internally, overrides GridLayer&#39;s <a href="#gridlayer-createtile"><code>createTile()</code></a><br>
+to return an <code>&lt;img&gt;</code> HTML element with the appropiate image URL given <code>coords</code>. The <code>done</code>
+callback is called when the tile has been loaded.</td>
+	</tr>
+	<tr id='tilelayer-gettileurl'>
+		<td><code><b>getTileUrl</b>(<nobr>&lt;Object&gt;</nobr> <i>coords</i>)</nobr></code></td>
+		<td><code>String</code></td>
+		<td>Called only internally, returns the URL for a tile given its coordinates.<br>
+Classes extending <a href="#tilelayer"><code>TileLayer</code></a> can override this function to provide custom tile URL naming schemes.</td>
+	</tr>
+</tbody></table>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#gridlayer-method'>Methods from GridLayer</a>.</label> -->
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#gridlayer'>GridLayer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-bringtofront'>
+		<td><code><b>bringToFront</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Brings the tile layer to the top of all tile layers.</td>
+	</tr>
+	<tr id='tilelayer-bringtoback'>
+		<td><code><b>bringToBack</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Brings the tile layer to the bottom of all tile layers.</td>
+	</tr>
+	<tr id='tilelayer-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</td>
+	</tr>
+	<tr id='tilelayer-getcontainer'>
+		<td><code><b>getcontainer</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td>Returns the HTML element that contains the tiles for this layer.</td>
+	</tr>
+	<tr id='tilelayer-setopacity'>
+		<td><code><b>setOpacity</b>(<nobr>&lt;Number&gt;</nobr> <i>opacity</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Changes the <a href="#gridlayer-opacity">opacity</a> of the grid layer.</td>
+	</tr>
+	<tr id='tilelayer-setzindex'>
+		<td><code><b>setZIndex</b>(<nobr>&lt;Number&gt;</nobr> <i>zIndex</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Changes the <a href="#gridlayer-zindex">zIndex</a> of the grid layer.</td>
+	</tr>
+	<tr id='tilelayer-isloading'>
+		<td><code><b>isLoading</b>()</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if any tile in the grid layer has not finished loading.</td>
+	</tr>
+	<tr id='tilelayer-redraw'>
+		<td><code><b>redraw</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Causes the layer to clear all the tiles and request them again.</td>
+	</tr>
+	<tr id='tilelayer-gettilesize'>
+		<td><code><b>getTileSize</b>()</nobr></code></td>
+		<td><code>Point</code></td>
+		<td>Normalizes the <a href="#gridlayer-tilesize">tileSize option</a> into a point. Used by the <code>createTile()</code> method.</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#layer-method'>Methods from Layer</a>.</label> -->
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds the layer to the given map</td>
+	</tr>
+	<tr id='tilelayer-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the layer from the map it is currently active on.</td>
+	</tr>
+	<tr id='tilelayer-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the layer from the given map</td>
+	</tr>
+	<tr id='tilelayer-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#layer-extension-methods'>Extension methods from Layer</a>.</label> -->
+	<label><span class='expander'>▶</span> Extension methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-onadd'>
+		<td><code><b>onAdd</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Should contain code that creates DOM elements for the layer, adds them to <code>map panes</code> where they should belong and puts listeners on relevant map events. Called on <a href="#map-addlayer"><code>map.addLayer(layer)</code></a>.</td>
+	</tr>
+	<tr id='tilelayer-onremove'>
+		<td><code><b>onRemove</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Should contain all clean up code that removes the layer&#39;s elements from the DOM and removes listeners previously added in <a href="#layer-onadd"><code>onAdd</code></a>. Called on <a href="#map-removelayer"><code>map.removeLayer(layer)</code></a>.</td>
+	</tr>
+	<tr id='tilelayer-getevents'>
+		<td><code><b>getEvents</b>()</nobr></code></td>
+		<td><code>Object</code></td>
+		<td>This optional method should return an object like <code>{ viewreset: this._reset }</code> for <a href="#event-addeventlistener"><code>addEventListener</code></a>. These events will be automatically added and removed from the map with your layer.</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#evented-method'>Methods from Evented</a>.</label> -->
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-on'>
+		<td><code><b>on</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. <code>&#39;click dblclick&#39;</code>).</td>
+	</tr>
+	<tr id='tilelayer-on'>
+		<td><code><b>on</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></td>
+	</tr>
+	<tr id='tilelayer-off'>
+		<td><code><b>off</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn?</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to <code>on</code>, you must pass the same context to <code>off</code> in order to remove the listener.</td>
+	</tr>
+	<tr id='tilelayer-off'>
+		<td><code><b>off</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a set of type/listener pairs.</td>
+	</tr>
+	<tr id='tilelayer-off'>
+		<td><code><b>off</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes all listeners to all events on the object.</td>
+	</tr>
+	<tr id='tilelayer-fire'>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Fires an event of the specified type. You can optionally provide an data object — the first argument of the listener function will contain its properties.</td>
+	</tr>
+	<tr id='tilelayer-listens'>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if a particular event type has any listeners attached to it.</td>
+	</tr>
+	<tr id='tilelayer-once'>
+		<td><code><b>once</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Behaves as <a href="#evented-on"><code>on(…)</code></a>, except the listener will only get fired once and then removed.</td>
+	</tr>
+	<tr id='tilelayer-addeventlistener'>
+		<td><code><b>addEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-on"><code>on(…)</code></a></td>
+	</tr>
+	<tr id='tilelayer-removeeventlistener'>
+		<td><code><b>removeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-off"><code>off(…)</code></a></td>
+	</tr>
+	<tr id='tilelayer-clearalleventlisteners'>
+		<td><code><b>clearAllEventListeners</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-off"><code>off()</code></a></td>
+	</tr>
+	<tr id='tilelayer-addonetimeeventlistener'>
+		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-once"><code>once(…)</code></a></td>
+	</tr>
+	<tr id='tilelayer-fireevent'>
+		<td><code><b>fireEvent</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-fire"><code>fire(…)</code></a></td>
+	</tr>
+	<tr id='tilelayer-haseventlisteners'>
+		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-listens"><code>listens(…)</code></a></td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<h2 id='tilelayer-wms'>TileLayer.WMS</h2>
+<p>Used to display WMS services as tile layers on the map. Extends <a href="#tilelayer"><code>TileLayer</code></a>.</p>
+
+<h3 id='tilelayer-wms-example'>Usage example</h3>
+
+
+
+
+<pre><code class="lang-js">var nexrad = L.tileLayer.wms(&quot;http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi&quot;, {
+    layers: &#39;nexrad-n0r-900913&#39;,
+    format: &#39;image/png&#39;,
+    transparent: true,
+    attribution: &quot;Weather data © 2012 IEM Nexrad&quot;
+});
+</code></pre>
+
+
+
+<h3 id='tilelayer-wms-factory'>Creation</h3>
+
+
+
+<table><thead>
+	<tr>
+		<th>Factory</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-wms-l-tilelayer-wms'>
+		<td><code><b>L.tileLayer.wms</b>(<nobr>&lt;String&gt;</nobr> <i>baseUrl</i>, <nobr>&lt;TileLayer.WMS options&gt;</nobr> <i>options</i>)</nobr></code></td>
+		<td>Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.</td>
+	</tr>
+</tbody></table>
+
+<h3 id='tilelayer-wms-option'>Options</h3>
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-wms-layers'>
+		<td><code><b>layers</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;&#x27;</code></td>
+		<td><strong>(required)</strong> Comma-separated list of WMS layers to show.</td>
+	</tr>
+	<tr id='tilelayer-wms-styles'>
+		<td><code><b>styles</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;&#x27;</code></td>
+		<td>Comma-separated list of WMS styles.<br>
+If <code>true</code>, the WMS service will return images with transparency.</td>
+	</tr>
+	<tr id='tilelayer-wms-format'>
+		<td><code><b>format</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;image/jpeg&#x27;</code></td>
+		<td>WMS image format (use <code>&#39;image/png&#39;</code> for layers with transparency).</td>
+	</tr>
+	<tr id='tilelayer-wms-version'>
+		<td><code><b>version</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;1.1.1&#x27;</code></td>
+		<td>Version of the WMS service to use</td>
+	</tr>
+	<tr id='tilelayer-wms-crs'>
+		<td><code><b>crs</b></code></td>
+		<td><code>CRS</code>
+		<td><code>null</code></td>
+		<td>Coordinate Reference System to use for the WMS requests, defaults to<br>
+map CRS. Don&#39;t change this if you&#39;re not sure what it means.</td>
+	</tr>
+	<tr id='tilelayer-wms-uppercase'>
+		<td><code><b>uppercase</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>If <code>true</code>, WMS request parameter keys will be uppercase.</td>
+	</tr>
+</tbody></table>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#tilelayer-option'>Options from TileLayer</a>.</label> -->
+	<label><span class='expander'>▶</span> Options inherited from <a href='#tilelayer'>TileLayer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-wms-minzoom'>
+		<td><code><b>minZoom</b></code></td>
+		<td><code>Number</code>
+		<td><code>0</code></td>
+		<td>Minimum zoom number.</td>
+	</tr>
+	<tr id='tilelayer-wms-maxzoom'>
+		<td><code><b>maxZoom</b></code></td>
+		<td><code>Number</code>
+		<td><code>18</code></td>
+		<td>Maximum zoom number.</td>
+	</tr>
+	<tr id='tilelayer-wms-maxnativezoom'>
+		<td><code><b>maxNativeZoom</b></code></td>
+		<td><code>Number</code>
+		<td><code>null</code></td>
+		<td>Maximum zoom number the tiles source has available. If it is specified, the tiles on all zoom levels higher than <code>maxNativeZoom</code> will be loaded from <code>maxZoom</code> level and auto-scaled.</td>
+	</tr>
+	<tr id='tilelayer-wms-subdomains'>
+		<td><code><b>subdomains</b></code></td>
+		<td><code>String|String[]</code>
+		<td><code>&#x27;abc&#x27;</code></td>
+		<td>Subdomains of the tile service. Can be passed in the form of one string (where each letter is a subdomain name) or an array of strings.</td>
+	</tr>
+	<tr id='tilelayer-wms-errortileurl'>
+		<td><code><b>errorTileUrl</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;&#x27;</code></td>
+		<td>URL to the tile image to show in place of the tile that failed to load.</td>
+	</tr>
+	<tr id='tilelayer-wms-zoomoffset'>
+		<td><code><b>zoomOffset</b></code></td>
+		<td><code>Number</code>
+		<td><code>0</code></td>
+		<td>The zoom number used in tile URLs will be offset with this value.</td>
+	</tr>
+	<tr id='tilelayer-wms-tms'>
+		<td><code><b>tms</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>If <code>true</code>, inverses Y axis numbering for tiles (turn this on for TMS services).</td>
+	</tr>
+	<tr id='tilelayer-wms-zoomreverse'>
+		<td><code><b>zoomReverse</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>If set to true, the zoom number used in tile URLs will be reversed (<code>maxZoom - zoom</code> instead of <code>zoom</code>)</td>
+	</tr>
+	<tr id='tilelayer-wms-detectretina'>
+		<td><code><b>detectRetina</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>If <code>true</code> and user is on a retina display, it will request four tiles of half the specified size and a bigger zoom level in place of one to utilize the high resolution.</td>
+	</tr>
+	<tr id='tilelayer-wms-crossorigin'>
+		<td><code><b>crossOrigin</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>If true, all tiles will have their crossOrigin attribute set to &#39;&#39;. This is needed if you want to access tile pixel data.</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#gridlayer-option'>Options from GridLayer</a>.</label> -->
+	<label><span class='expander'>▶</span> Options inherited from <a href='#gridlayer'>GridLayer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-wms-tilesize'>
+		<td><code><b>tileSize</b></code></td>
+		<td><code>Number|Point</code>
+		<td><code>256</code></td>
+		<td>Width and height of tiles in the grid. Use a number if width and height are equal, or <code>L.point(width, height)</code> otherwise.</td>
+	</tr>
+	<tr id='tilelayer-wms-opacity'>
+		<td><code><b>opacity</b></code></td>
+		<td><code>Number</code>
+		<td><code>1.0</code></td>
+		<td>Opacity of the tiles. Can be used in the <code>createTile()</code> function.</td>
+	</tr>
+	<tr id='tilelayer-wms-updatewhenidle'>
+		<td><code><b>updateWhenIdle</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>depends</code></td>
+		<td>If <code>false</code>, new tiles are loaded during panning, otherwise only after it (for better performance). <code>true</code> by default on mobile browsers, otherwise <code>false</code>.</td>
+	</tr>
+	<tr id='tilelayer-wms-updateinterval'>
+		<td><code><b>updateInterval</b></code></td>
+		<td><code>Number</code>
+		<td><code>200</code></td>
+		<td>Tiles will not update more than once every <code>updateInterval</code> milliseconds.</td>
+	</tr>
+	<tr id='tilelayer-wms-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
+	</tr>
+	<tr id='tilelayer-wms-zindex'>
+		<td><code><b>zIndex</b></code></td>
+		<td><code>Number</code>
+		<td><code>null</code></td>
+		<td>The explicit zIndex of the tile layer. Not set by default.</td>
+	</tr>
+	<tr id='tilelayer-wms-bounds'>
+		<td><code><b>bounds</b></code></td>
+		<td><code>LatLngBounds</code>
+		<td><code>null</code></td>
+		<td>If set, tiles will only be loaded inside inside the set <code>LatLngBounds</code>.</td>
+	</tr>
+	<tr id='tilelayer-wms-pane'>
+		<td><code><b>pane</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;tilePane&#x27;</code></td>
+		<td><code>Map pane</code> where the grid layer will be added.</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<h3 id='tilelayer-wms-method'>Methods</h3>
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-wms-setparams'>
+		<td><code><b>setParams</b>(<nobr>&lt;Object&gt;</nobr> <i>params</i>, <nobr>&lt;Boolean&gt;</nobr> <i>noRedraw?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Merges an object with the new parameters and re-requests tiles on the current screen (unless <code>noRedraw</code> was set to true).</td>
+	</tr>
+</tbody></table>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#tilelayer-method'>Methods from TileLayer</a>.</label> -->
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#tilelayer'>TileLayer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-wms-seturl'>
+		<td><code><b>setUrl</b>(<nobr>&lt;String&gt;</nobr> <i>url</i>, <nobr>&lt;Boolean&gt;</nobr> <i>noRedraw?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Updates the layer&#39;s URL template and redraws it (unless <code>noRedraw</code> is set to <code>true</code>).</td>
+	</tr>
+	<tr id='tilelayer-wms-createtile'>
+		<td><code><b>createTile</b>(<nobr>&lt;Object&gt;</nobr> <i>coords</i>, <nobr>&lt;Function&gt;</nobr> <i>done?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>Called only internally, overrides GridLayer&#39;s <a href="#gridlayer-createtile"><code>createTile()</code></a><br>
+to return an <code>&lt;img&gt;</code> HTML element with the appropiate image URL given <code>coords</code>. The <code>done</code>
+callback is called when the tile has been loaded.</td>
+	</tr>
+	<tr id='tilelayer-wms-gettileurl'>
+		<td><code><b>getTileUrl</b>(<nobr>&lt;Object&gt;</nobr> <i>coords</i>)</nobr></code></td>
+		<td><code>String</code></td>
+		<td>Called only internally, returns the URL for a tile given its coordinates.<br>
+Classes extending <a href="#tilelayer"><code>TileLayer</code></a> can override this function to provide custom tile URL naming schemes.</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#gridlayer-method'>Methods from GridLayer</a>.</label> -->
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#gridlayer'>GridLayer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-wms-bringtofront'>
+		<td><code><b>bringToFront</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Brings the tile layer to the top of all tile layers.</td>
+	</tr>
+	<tr id='tilelayer-wms-bringtoback'>
+		<td><code><b>bringToBack</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Brings the tile layer to the bottom of all tile layers.</td>
+	</tr>
+	<tr id='tilelayer-wms-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</td>
+	</tr>
+	<tr id='tilelayer-wms-getcontainer'>
+		<td><code><b>getcontainer</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td>Returns the HTML element that contains the tiles for this layer.</td>
+	</tr>
+	<tr id='tilelayer-wms-setopacity'>
+		<td><code><b>setOpacity</b>(<nobr>&lt;Number&gt;</nobr> <i>opacity</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Changes the <a href="#gridlayer-opacity">opacity</a> of the grid layer.</td>
+	</tr>
+	<tr id='tilelayer-wms-setzindex'>
+		<td><code><b>setZIndex</b>(<nobr>&lt;Number&gt;</nobr> <i>zIndex</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Changes the <a href="#gridlayer-zindex">zIndex</a> of the grid layer.</td>
+	</tr>
+	<tr id='tilelayer-wms-isloading'>
+		<td><code><b>isLoading</b>()</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if any tile in the grid layer has not finished loading.</td>
+	</tr>
+	<tr id='tilelayer-wms-redraw'>
+		<td><code><b>redraw</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Causes the layer to clear all the tiles and request them again.</td>
+	</tr>
+	<tr id='tilelayer-wms-gettilesize'>
+		<td><code><b>getTileSize</b>()</nobr></code></td>
+		<td><code>Point</code></td>
+		<td>Normalizes the <a href="#gridlayer-tilesize">tileSize option</a> into a point. Used by the <code>createTile()</code> method.</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#layer-method'>Methods from Layer</a>.</label> -->
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-wms-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds the layer to the given map</td>
+	</tr>
+	<tr id='tilelayer-wms-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the layer from the map it is currently active on.</td>
+	</tr>
+	<tr id='tilelayer-wms-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the layer from the given map</td>
+	</tr>
+	<tr id='tilelayer-wms-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#layer-extension-methods'>Extension methods from Layer</a>.</label> -->
+	<label><span class='expander'>▶</span> Extension methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-wms-onadd'>
+		<td><code><b>onAdd</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Should contain code that creates DOM elements for the layer, adds them to <code>map panes</code> where they should belong and puts listeners on relevant map events. Called on <a href="#map-addlayer"><code>map.addLayer(layer)</code></a>.</td>
+	</tr>
+	<tr id='tilelayer-wms-onremove'>
+		<td><code><b>onRemove</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Should contain all clean up code that removes the layer&#39;s elements from the DOM and removes listeners previously added in <a href="#layer-onadd"><code>onAdd</code></a>. Called on <a href="#map-removelayer"><code>map.removeLayer(layer)</code></a>.</td>
+	</tr>
+	<tr id='tilelayer-wms-getevents'>
+		<td><code><b>getEvents</b>()</nobr></code></td>
+		<td><code>Object</code></td>
+		<td>This optional method should return an object like <code>{ viewreset: this._reset }</code> for <a href="#event-addeventlistener"><code>addEventListener</code></a>. These events will be automatically added and removed from the map with your layer.</td>
+	</tr>
+</tbody></table></div>
+</div>
+
+<div class='accordion'>
+<!-- 	<label>Show inherited <a href='#evented-method'>Methods from Evented</a>.</label> -->
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
+	<div class='accordion-content'>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-wms-on'>
+		<td><code><b>on</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. <code>&#39;click dblclick&#39;</code>).</td>
+	</tr>
+	<tr id='tilelayer-wms-on'>
+		<td><code><b>on</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></td>
+	</tr>
+	<tr id='tilelayer-wms-off'>
+		<td><code><b>off</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn?</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to <code>on</code>, you must pass the same context to <code>off</code> in order to remove the listener.</td>
+	</tr>
+	<tr id='tilelayer-wms-off'>
+		<td><code><b>off</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a set of type/listener pairs.</td>
+	</tr>
+	<tr id='tilelayer-wms-off'>
+		<td><code><b>off</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes all listeners to all events on the object.</td>
+	</tr>
+	<tr id='tilelayer-wms-fire'>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Fires an event of the specified type. You can optionally provide an data object — the first argument of the listener function will contain its properties.</td>
+	</tr>
+	<tr id='tilelayer-wms-listens'>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if a particular event type has any listeners attached to it.</td>
+	</tr>
+	<tr id='tilelayer-wms-once'>
+		<td><code><b>once</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Behaves as <a href="#evented-on"><code>on(…)</code></a>, except the listener will only get fired once and then removed.</td>
+	</tr>
+	<tr id='tilelayer-wms-addeventlistener'>
+		<td><code><b>addEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-on"><code>on(…)</code></a></td>
+	</tr>
+	<tr id='tilelayer-wms-removeeventlistener'>
+		<td><code><b>removeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-off"><code>off(…)</code></a></td>
+	</tr>
+	<tr id='tilelayer-wms-clearalleventlisteners'>
+		<td><code><b>clearAllEventListeners</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-off"><code>off()</code></a></td>
+	</tr>
+	<tr id='tilelayer-wms-addonetimeeventlistener'>
+		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-once"><code>once(…)</code></a></td>
+	</tr>
+	<tr id='tilelayer-wms-fireevent'>
+		<td><code><b>fireEvent</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-fire"><code>fire(…)</code></a></td>
+	</tr>
+	<tr id='tilelayer-wms-haseventlisteners'>
+		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-listens"><code>listens(…)</code></a></td>
+	</tr>
+</tbody></table></div>
+</div>
+
+
+
+	</div>
+	<script>
+	hljs.configure({tabReplace: '    '});
+	hljs.initHighlightingOnLoad();
+
+	var elems = document.querySelectorAll('h2, h3, h4, tr');
+
+	for (var i = 0, len = elems.length; i < len; i++) {
+		var el = elems[i];
+
+		if (el.id) {
+			var anchor = document.createElement('a');
+			anchor.setAttribute('anchor', el.id);
+			if (!el.children.length) {
+				// For headers, insert the anchor before.
+				el.parentNode.insertBefore(anchor, el);
+			} else {
+				// For table rows, insert the anchor inside the first <td>
+				el.querySelector('td').appendChild(anchor);
+			}
+		}
+	}
+
+	elems = document.querySelectorAll('div.accordion');
+	for (var i = 0, len = elems.length; i < len; i++) {
+		var el = elems[i];
+
+		el.querySelector('label').addEventListener('click', function(c){
+			return function() {
+				if (c.className === 'accordion expanded') {
+					c.className = 'accordion collapsed';
+				} else {
+					c.className = 'accordion expanded';
+				}
+				console.log(c);
+			};
+		}(el));
+
+// 		el.className = 'accordion collapsed';
+// 		el.querySelector('.accordion-content').style.display = 'none';
+	}
+
+</script>
+<style>
+	div.accordion {
+		width: 100%;
+		overflow: hidden;
+	}
+
+	div.accordion > label {
+		width: 100%;
+		cursor: pointer;
+		display: block;
+		background: #EEE;
+		padding: 0.5em 1em;
+		font-weight: bold;
+		font-size: 12px;
+	}
+
+	div.accordion > div.accordion-content {
+		max-height: 0;
+		display: none;
+	}
+
+	div.accordion.collapsed > div.accordion-content {
+		animation-duration: 0.4s;
+		animation-name: collapse;
+/* 		height: 0; */
+		max-height: 0;
+		display: block;
+	}
+
+	div.accordion.expanded > div.accordion-content {
+		animation-duration: 0.4s;
+		animation-name: expand;
+/* 		height: auto; */
+		max-height: none;
+		display: block;
+	}
+
+	@keyframes collapse {
+		0% { max-height: 100vh; }
+		100% { max-height: 0; }
+	}
+
+	@keyframes expand {
+		0% { max-height: 0; }
+		100% { max-height: 100vh; }
+	}
+
+/*	div.accordion > div.accordion-content {
+		transition: max-height 0.4s ease-out 0s;
+	}*/
+
+	div.accordion.expanded > label > span.expander {
+		transform: rotate(90deg);
+	}
+
+	div.accordion > label > span.expander {
+		transition: transform 0.4s ease-out 0s;
+		display: inline-block;
+	}
+
+	table {
+		margin-bottom: 0;
+	}
+
+</style>
+</body></html>
