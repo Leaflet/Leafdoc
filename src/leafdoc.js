@@ -2,7 +2,7 @@ var sander = require('sander');
 
 var template = require('./template'),
     getTemplate = template.getTemplate,
-    setTemplateDir = template.setTemplate;
+    setTemplateDir = template.setTemplateDir;
 
 var regexps = require('./regexps');
 
@@ -23,7 +23,7 @@ function Leafdoc(options){
 
 	if (options) {
 		if (options.templateDir) {
-			setTemplatedir(options.templateDir);
+			setTemplateDir(options.templateDir);
 		}
 	}
 };
@@ -248,17 +248,22 @@ Leafdoc.prototype.addStr = function(str) {
 
 						if (content) {
 							var split = regexps.functionDefinition.exec(content);
-							name = split[1];
-							paramString = split[2];
-							type = split[3];
-							defaultValue = split[4];
-
-							if (paramString) {
-								while(match = regexps.functionParam.exec(paramString)) {
-									params[ match[1] ] = {name: match[1], type: match[2]};
-								}
+							if (!split) {
+								console.error('Invalid ' + directive + ' definition: ', content);
 							}
-// 							console.log(params);
+							else {
+								name = split[1];
+								paramString = split[2];
+								type = split[3];
+								defaultValue = split[4];
+
+								if (paramString) {
+									while(match = regexps.functionParam.exec(paramString)) {
+										params[ match[1] ] = {name: match[1], type: match[2]};
+									}
+								}
+	// 							console.log(params);
+							}
 
 						} else {
 							name = '__default';

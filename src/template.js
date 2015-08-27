@@ -7,8 +7,8 @@ var Handlebars = require('handlebars');
 
 var templateDir = 'basic';
 
-module.exports.getTemplate = function(templateDir, templateName) {
-	return Handlebars.compile(sander.readFileSync('templates/' + templateName + '.hbs').toString());
+module.exports.setTemplateDir = function(newDir) {
+	templateDir = newDir;
 };
 
 module.exports.getTemplate = function(templateName) {
