@@ -30,10 +30,11 @@ var leafDirective = XRegExp('^  \\s* 🍂 (?<directive> \\S+ ) (\\s+ (?<content>
 
 
 // Parses an identifier, allowing only unicode ID_Start and ID_Continue characters
-var identifier= XRegExp.build('^({{ID_Start}}{{ID_Continue}}*)$', {
+// An identifier allows dots in it, to allow for namespacing identifiers.
+var identifier= XRegExp.build('^({{ID_Start}}  ( {{ID_Continue}} | \\. )*)$', {
 	ID_Start: require('unicode-7.0.0/properties/ID_Start/regex'),
 	ID_Continue: require('unicode-7.0.0/properties/ID_Continue/regex')
-});
+}, 'nx');
 
 // Parses a function name, its return type, and its parameters
 // Funny thing about functions is that not all printable characters are allowed. Thus,
@@ -44,7 +45,7 @@ var functionDefinition = XRegExp.build('^ (?<name> {{identifier}} ) \\s* (?<para
 
 
 // var functionParam = XRegExp.build('^ \\s* (?<name> {{identifier}}) \\s* ( \\: \\s* (?<type> .+ ) \\s* ) $', {identifier: identifier}, 'nx');
-var functionParam = XRegExp.build('\\s* (?<name> {{identifier}}) \\s* ( \\: \\s* (?<type> .+ ?) \\s* ) \\b,? ', {identifier: identifier}, 'gnx');
+var functionParam = XRegExp.build('\\s* (?<name> {{identifier}} \\?{0,1} ) \\s* ( \\: \\s* (?<type> .+ ?) \\s* ) \\b,? ', {identifier: identifier}, 'gnx');
 
 
 

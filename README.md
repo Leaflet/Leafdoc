@@ -85,7 +85,7 @@ name [ ( params ) ] [: type] [= default]
 ```
 where `params` is
 ```
-name [ : type ]  [ , name [ : type ]  [ , name [ : type ] ...  ]   ]
+name[?] [ : type ]  [ , name[?] [ : type ]  [ , name[?] [ : type ] ...  ]   ]
 ```
 
 Which means the following are possible:
@@ -117,6 +117,9 @@ The last function can also be written without the parameters shorthand:
 🍂function sum: Int
 🍂param a: Int
 🍂param b: Int
+
+Use an interrogation sign to specify a parameter as optional:
+🍂function update(force? : Boolean): null
 ```
 
 You can specify everything (name, params, type, default), but no documentable uses them all in the templates. The usual schema is:

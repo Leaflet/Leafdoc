@@ -607,12 +607,18 @@ Leafdoc.prototype._flattenInheritances = function(classname, inheritancesSoFar) 
 		inheritancesSoFar = [];
 	}
 
-	for (var i in this._namespaces[classname].inherits) {
-		var parent = this._namespaces[classname].inherits[i];
-		if (inheritancesSoFar.indexOf(parent) === -1) {
-			inheritancesSoFar.push(parent);
-			inheritancesSoFar = this._flattenInheritances(parent, inheritancesSoFar);
+	if (this._namespaces.hasOwnProperty(classname)) {
+
+		for (var i in this._namespaces[classname].inherits) {
+			var parent = this._namespaces[classname].inherits[i];
+			if (inheritancesSoFar.indexOf(parent) === -1) {
+				inheritancesSoFar.push(parent);
+				inheritancesSoFar = this._flattenInheritances(parent, inheritancesSoFar);
+			}
 		}
+	} else {
+		console.warn('Warning: Ancestor class/namespace «', classname, '» not found!');
+		return [];
 	}
 
 // 	console.log(classname, '→', inheritancesSoFar);
