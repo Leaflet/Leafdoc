@@ -1,14 +1,14 @@
 var sander = require('sander');
 
 var template = require('./template'),
-    getTemplate = template.getTemplate;
+    getTemplate = template.getTemplate,
+    setTemplateDir = template.setTemplate;
 
+var regexps = require('./regexps');
 
-/*
- * 🍂class Leafdoc
- * Represents the Leafdoc parser
- */
-function Leafdoc(){
+// 🍂class Leafdoc
+// Represents the Leafdoc parser
+function Leafdoc(options){
 	this._namespaces = {};
 	this._knownDocumentables = [
 		'example',
@@ -20,32 +20,40 @@ function Leafdoc(){
 		'property'
 	];
 	this._AKAs = {};
+
+	if (options) {
+		if (options.templateDir) {
+			setTemplatedir(options.templateDir);
+		}
+	}
 };
 
 /*
+ * 🍂factory Leafdoc(options: LeafdocOptions)
+ * Constructor for a new Leafdoc parser
+ *
+ * 🍂section
+ * 🍂aka LeafdocOptions
+ * 🍂option templateDir: String = 'basic'
+ * Defines which subdirectory in `templates/` to use for building up the HTML.
+ *
  * 🍂example
  *
  * Output Leafdoc's own documentation to the console with:
  *
  * ```
- * var LeafDoc = require('./leafdoc.js');
+ * var LeafDoc = require('./src/leafdoc.js');
  * var doc = new LeafDoc();
+ * 	doc.addFile('src/leafdoc.js');
  *
- * doc.addFile('leafdoc.js');
  * console.log( doc.outputStr() );
  * ```
  */
 
 
 
-/*
- * 🍂method addDir
- * 🍂param dirname, String
- * 🍂param extension, String
- * 🍂returns this
- *
- * Recursively scans a directory, and parses any files that match the given `extension`
- */
+// 🍂method addDir (dirname: String, extension: String): this
+// Recursively scans a directory, and parses any files that match the given `extension`
 Leafdoc.prototype.addDir = function(dirname, extension) {
 
 	/// TODO
@@ -54,52 +62,22 @@ Leafdoc.prototype.addDir = function(dirname, extension) {
 
 
 
-/*
- * 🍂method addFile
- * 🍂param filename, String
- * 🍂returns this
- * Parses the given file
- */
+// 🍂method addFile(filename: String): this
+// Parses the given file
 Leafdoc.prototype.addFile = function(filename) {
 	return this.addBuffer(sander.readFileSync(filename));
 };
 
 
 
-/*
- * 🍂method addBuffer
- * 🍂param buf, Buffer
- * 🍂returns this
- * Parses the given buffer
- */
+// 🍂method addBuffer(buf: Buffer): this
+// Parses the given buffer
 Leafdoc.prototype.addBuffer = function(buf) {
 	return this.addStr(buf.toString());
 };
 
-
-// Matches each comment block
-// [ \f\r\t\v] matches any whitespace character but newline
-// ^([ \t]*\/{2,}[ \t]?(?:.*)\n)+   Matches multiple single-line // comments
-// ^[ \t]*\/\*([\s\S]*?)\*\/   Matches single multiple-line /* */ comment
-// ^([ \t]*\/{2,}[ \t]?(?:.*)\n)+|[ \t]*\/\*([\s\S]*?)\*\/)    Matches either single- or multi-line comments.
-Leafdoc.prototype._commentBlockRegex = new RegExp(/^((?:[ \t]*\/{2,}[ \t]*.*\n)+)|(?:[ \t]*\/\*([\s\S]*?)\*\/)/gm);
-
-// Inside a comment /* */ block, matches a line sans the leading spaces / asterisk(s)
-Leafdoc.prototype._leadingBlockRegex = new RegExp(/^(?:\s*\* ?)?(.*)\n?/gm);
-
-// Inside a multiple // block, matches a line sans the leading //
-Leafdoc.prototype._leadingLineRegex = new RegExp(/^(?:\s*\/\/)?(?: ?)(.+)\n?/gm);
-
-// Inside a line, matches the leaf directive
-Leafdoc.prototype._leafDirectiveRegex = new RegExp(/^\s?🍂(\S*)(?:\s(.+))?$/);
-
-
-/*
- * 🍂method addStr
- * 🍂param str, String
- * 🍂returns this
- * Parses the given string for Leafdoc comments
- */
+// 🍂method addStr(str: String): this
+// Parses the given string for Leafdoc comments
 Leafdoc.prototype.addStr = function(str) {
 
 	// Leaflet files use DOS line feeds, which screw up things.
@@ -111,6 +89,7 @@ Leafdoc.prototype.addStr = function(str) {
 	var dt = '';	// Type of documentable
 	var dc = '';	// Name of documentable
 	var alt = 0;	// Will auto-increment for documentables with 🍂alternative
+	var altAppliesTo = null;	// Ensures 'alt' resets when documentable changes
 
 	// Scope of the current line (parser state): ns, sec or dc.
 	// (namespace, section, documentable)
@@ -125,9 +104,13 @@ Leafdoc.prototype.addStr = function(str) {
 	var sectionComments = [];
 	var sectionAKA = [];
 
+
+	/// TODO: Instead of using a regexp for comment blocks, allow using
+	/// another regexp which matches a whole file, for files containing just docs.
+
 	// 1: Fetch comment blocks (in a regexp loop). For each block...
 	var match;
-	while(match = this._commentBlockRegex.exec(str)) {
+	while(match = regexps.commentBlock.exec(str)) {
 
 		var multilineComment = match[1];
 		var blockComment = match[2];
@@ -143,20 +126,25 @@ Leafdoc.prototype.addStr = function(str) {
 // 		}
 
 		// Which regex should we use to clean each line?
-		var regex = multilineComment ? this._leadingLineRegex : this._leadingBlockRegex;
+// 		var regex = multilineComment ? this._leadingLineRegex : regexps.leadingBlock;
+		var regex = multilineComment ? regexps.leadingLine : regexps.leadingBlock;
 
 		// 2: Strip leading asterisk/slashes and whitespace and split into lines
-		while(match = regex.exec(commentBlock)) {
+		var lines = commentBlock.split('\n');
+// 		while(match = regex.exec(commentBlock)) {
+		for (var i in lines) {
+			var line = lines[i];
+// 			console.log('Line: ' + (multilineComment?'/':'*') + ' <' + line + '>');
+			var match = regex.exec(line);
 			var lineStr = match[1];
 			var validLine = false;
 			var directive, content;
 
-// 			if (multilineComment) {
-// 				console.log('line in multiline comment', blockIsEmpty, lineStr);
-// 			}
+// 			console.log('Line→ ' + (multilineComment?'/':'*') + ' <' + lineStr + '>');
 
 			// 3: Parse 🍂 directives
-			match = this._leafDirectiveRegex.exec(lineStr);
+// 			match = this._leafDirectiveRegex.exec(lineStr);
+			match = regexps.leafDirective.exec(lineStr);
 			if (match) {
 				// In "🍂param foo, bar", directive is "param" and content is "foo, bar"
 				directive = match[1];
@@ -175,12 +163,11 @@ Leafdoc.prototype.addStr = function(str) {
 					scope = 'dc';
 					dt = directive;
 					dc = '';	// The name of the documentable will be set later
-					alt = 0;
 				}
 
 				blockIsEmpty = false;
 			} else {
-				if (!blockIsEmpty && lineStr) {
+				if (!blockIsEmpty) {
 					directive = 'comment';
 					content = lineStr;
 					validLine = true;
@@ -252,47 +239,57 @@ Leafdoc.prototype.addStr = function(str) {
 
 					if (this._knownDocumentables.indexOf(directive) !== -1 ) {
 						// Documentables might have more than their name as content.
-						// By default, type (or return type) is second, default value is third.
+						// All documentables will follow the syntax for functions,
+						//   with optional parameters, optional type, and optional default value.
 
-						var split;
+// 						console.log(content, ', ', alt);
+
+						var name, params = {}, type = null, defaultValue = null;
+
 						if (content) {
-							split = content.split(',');
+							var split = regexps.functionDefinition.exec(content);
+							name = split[1];
+							paramString = split[2];
+							type = split[3];
+							defaultValue = split[4];
+
+							if (paramString) {
+								while(match = regexps.functionParam.exec(paramString)) {
+									params[ match[1] ] = {name: match[1], type: match[2]};
+								}
+							}
+// 							console.log(params);
+
 						} else {
-							split = ['__default'];
+							name = '__default';
 						}
-						dc = split[0].trim();
+
+						// Handle alternatives - just modify the name if 'alt' and 'altAppliesTo' match
+						if (altAppliesTo === name) {
+							dc = name + '-alternative-' + alt;
+						} else {
+							dc = name;
+							alt = 0;
+							altAppliesTo = null;
+						}
 
 						if (!currentSection.documentables.hasOwnProperty(dc)) {
 							currentSection.documentables[dc] = {
-								name: dc,
+								name: name,
 								aka: [],
 								comments: [],
-								params: {},	// Only for functions/methods/factories
-								type: (split[1] ? split[1].trim() : null),
-								defaultValue: (split[2] ? split.slice(2).join(',').trim() : null)	// Only for options
+								params: params,	// Only for functions/methods/factories
+								type: type || null,
+								defaultValue: defaultValue || null	// Only for options, properties
 							}
 						}
 						currentDocumentable = currentSection.documentables[dc];
 
 					} else if (directive === 'alternative') {
-						if (!dc) {
-							console.error('🍂alternative directive called before documentable was defined.');
-						}
 						alt++;
-						var key = dc + '-alternative-' + alt;
-						// An alternative will always inherit the (return) type and default
-						// value from the original.
-						if (!currentSection.documentables.hasOwnProperty(key)) {
-							currentSection.documentables[key] = {
-								name: dc,
-								aka: [],
-								comments: [],
-								params: {},	// Only for functions/methods/factories
-								type: currentDocumentable.type,
-								defaultValue: currentDocumentable.defaultValue	// Only for options
-							}
-						}
-						currentDocumentable = currentSection.documentables[key];
+						// Alternative applies to current documentable name; if name
+						// doesn't match, alternative has no effect.
+						altAppliesTo = currentDocumentable.name;
 
 					} else if (directive === 'param') {
 						// Params are param name, type.
@@ -328,10 +325,30 @@ Leafdoc.prototype.addStr = function(str) {
 };
 
 
+// Matches: functionName (parameters): returnType
+/// TODO: Use regenerate + unicode-7.0.0 npm packages to build regexps which
+/// respect ID_Start and ID_Continue
+Leafdoc.prototype._functionRexExp = new RegExp(/^(\S+)\s*(?:\((.*)\))?(?::\s*(\S+))/);
+
+// Given a string, returns the documentable skeleton, like a factory.
+// The function might have parameters and return value.
+// Also works for methods, so `type` must be either `'function'` or `'method'`.
+Leafdoc.prototype._parseFunction = function(str, type) {
+
+
+
+
+
+};
+
+
+
+
+
+
 
 /*
- * 🍂method outputStr
- * 🍂returns String
+ * 🍂method outputStr: String
  * Outputs the documentation to a string.
  * Use only after all the needed files have been parsed.
  */
@@ -342,8 +359,6 @@ Leafdoc.prototype.outputStr = function() {
 	var out = '';
 	for (var ns in this._namespaces) {
 
-// 		out += '<h2>' + ns + '</h2>';
-// 		console.log('outputting namespace', ns);
 		out += this._stringifyNamespace(this._namespaces[ns]);
 	}
 	

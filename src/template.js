@@ -2,11 +2,18 @@
 // Minor wrapper over Handlebars
 
 var sander = require('sander');
+var path = require('path');
 var Handlebars = require('handlebars');
+
+var templateDir = 'basic';
+
+module.exports.getTemplate = function(templateDir, templateName) {
+	return Handlebars.compile(sander.readFileSync('templates/' + templateName + '.hbs').toString());
+};
 
 module.exports.getTemplate = function(templateName) {
 	
-	return Handlebars.compile(sander.readFileSync('templates/' + templateName + '.hbs').toString());
+	return Handlebars.compile(sander.readFileSync(path.join('templates/', templateDir, templateName + '.hbs')).toString());
 	
 };
 

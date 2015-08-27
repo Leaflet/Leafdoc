@@ -8,7 +8,7 @@ Leafdoc's goals are to help produce documentation which is:
 * **Concise**: If you need half a page to describe what a function does, then Leafdoc is probably not for you.
 * **Non-intrusive**: Allow devs to write the minimum possible amount of documentation lines. A two-line function shouldn't need 15 lines of docs.
 * **Narrative**: Forget about exhaustive code introspection, and focus into providing human-readable explanations and per-class code examples using Markdown to do the heavy lifting.
-
+* **Language-independent**: Designed with Javascript in mind (and its dozens of ways of doing class inheritance or defining methods), Leafdoc doesn't parse your source code, just the comments.
 
 ## Try
 
@@ -27,16 +27,23 @@ js test.js > leafdoc.html
 
 ## Write
 
-The syntax is pretty much the tried-and-true directives-in-comment-blocks from JSdoc, NaturalDocs and a gazilion others. But instead of an `@` symbol, Leafdoc uses a leaf:
+The syntax is pretty much the tried-and-true directives-in-comment-blocks from JSdoc, NaturalDocs and a gazillion others. But instead of an `@` symbol, Leafdoc uses a leaf:
 
 ```
 /*
- * 🍂method addDir, this
- * 🍂param dirname, String
- * 🍂param extension, String
+ * 🍂method addDir: this
+ * 🍂param dirname: String
+ * 🍂param extension: String
  *
  * Recursively scans a directory, and parses any files that match the given `extension`
  */
+```
+
+Leafdoc was designed with compactness in mind, so it accepts comment blocks consisting of adjacent `//` comment lines, and a shorthand syntax for function/method parameters. This is equivalent to the example just above:
+
+```
+// 🍂method addDir (dirname: String, extension: String): this
+// Recursively scans a directory, and parses any files that match the given `extension`
 ```
 
 
@@ -46,37 +53,98 @@ The syntax is pretty much the tried-and-true directives-in-comment-blocks from J
 * `🍂example` lets some space to demonstrate how the class / namespace is meant to be used.
 * `🍂section` allows you to group several functions, events, methods or options together, thematically.
 * Methods, functions, options, etc are a generic thing internally named "documentable":
-	* `🍂method (name), (return type)`
-		* Has zero or more `🍂param (name), (type)`
-	* `🍂function (name), (return type)`
-		* Has zero or more `🍂param (name), (type)`
-	* `🍂factory (name)`
-		* Has zero or more `🍂param (name), (type)`
-	* `🍂option (name), (type), (default value)`
-	* `🍂event (name), (type)`
+	* `🍂method`
+	* `🍂function`
+	* `🍂factory`
+	* `🍂option`
+	* `🍂event`
+* Functions/methods/factories can have parameters, specified with `🍂param (name)`, `🍂param (name): (type)` or inline (see below).
 * Classes, namespaces and documentables can have `🍂aka (alternative name)`, (short for Also Known As). This allows to create links to the same thing using different names.
-* Anything can have several `🍂comment`s, exmplaining the thing. The `🍂comment` directive can be ommited, because any line without an explicit directive equals to one (but only for comment blocks that already have a 🍂 directive - non-🍂 blocks are ignored).
+* Anything can have several `🍂comment`s, explaining the thing. `🍂comment` directives can be implicit, because any (non-empty) line without an explicit directive equals to a comment.
 * If a function (or any other documentable) has several alternative uses, use the `🍂alternative` directive after to re-defining the documentable, e.g.:
   ```
   /*
-  🍂method on, this
-  🍂param type, String
-  🍂param fn, Function
+  🍂method on(type: String, fn: Function): this
   Adds the function `fn` as an event handler for the `type` event.
 
   🍂alternative
-  🍂param fnMap, Object
-  Adds a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`.
+  🍂method on(types: String, fn: Function): this
+  Given an array of event types (strings), attaches `fn` as an event handler to each of them.
   */
   ```
   In this example, the two alternatives are `on(type, fn)` and `on(fnMap)`. They will be shown as two different documentables.
-* `🍂inherits` means that a class or namespace inherits all documentables from another class or namespace.
 
+* `🍂inherits (parent)` means that a class or namespace inherits all documentables from another class or namespace.
+
+### Shorthand syntax
+
+Any documentable has the same syntax: name, optional parameters, optional type / return type/value, default value.
+
+```
+name [ ( params ) ] [: type] [= default]
+```
+where `params` is
+```
+name [ : type ]  [ , name [ : type ]  [ , name [ : type ] ...  ]   ]
+```
+
+Which means the following are possible:
+
+```
+An option usually has a type and a default value:
+🍂option enabled: Boolean = true
+
+But we can omit the default value:
+🍂option enabled: Boolean
+
+Or omit just the data type:
+🍂option enabled = true
+
+Or even just say there is an option:
+🍂option enabled
+
+A function with a return type:
+🍂function get: String
+
+A function with one parameter:
+🍂function get(id: Int): String
+
+Or two:
+A function with one parameter:
+🍂function sum(a: Int, b: Int): Int
+
+The last function can also be written without the parameters shorthand:
+🍂function sum: Int
+🍂param a: Int
+🍂param b: Int
+```
+
+You can specify everything (name, params, type, default), but no documentable uses them all in the templates. The usual schema is:
+
+|            | Params | Type | Default |
+| ---------- | ------ | ---- | ------- |
+| example    |        |      |         |
+| option     |        |  X   |   X     |
+| property   |        |  X   |   X     |
+| event      |        |  X   |         |
+| method     |   X    |  X   |         |
+| function   |   X    |  X   |         |
+| factory    |   X    |      |         |
 
 
 ### Customization
 
-At some point in the future it shall be easy to use a different set of `handlebars` templates.
+The output relies on a set of `handlebars` templates. By default, the ones in `templates/basic` will be used. In order to use another set of templates, pass the `templateDir` option to the Leafdoc constructor, like so:
+
+```js
+var l = new Leafdoc({templateDir: 'leaflet'});
+```
+
+I will write no detailed docs on how to modify the templates. If you know some HTML and `handlebars`, just copy them and hack things away :-)
+
+## Known gotchas
+
+* Leafdoc relies on some ugly per-module globals, so having more than one instance in your code (in the same process) might break things up. The use case for Leafdoc is to have just one instance when building docs for your code.
 
 
 ## Troubleshooting
