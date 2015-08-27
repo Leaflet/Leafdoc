@@ -367,9 +367,9 @@ Leafdoc.prototype.outputStr = function() {
 
 		out += this._stringifyNamespace(this._namespaces[ns]);
 	}
-	
+
 	return (getTemplate('html'))({body: out});
-	
+
 };
 
 Leafdoc.prototype._stringifyNamespace = function(namespace) {
@@ -529,10 +529,9 @@ Leafdoc.prototype._stringifySection = function(section, documentableType, inheri
 			});
 		}
 
-// 		console.log(docs);
 	}
 
-// 	console.log(documentableType);
+// 	console.log(documentableType, section.name === '__default');
 
 	return (getTemplate('section'))({
 		name: name,
@@ -540,7 +539,9 @@ Leafdoc.prototype._stringifySection = function(section, documentableType, inheri
 		comments: section.comments,
 		documentables:(getTemplate(documentableType))({
 			documentables: docs
-		})
+		}),
+		isSecondarySection: ( section.name !== '__default' && documentableType !== 'example' && !inheritingNamespace),
+		isInherited: !!inheritingNamespace
 	});
 };
 

@@ -183,14 +183,18 @@
 		overflow: hidden;
 	}
 
-	div.accordion > label {
-		width: 100%;
-		cursor: pointer;
+	div.accordion > label,
+	section.collapsable h4 {
 		display: block;
 		background: #EEE;
 		padding: 0.5em 1em;
 		font-weight: bold;
 		font-size: 12px;
+		margin: 0;
+	}
+
+	div.accordion > label {
+		cursor: pointer;
 	}
 
 	div.accordion > div.accordion-content {
@@ -240,6 +244,23 @@
 	table {
 		margin-bottom: 0;
 	}
+
+	section.collapsable {
+/* 		background: pink; */
+	}
+
+	section.collapsable div.section-comments {
+		background: #eee;
+		padding: 0 1em;
+		font-size: 12px;
+	}
+
+	section.collapsable pre {
+		margin:0;
+	}
+
+
+
 
 </style>
 </body></html>
