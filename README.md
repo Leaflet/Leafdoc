@@ -87,6 +87,8 @@ where `params` is
 ```
 name[?] [ : type ]  [ , name[?] [ : type ]  [ , name[?] [ : type ] ...  ]   ]
 ```
+and where `name` is a valid unicode identifier, or an ellipsis (`…`). `type` and `default` are freeform and can have spaces.
+
 
 Which means the following are possible:
 
@@ -120,6 +122,9 @@ The last function can also be written without the parameters shorthand:
 
 Use an interrogation sign to specify a parameter as optional:
 🍂function update(force? : Boolean): null
+
+Use ellipsis to mark optional parameters:
+🍂function update(…): null
 ```
 
 You can specify everything (name, params, type, default), but no documentable uses them all in the templates. The usual schema is:

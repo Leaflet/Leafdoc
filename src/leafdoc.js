@@ -227,7 +227,8 @@ Leafdoc.prototype.addStr = function(str) {
 							name: sec,
 							aka: sectionAKA,
 							comments: sectionComments,
-							documentables: {}
+							documentables: {},
+							type: dt
 						};
 						sectionAKA = [];
 						sectionComments = [];
@@ -261,8 +262,8 @@ Leafdoc.prototype.addStr = function(str) {
 									while(match = regexps.functionParam.exec(paramString)) {
 										params[ match[1] ] = {name: match[1], type: match[2]};
 									}
+// 									console.log("\"" + paramString + "\"\n\t", params);
 								}
-	// 							console.log(params);
 							}
 
 						} else {
@@ -530,6 +531,8 @@ Leafdoc.prototype._stringifySection = function(section, documentableType, inheri
 
 // 		console.log(docs);
 	}
+
+// 	console.log(documentableType);
 
 	return (getTemplate('section'))({
 		name: name,

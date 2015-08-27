@@ -44,10 +44,10 @@ var functionDefinition = XRegExp.build('^ (?<name> {{identifier}} ) \\s* (?<para
 },'nx');
 
 
+
 // var functionParam = XRegExp.build('^ \\s* (?<name> {{identifier}}) \\s* ( \\: \\s* (?<type> .+ ) \\s* ) $', {identifier: identifier}, 'nx');
-var functionParam = XRegExp.build('\\s* (?<name> {{identifier}} \\?{0,1} ) \\s* ( \\: \\s* (?<type> .+ ?) \\s* ) \\b,? ', {identifier: identifier}, 'gnx');
-
-
+// var functionParam = XRegExp.build('\\s* (?<name> ( {{identifier}} | … ) \\?{0,1} ) \\s* ( \\: \\s* (?<type> [^,]+ ) \\s* ) (, | \\)) ', {identifier: identifier}, 'gnx');
+var functionParam = XRegExp.build('\\s* (?<name> ( {{identifier}} | … ) \\?{0,1} ) \\s* ( \\: \\s* (?<type> [^,]+ ) \\s* )? (, | \\)) ', {identifier: identifier}, 'gnx');
 
 
 module.exports = {

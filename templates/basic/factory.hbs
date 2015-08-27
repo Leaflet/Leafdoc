@@ -8,7 +8,7 @@
 	<tr id='{{id}}'>
 		<td><code>new <b>{{name}}</b>(
 		{{~#each params~}}
-			{{#if type}}<nobr>&lt;{{{type type}}}&gt;</nobr> {{/if}}<i>{{name}}</i>
+			<nobr>{{#if type}}&lt;{{{type type}}}&gt; {{/if}}<i>{{name}}</i></nobr>
 			{{~#unless @last}}, {{/unless}}{{/each~}}
 		)</nobr></code></td>
 		<td>{{{markdown comments}}}</td>
