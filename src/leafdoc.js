@@ -22,20 +22,22 @@ function Leafdoc(options){
 	this._AKAs = {};
 
 	if (options) {
+		// 🍂option templateDir: String = 'basic'
+		// Defines which subdirectory in `templates/` to use for building up the HTML.
 		if (options.templateDir) {
 			setTemplateDir(options.templateDir);
 		}
+
+		// 🍂option showInheritancesWhenEmpty: Boolean = false
+		// When `true`, child classes/namespaces will display documentables from ancestors, even if the child class doesn't have any of such documentables.
+		// e.g. display inherited events even if the child doesn't define any new events.
+		this.showInheritancesWhenEmpty = options.showInheritancesWhenEmpty || false;
 	}
 };
 
 /*
- * 🍂factory Leafdoc(options: LeafdocOptions)
+ * 🍂factory Leafdoc(options: Leafdoc options)
  * Constructor for a new Leafdoc parser
- *
- * 🍂section
- * 🍂aka LeafdocOptions
- * 🍂option templateDir: String = 'basic'
- * Defines which subdirectory in `templates/` to use for building up the HTML.
  *
  * 🍂example
  *
@@ -375,14 +377,33 @@ Leafdoc.prototype.outputStr = function() {
 Leafdoc.prototype._stringifyNamespace = function(namespace) {
 	var out = '';
 
-	var inheritances = this._flattenInheritances(namespace.name);
+	var ancestors = this._flattenInheritances(namespace.name);
 
 	/// Ensure explicit order of the supersections (known types of documentable:
 	/// example, factory, options, events, methods, properties
 	for (var i in this._knownDocumentables) {
 		var s = this._knownDocumentables[i];
-		if (namespace.supersections.hasOwnProperty(s)) {
-			out += this._stringifySupersection(namespace.supersections[s], inheritances, namespace.name);
+
+		var supersectionHasSomething = namespace.supersections.hasOwnProperty(s);
+
+		if (s !== 'example' && this.showInheritancesWhenEmpty && !supersectionHasSomething) {
+// 			console.log('checking for empty section with inherited stuff, ', namespace.name, s, ancestors);
+			for (var i in ancestors) {
+				var ancestor = ancestors[i];
+// 				console.log(ancestor, this._namespaces[ancestor].supersections.hasOwnProperty(s));
+				if (this._namespaces[ancestor].supersections.hasOwnProperty(s)) {
+					supersectionHasSomething = true;
+					namespace.supersections[s] = {
+						name: this._namespaces[ancestor].supersections[s].name,
+						sections: {}
+					};
+				}
+			}
+		}
+
+
+		if (supersectionHasSomething) {
+			out += this._stringifySupersection(namespace.supersections[s], ancestors, namespace.name);
 		}
 	}
 
