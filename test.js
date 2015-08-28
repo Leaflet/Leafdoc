@@ -14,6 +14,13 @@ doc.addDir('src');
 // 	showInheritancesWhenEmpty: true
 // });
 
+
+
+// var doc = new LeafDoc({
+// 	templateDir: 'leaflet',
+// 	showInheritancesWhenEmpty: true
+// });
+
 // doc.addFile('../Leaflet/src/layer/marker/Marker.js');
 // doc.addFile('../Leaflet/src/layer/marker/Marker.Drag.js');
 // doc.addFile('../Leaflet/src/layer/marker/Marker.Popup.js');
