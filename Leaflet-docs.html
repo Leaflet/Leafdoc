@@ -21,8 +21,8 @@
 			<ul>
 <!-- 				<li><a href="#map-usage">Usage example</a></li> -->
 <!-- 				<li><a href="#map-constructor">Creation</a></li> -->
-				<li><a href="#map-options">Options</a></li>
-				<li><a href="#map-events">Events</a></li>
+				<li><a href="#map-option">Options</a></li>
+				<li><a href="#map-event">Events</a></li>
 			</ul>
 			<h4>Map Methods</h4>
 			<ul>
@@ -73,23 +73,23 @@
 				<li><a href="#latlng">LatLng</a></li>
 				<li><a href="#latlngbounds">LatLngBounds</a></li>
 				<li><a href="#point">Point</a></li>
-<!-- 				<li><a href="#bounds">Bounds</a></li> -->
-<!-- 				<li><a href="#icon">Icon</a></li> -->
-<!-- 				<li><a href="#divicon">DivIcon</a></li> -->
+				<li><a href="#bounds">Bounds</a></li>
+				<li><a href="#icon">Icon</a></li>
+				<li><a href="#divicon">DivIcon</a></li>
 			</ul>
 			<h4>Controls</h4>
 			<ul>
-<!-- 				<li><a href="#control-zoom">Zoom</a></li> -->
-<!-- 				<li><a href="#control-attribution">Attribution</a></li> -->
-<!-- 				<li><a href="#control-layers">Layers</a></li> -->
-<!-- 				<li><a href="#control-scale">Scale</a></li> -->
+				<li><a href="#control-zoom">Zoom</a></li>
+				<li><a href="#control-attribution">Attribution</a></li>
+				<li><a href="#control-layers">Layers</a></li>
+				<li><a href="#control-scale">Scale</a></li>
 			</ul>
 		</div>
 		<div class="toc-col">
-			<h4>Shared Methods</h4>
+			<h4>Shared Layer Methods</h4>
 			<ul>
 				<li><a href="#evented">Event</a></li>
-<!-- 				<li><a href="#layers">Layer</a></li> -->
+				<li><a href="#layers">Layer</a></li>
 				<li><a href="#popup">Popup</a></li>
 			</ul>
 			<h4>Utility</h4>
@@ -113,7 +113,7 @@
 			<ul>
 <!-- 				<li><a href="#class">Class</a></li> -->
 <!-- 				<li><a href="#evented">Evented</a></li> -->
-				<li><a href="#layer">Layer</a></li>
+<!-- 				<li><a href="#layer">Layer</a></li> -->
 <!-- 				<li><a href="#control">Control</a></li> -->
 <!-- 				<li><a href="#handler">Handler</a></li> -->
 				<!--<li><a class="nodocs" href="#">IFeature</a></li>-->
@@ -131,7 +131,178 @@
 		</div>
 	</div>
 
-	<h2 id='marker'>Marker</h2>
+	<h2 id='map'>Map</h2>
+
+<section>
+<h3 id='map-option'>Options</h3>
+
+<section class='collapsable'>
+
+<h4 id='map-interaction-options'>Interaction Options</h4>
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-closepopuponclick'>
+		<td><code><b>closePopupOnClick</b></code></td>
+		<td><code>Boolean </code>
+		<td><code>true</code></td>
+		<td>Set it to <code>false</code> if you don&#39;t want popups to close when user clicks the map.</td>
+	</tr>
+</tbody></table>
+
+</section><section class='collapsable'>
+
+<h4 id='map-control-options'>Control options</h4>
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-zoomcontrol'>
+		<td><code><b>zoomControl</b></code></td>
+		<td><code>Boolean </code>
+		<td><code>true</code></td>
+		<td>Whether a <a href="#control-zoom">zoom control</a> is added to the map by default.</td>
+	</tr>
+	<tr id='map-attributioncontrol'>
+		<td><code><b>attributionControl</b></code></td>
+		<td><code>Boolean </code>
+		<td><code>true</code></td>
+		<td>Whether a <a href="#control-attribution">attribution control</a> is added to the map by default.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+</section><section>
+<h3 id='map-event'>Events</h3>
+
+<section class='collapsable'>
+
+<h4 id='map-popup-events'>Popup events</h4>
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-popupopen'>
+		<td><code><b>popupopen</b>
+		<td><code>PopupEvent</code></td>
+		<td>Fired when a popup is opened in the map</td>
+	</tr>
+	<tr id='map-popupclose'>
+		<td><code><b>popupclose</b>
+		<td><code>PopupEvent</code></td>
+		<td>Fired when a popup in the map is closed</td>
+	</tr>
+</tbody></table>
+
+</section><section class='collapsable'>
+
+<h4 id='map-layer-events'>Layer events</h4>
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-layeradd'>
+		<td><code><b>layeradd</b>
+		<td><code>LayerEvent</code></td>
+		<td>Fired when a new layer is added to the map.</td>
+	</tr>
+	<tr id='map-layerremove'>
+		<td><code><b>layerremove</b>
+		<td><code>LayerEvent</code></td>
+		<td>Fired when some layer is removed from the map</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+</section><section>
+<h3 id='map-method'>Methods</h3>
+
+<section class='collapsable'>
+
+<h4 id='map-methods-for-layers-and-controls'>Methods for Layers and Controls</h4>
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-openpopup'>
+		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#popup'>Popup</a>&gt;</nobr> <i>popup</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).</td>
+	</tr>
+	<tr id='map-openpopup'>
+		<td><code><b>openPopup</b>(<nobr>&lt;String|HTMLElement&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Creates a popup with the specified content and options and opens it in the given point on a map.</td>
+	</tr>
+	<tr id='map-closepopup'>
+		<td><code><b>closePopup</b>(<nobr>&lt;<a href='#popup'>Popup</a>&gt;</nobr> <i>popup?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Closes the popup previously opened with <a href="#map-openpopup">openPopup</a> (or the given one).</td>
+	</tr>
+	<tr id='map-addlayer'>
+		<td><code><b>addLayer</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds the given layer to the map</td>
+	</tr>
+	<tr id='map-removelayer'>
+		<td><code><b>removeLayer</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the given layer from the map.</td>
+	</tr>
+	<tr id='map-haslayer'>
+		<td><code><b>hasLayer</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if the given layer is currently added to the map</td>
+	</tr>
+	<tr id='map-eachlayer'>
+		<td><code><b>eachLayer</b>(<nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Iterates over the layers of the map, optionally specifying context of the iterator function.<br>
+<pre><code>map.eachLayer(function(layer){
+    layer.bindPopup(&#39;Hello&#39;);
+});
+</code></pre></td>
+	</tr>
+</tbody></table>
+
+</section>
+
+</section><h2 id='marker'>Marker</h2>
 <p>L.Marker is used to display clickable/draggable icons on the map. Extends <a href="#layer"><code>Layer</code></a>.</p>
 
 <section>
@@ -195,7 +366,7 @@
 		<td><code><b>icon</b></code></td>
 		<td><code>L.Icon </code>
 		<td><code>*</code></td>
-		<td>Icon class to use for rendering the marker. See <a href="#L.Icon">Icon documentation</a> for details on how to customize the marker icon. Set to new <code>L.Icon.Default()</code> by default.</td>
+		<td>Icon class to use for rendering the marker. See <a href="#icon">Icon documentation</a> for details on how to customize the marker icon. Set to new <code>L.Icon.Default()</code> by default.</td>
 	</tr>
 	<tr id='marker-interactive'>
 		<td><code><b>interactive</b></code></td>
@@ -448,7 +619,7 @@
 		<td>Changes the <a href="#marker-zindexoffset">zIndex offset</a> of the marker.</td>
 	</tr>
 	<tr id='marker-seticon'>
-		<td><code><b>setIcon</b>(<nobr>&lt;Icon&gt;</nobr> <i>icon</i>)</nobr></code></td>
+		<td><code><b>setIcon</b>(<nobr>&lt;<a href='#icon'>Icon</a>&gt;</nobr> <i>icon</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td>Changes the marker icon.</td>
 	</tr>
@@ -1222,149 +1393,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 
 </section></div>
 </div>
-
-</section><h2 id='map'>Map</h2>
-
-<section>
-<h3 id='map-option'>Options</h3>
-
-<section class='collapsable'>
-
-<h4 id='map-interaction-options'>Interaction Options</h4>
-
-<div class='section-comments'></div>
-
-<table><thead>
-	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='map-closepopuponclick'>
-		<td><code><b>closePopupOnClick</b></code></td>
-		<td><code>Boolean </code>
-		<td><code>true</code></td>
-		<td>Set it to <code>false</code> if you don&#39;t want popups to close when user clicks the map.</td>
-	</tr>
-</tbody></table>
-
-</section>
-
-</section><section>
-<h3 id='map-event'>Events</h3>
-
-<section class='collapsable'>
-
-<h4 id='map-popup-events'>Popup events</h4>
-
-<div class='section-comments'></div>
-
-<table><thead>
-	<tr>
-		<th>Event</th>
-		<th>Data</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='map-popupopen'>
-		<td><code><b>popupopen</b>
-		<td><code>PopupEvent</code></td>
-		<td>Fired when a popup is opened in the map</td>
-	</tr>
-	<tr id='map-popupclose'>
-		<td><code><b>popupclose</b>
-		<td><code>PopupEvent</code></td>
-		<td>Fired when a popup in the map is closed</td>
-	</tr>
-</tbody></table>
-
-</section><section class='collapsable'>
-
-<h4 id='map-layer-events'>Layer events</h4>
-
-<div class='section-comments'></div>
-
-<table><thead>
-	<tr>
-		<th>Event</th>
-		<th>Data</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='map-layeradd'>
-		<td><code><b>layeradd</b>
-		<td><code>LayerEvent</code></td>
-		<td>Fired when a new layer is added to the map.</td>
-	</tr>
-	<tr id='map-layerremove'>
-		<td><code><b>layerremove</b>
-		<td><code>LayerEvent</code></td>
-		<td>Fired when some layer is removed from the map</td>
-	</tr>
-</tbody></table>
-
-</section>
-
-</section><section>
-<h3 id='map-method'>Methods</h3>
-
-<section class='collapsable'>
-
-<h4 id='map-methods-for-layers-and-controls'>Methods for Layers and Controls</h4>
-
-<div class='section-comments'></div>
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='map-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#popup'>Popup</a>&gt;</nobr> <i>popup</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td>Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).</td>
-	</tr>
-	<tr id='map-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;String|HTMLElement&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td>Creates a popup with the specified content and options and opens it in the given point on a map.</td>
-	</tr>
-	<tr id='map-closepopup'>
-		<td><code><b>closePopup</b>(<nobr>&lt;<a href='#popup'>Popup</a>&gt;</nobr> <i>popup?</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td>Closes the popup previously opened with <a href="#map-openpopup">openPopup</a> (or the given one).</td>
-	</tr>
-	<tr id='map-addlayer'>
-		<td><code><b>addLayer</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td>Adds the given layer to the map</td>
-	</tr>
-	<tr id='map-removelayer'>
-		<td><code><b>removeLayer</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td>Removes the given layer from the map.</td>
-	</tr>
-	<tr id='map-haslayer'>
-		<td><code><b>hasLayer</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>)</nobr></code></td>
-		<td><code>Boolean</code></td>
-		<td>Returns <code>true</code> if the given layer is currently added to the map</td>
-	</tr>
-	<tr id='map-eachlayer'>
-		<td><code><b>eachLayer</b>(<nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td>Iterates over the layers of the map, optionally specifying context of the iterator function.<br>
-<pre><code>map.eachLayer(function(layer){
-    layer.bindPopup(&#39;Hello&#39;);
-});
-</code></pre></td>
-	</tr>
-</tbody></table>
-
-</section>
 
 </section><h2 id='layer'>Layer</h2>
 <p>A set of methods from the Layer base class that all Leaflet layers use.
@@ -9451,7 +9479,7 @@ bounds = L.latLngBounds(southWest, northEast);
 		<td>Returns <code>true</code> if the rectangle intersects the given bounds. Two bounds intersect if they have at least one point in common.</td>
 	</tr>
 	<tr id='latlngbounds-overlaps'>
-		<td><code><b>overlaps</b>(<nobr>&lt;Bounds&gt;</nobr> <i>otherBounds</i>)</nobr></code></td>
+		<td><code><b>overlaps</b>(<nobr>&lt;<a href='#bounds'>Bounds</a>&gt;</nobr> <i>otherBounds</i>)</nobr></code></td>
 		<td><code>Boolean</code></td>
 		<td>Returns <code>true</code> if the rectangle overlaps the given bounds. Two bounds overlap if their intersection is an area.</td>
 	</tr>
@@ -9615,6 +9643,1691 @@ map.panBy(L.point(200, 300));
 
 </section>
 
+</section><h2 id='bounds'>Bounds</h2>
+<p>Represents a rectangular area in pixel coordinates.</p>
+
+<section>
+<h3 id='bounds-example'>Usage example</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+
+<pre><code class="lang-js">var p1 = L.point(10, 10),
+p2 = L.point(40, 60),
+bounds = L.bounds(p1, p2);
+</code></pre>
+<p>All Leaflet methods that accept <a href="#bounds"><code>Bounds</code></a> objects also accept them in a simple Array form (unless noted otherwise), so the bounds example above can be passed like this:</p>
+<pre><code class="lang-js">otherBounds.intersects([[10, 10], [40, 60]]);
+</code></pre>
+
+
+
+</section>
+
+</section><section>
+<h3 id='bounds-factory'>Creation</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Factory</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='bounds-l-bounds'>
+		<td><code><b>L.bounds</b>(<nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>topLeft</i>, <nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>bottomRight</i>)</nobr></code></td>
+		<td>Creates a Bounds object from two coordinates (usually top-left and bottom-right corners).</td>
+	</tr>
+	<tr id='bounds-l-bounds'>
+		<td><code><b>L.bounds</b>(<nobr>&lt;Point[]&gt;</nobr> <i>points</i>)</nobr></code></td>
+		<td>Creates a Bounds object from the points it contains</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+</section><section>
+<h3 id='bounds-method'>Methods</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='bounds-extend'>
+		<td><code><b>extend</b>(<nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>point</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Extends the bounds to contain the given point.</td>
+	</tr>
+	<tr id='bounds-getcenter'>
+		<td><code><b>getCenter</b>()</nobr></code></td>
+		<td><code><a href='#point'>Point</a></code></td>
+		<td>Returns the center point of the bounds.</td>
+	</tr>
+	<tr id='bounds-getbottomleft'>
+		<td><code><b>getBottomLeft</b>()</nobr></code></td>
+		<td><code><a href='#point'>Point</a></code></td>
+		<td>Returns the bottom-left point of the bounds.</td>
+	</tr>
+	<tr id='bounds-gettopright'>
+		<td><code><b>getTopRight</b>()</nobr></code></td>
+		<td><code><a href='#point'>Point</a></code></td>
+		<td>Returns the top-right point of the bounds.</td>
+	</tr>
+	<tr id='bounds-getsize'>
+		<td><code><b>getSize</b>()</nobr></code></td>
+		<td><code><a href='#point'>Point</a></code></td>
+		<td>Returns the size of the given bounds</td>
+	</tr>
+	<tr id='bounds-contains'>
+		<td><code><b>contains</b>(<nobr>&lt;<a href='#bounds'>Bounds</a>&gt;</nobr> <i>otherBounds</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if the rectangle contains the given one.</td>
+	</tr>
+	<tr id='bounds-contains'>
+		<td><code><b>contains</b>(<nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>point</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if the rectangle contains the given poing.</td>
+	</tr>
+	<tr id='bounds-intersects'>
+		<td><code><b>intersects</b>(<nobr>&lt;<a href='#bounds'>Bounds</a>&gt;</nobr> <i>otherBounds</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if the rectangle intersects the given bounds. Two bounds<br>
+intersect if they have at least one point in common.</td>
+	</tr>
+	<tr id='bounds-overlaps'>
+		<td><code><b>overlaps</b>(<nobr>&lt;<a href='#bounds'>Bounds</a>&gt;</nobr> <i>otherBounds</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if the rectangle overlaps the given bounds. Two bounds<br>
+overlap if their intersection is an area.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+</section><section>
+<h3 id='bounds-property'>Properties</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Property</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='bounds-min'>
+		<td><code><b>min</b>
+		<td><code><a href='#point'>Point</a></code></td>
+		<td>The top left corner of the rectangle.</td>
+	</tr>
+	<tr id='bounds-max'>
+		<td><code><b>max</b>
+		<td><code><a href='#point'>Point</a></code></td>
+		<td>The bottom right corner of the rectangle.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+</section><h2 id='icon'>Icon</h2>
+<p>Represents an icon to provide when creating a marker.</p>
+
+<section>
+<h3 id='icon-example'>Usage example</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+
+<pre><code class="lang-js">var myIcon = L.icon({
+    iconUrl: &#39;my-icon.png&#39;,
+    iconRetinaUrl: &#39;my-icon@2x.png&#39;,
+    iconSize: [38, 95],
+    iconAnchor: [22, 94],
+    popupAnchor: [-3, -76],
+    shadowUrl: &#39;my-icon-shadow.png&#39;,
+    shadowRetinaUrl: &#39;my-icon-shadow@2x.png&#39;,
+    shadowSize: [68, 95],
+    shadowAnchor: [22, 94]
+});
+
+L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);
+</code></pre>
+<p><code>L.Icon.Default</code> extends <a href="#icon"><code>L.Icon</code></a> and is the blue icon Leaflet uses for markers by default.</p>
+
+
+
+</section>
+
+</section><section>
+<h3 id='icon-factory'>Creation</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Factory</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='icon-l-icon'>
+		<td><code><b>L.icon</b>(<nobr>&lt;<a href='#icon-option'>Icon options</a>&gt;</nobr> <i>options</i>)</nobr></code></td>
+		<td>Creates an icon instance with the given options.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+</section><section>
+<h3 id='icon-option'>Options</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='icon-iconurl'>
+		<td><code><b>iconUrl</b></code></td>
+		<td><code>String </code>
+		<td><code>null</code></td>
+		<td><strong>(required)</strong> The URL to the icon image (absolute or relative to your script path).</td>
+	</tr>
+	<tr id='icon-iconretinaurl'>
+		<td><code><b>iconRetinaUrl</b></code></td>
+		<td><code>String </code>
+		<td><code>null</code></td>
+		<td>The URL to a retina sized version of the icon image (absolute or relative to your<br>
+script path). Used for Retina screen devices.</td>
+	</tr>
+	<tr id='icon-iconsize'>
+		<td><code><b>iconSize</b></code></td>
+		<td><code>Point </code>
+		<td><code>null</code></td>
+		<td>Size of the icon image in pixels.</td>
+	</tr>
+	<tr id='icon-iconanchor'>
+		<td><code><b>iconAnchor</b></code></td>
+		<td><code>Point </code>
+		<td><code>null</code></td>
+		<td>The coordinates of the &quot;tip&quot; of the icon (relative to its top left corner). The icon<br>
+will be aligned so that this point is at the marker&#39;s geographical location. Centered
+by default if size is specified, also can be set in CSS with negative margins.</td>
+	</tr>
+	<tr id='icon-popupanchor'>
+		<td><code><b>popupAnchor</b></code></td>
+		<td><code>Point </code>
+		<td><code>null</code></td>
+		<td>The coordinates of the point from which popups will &quot;open&quot;, relative to the icon anchor.</td>
+	</tr>
+	<tr id='icon-shadowurl'>
+		<td><code><b>shadowUrl</b></code></td>
+		<td><code>String </code>
+		<td><code>null</code></td>
+		<td>The URL to the icon shadow image. If not specified, no shadow image will be created.</td>
+	</tr>
+	<tr id='icon-shadowretinaurl'>
+		<td><code><b>shadowRetinaUrl</b></code></td>
+		<td><code>String </code>
+		<td><code>null</code></td>
+		<td></td>
+	</tr>
+	<tr id='icon-shadowsize'>
+		<td><code><b>shadowSize</b></code></td>
+		<td><code>Point </code>
+		<td><code>null</code></td>
+		<td>Size of the shadow image in pixels.</td>
+	</tr>
+	<tr id='icon-shadowanchor'>
+		<td><code><b>shadowAnchor</b></code></td>
+		<td><code>Point </code>
+		<td><code>null</code></td>
+		<td>The coordinates of the &quot;tip&quot; of the shadow (relative to its top left corner) (the same<br>
+as iconAnchor if not specified).</td>
+	</tr>
+	<tr id='icon-classname'>
+		<td><code><b>className</b></code></td>
+		<td><code>String </code>
+		<td><code>&#x27;&#x27;</code></td>
+		<td>A custom class name to assign to both icon and shadow images. Empty by default.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='icon-pane'>
+		<td><code><b>pane</b></code></td>
+		<td><code>String </code>
+		<td><code>&#x27;overlayPane&#x27;</code></td>
+		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+</section><section>
+<h3 id=''>Events</h3>
+
+
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Popup events inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='icon-popupopen'>
+		<td><code><b>popupopen</b>
+		<td><code>PopupEvent</code></td>
+		<td>Fired when a popup bound to this layer is opened</td>
+	</tr>
+	<tr id='icon-popupclose'>
+		<td><code><b>popupclose</b>
+		<td><code>PopupEvent</code></td>
+		<td>Fired when a popup bound to this layer is closed</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Events inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='icon-add'>
+		<td><code><b>add</b>
+		<td><code>Event</code></td>
+		<td>Fired after the layer is added to a map</td>
+	</tr>
+	<tr id='icon-remove'>
+		<td><code><b>remove</b>
+		<td><code>Event</code></td>
+		<td>Fired after the layer is removed from a map</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+</section><section>
+<h3 id='icon-method'>Methods</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='icon-createicon'>
+		<td><code><b>createIcon</b>(<nobr>&lt;HTMLElement|null&gt;</nobr> <i>oldIcon</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>Called internally when the icon has to be shown, returns a <code>&lt;img&gt;</code> HTML element<br>
+styled according to the options.</td>
+	</tr>
+	<tr id='icon-createshadow'>
+		<td><code><b>createShadow</b>(<nobr>&lt;HTMLElement|null&gt;</nobr> <i>oldIcon</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>As <code>createIcon</code>, but for the shadow beneath it.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='icon-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds the layer to the given map</td>
+	</tr>
+	<tr id='icon-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the layer from the map it is currently active on.</td>
+	</tr>
+	<tr id='icon-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the layer from the given map</td>
+	</tr>
+	<tr id='icon-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Extension methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='icon-onadd'>
+		<td><code><b>onAdd</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Should contain code that creates DOM elements for the layer, adds them to <code>map panes</code> where they should belong and puts listeners on relevant map events. Called on <a href="#map-addlayer"><code>map.addLayer(layer)</code></a>.</td>
+	</tr>
+	<tr id='icon-onremove'>
+		<td><code><b>onRemove</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Should contain all clean up code that removes the layer&#39;s elements from the DOM and removes listeners previously added in <a href="#layer-onadd"><code>onAdd</code></a>. Called on <a href="#map-removelayer"><code>map.removeLayer(layer)</code></a>.</td>
+	</tr>
+	<tr id='icon-getevents'>
+		<td><code><b>getEvents</b>()</nobr></code></td>
+		<td><code>Object</code></td>
+		<td>This optional method should return an object like <code>{ viewreset: this._reset }</code> for <a href="#event-addeventlistener"><code>addEventListener</code></a>. These events will be automatically added and removed from the map with your layer.</td>
+	</tr>
+	<tr id='icon-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td>This optional method should return a string containing HTML to be shown on the <code>Attribution control</code> whenever the layer is visible.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='icon-bindpopup'>
+		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Binds a popup to the layer with the passed <code>content</code> and sets up the<br>
+neccessary event listeners. If a <code>Function</code> is passed it will receive
+the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</td>
+	</tr>
+	<tr id='icon-unbindpopup'>
+		<td><code><b>unbindPopup</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the popup previously bound with <code>bindPopup</code>.</td>
+	</tr>
+	<tr id='icon-openpopup'>
+		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Opens the bound popup at the specificed <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</td>
+	</tr>
+	<tr id='icon-closepopup'>
+		<td><code><b>closePopup</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Closes the popup bound to this layer if it is open.<br>
+<p>Opens or closes the popup bound to this layer depending on its current state.</p>
+<p>Returns <code>true</code> if the popup bound to this layer is currently open.</p></td>
+	</tr>
+	<tr id='icon-setpopupcontent'>
+		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Sets the content of the popup bound to this layer.</td>
+	</tr>
+	<tr id='icon-getpopup'>
+		<td><code><b>getPopup</b>()</nobr></code></td>
+		<td><code><a href='#popup'>Popup</a></code></td>
+		<td>Returns the popup bound to this layer.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='icon-on'>
+		<td><code><b>on</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. <code>&#39;click dblclick&#39;</code>).</td>
+	</tr>
+	<tr id='icon-on'>
+		<td><code><b>on</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></td>
+	</tr>
+	<tr id='icon-off'>
+		<td><code><b>off</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn?</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to <code>on</code>, you must pass the same context to <code>off</code> in order to remove the listener.</td>
+	</tr>
+	<tr id='icon-off'>
+		<td><code><b>off</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a set of type/listener pairs.</td>
+	</tr>
+	<tr id='icon-off'>
+		<td><code><b>off</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes all listeners to all events on the object.</td>
+	</tr>
+	<tr id='icon-fire'>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Fires an event of the specified type. You can optionally provide an data object — the first argument of the listener function will contain its properties.</td>
+	</tr>
+	<tr id='icon-listens'>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if a particular event type has any listeners attached to it.</td>
+	</tr>
+	<tr id='icon-once'>
+		<td><code><b>once</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Behaves as <a href="#evented-on"><code>on(…)</code></a>, except the listener will only get fired once and then removed.</td>
+	</tr>
+	<tr id='icon-addeventlistener'>
+		<td><code><b>addEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-on"><code>on(…)</code></a></td>
+	</tr>
+	<tr id='icon-removeeventlistener'>
+		<td><code><b>removeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-off"><code>off(…)</code></a></td>
+	</tr>
+	<tr id='icon-clearalleventlisteners'>
+		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-off"><code>off()</code></a></td>
+	</tr>
+	<tr id='icon-addonetimeeventlistener'>
+		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-once"><code>once(…)</code></a></td>
+	</tr>
+	<tr id='icon-fireevent'>
+		<td><code><b>fireEvent</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-fire"><code>fire(…)</code></a></td>
+	</tr>
+	<tr id='icon-haseventlisteners'>
+		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-listens"><code>listens(…)</code></a></td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+</section><h2 id='divicon'>DivIcon</h2>
+<p>Represents a lightweight icon for markers that uses a simple <code>&lt;div&gt;</code>
+element instead of an image. Inherits from <a href="#icon"><code>Icon</code></a> but ignores the <code>iconUrl</code> and shadow options.</p>
+
+<section>
+<h3 id='divicon-example'>Usage example</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+
+<pre><code class="lang-js">var myIcon = L.divIcon({className: &#39;my-div-icon&#39;});
+// you can set .my-div-icon styles in CSS
+
+L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);
+</code></pre>
+<p>By default, it has a &#39;leaflet-div-icon&#39; CSS class and is styled as a little white square with a shadow.</p>
+
+
+
+</section>
+
+</section><section>
+<h3 id='divicon-factory'>Creation</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Factory</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divicon-l-divicon'>
+		<td><code><b>L.divIcon</b>(<nobr>&lt;<a href='#divicon-option'>DivIcon options</a>&gt;</nobr> <i>options</i>)</nobr></code></td>
+		<td>Creates a <a href="#divicon"><code>DivIcon</code></a> instance with the given options.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+</section><section>
+<h3 id='divicon-option'>Options</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divicon-html'>
+		<td><code><b>html</b></code></td>
+		<td><code>String </code>
+		<td><code>&#x27;&#x27;</code></td>
+		<td>Custom HTML code to put inside the div element, empty by default.</td>
+	</tr>
+	<tr id='divicon-bgpos'>
+		<td><code><b>bgPos</b></code></td>
+		<td><code>Point </code>
+		<td><code>[0, 0]</code></td>
+		<td>Optional relative position of the background, in pixels</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#icon'>Icon</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divicon-iconurl'>
+		<td><code><b>iconUrl</b></code></td>
+		<td><code>String </code>
+		<td><code>null</code></td>
+		<td><strong>(required)</strong> The URL to the icon image (absolute or relative to your script path).</td>
+	</tr>
+	<tr id='divicon-iconretinaurl'>
+		<td><code><b>iconRetinaUrl</b></code></td>
+		<td><code>String </code>
+		<td><code>null</code></td>
+		<td>The URL to a retina sized version of the icon image (absolute or relative to your<br>
+script path). Used for Retina screen devices.</td>
+	</tr>
+	<tr id='divicon-iconsize'>
+		<td><code><b>iconSize</b></code></td>
+		<td><code>Point </code>
+		<td><code>null</code></td>
+		<td>Size of the icon image in pixels.</td>
+	</tr>
+	<tr id='divicon-iconanchor'>
+		<td><code><b>iconAnchor</b></code></td>
+		<td><code>Point </code>
+		<td><code>null</code></td>
+		<td>The coordinates of the &quot;tip&quot; of the icon (relative to its top left corner). The icon<br>
+will be aligned so that this point is at the marker&#39;s geographical location. Centered
+by default if size is specified, also can be set in CSS with negative margins.</td>
+	</tr>
+	<tr id='divicon-popupanchor'>
+		<td><code><b>popupAnchor</b></code></td>
+		<td><code>Point </code>
+		<td><code>null</code></td>
+		<td>The coordinates of the point from which popups will &quot;open&quot;, relative to the icon anchor.</td>
+	</tr>
+	<tr id='divicon-shadowurl'>
+		<td><code><b>shadowUrl</b></code></td>
+		<td><code>String </code>
+		<td><code>null</code></td>
+		<td>The URL to the icon shadow image. If not specified, no shadow image will be created.</td>
+	</tr>
+	<tr id='divicon-shadowretinaurl'>
+		<td><code><b>shadowRetinaUrl</b></code></td>
+		<td><code>String </code>
+		<td><code>null</code></td>
+		<td></td>
+	</tr>
+	<tr id='divicon-shadowsize'>
+		<td><code><b>shadowSize</b></code></td>
+		<td><code>Point </code>
+		<td><code>null</code></td>
+		<td>Size of the shadow image in pixels.</td>
+	</tr>
+	<tr id='divicon-shadowanchor'>
+		<td><code><b>shadowAnchor</b></code></td>
+		<td><code>Point </code>
+		<td><code>null</code></td>
+		<td>The coordinates of the &quot;tip&quot; of the shadow (relative to its top left corner) (the same<br>
+as iconAnchor if not specified).</td>
+	</tr>
+	<tr id='divicon-classname'>
+		<td><code><b>className</b></code></td>
+		<td><code>String </code>
+		<td><code>&#x27;&#x27;</code></td>
+		<td>A custom class name to assign to both icon and shadow images. Empty by default.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divicon-pane'>
+		<td><code><b>pane</b></code></td>
+		<td><code>String </code>
+		<td><code>&#x27;overlayPane&#x27;</code></td>
+		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+</section><section>
+<h3 id=''>Events</h3>
+
+
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Popup events inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divicon-popupopen'>
+		<td><code><b>popupopen</b>
+		<td><code>PopupEvent</code></td>
+		<td>Fired when a popup bound to this layer is opened</td>
+	</tr>
+	<tr id='divicon-popupclose'>
+		<td><code><b>popupclose</b>
+		<td><code>PopupEvent</code></td>
+		<td>Fired when a popup bound to this layer is closed</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Events inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divicon-add'>
+		<td><code><b>add</b>
+		<td><code>Event</code></td>
+		<td>Fired after the layer is added to a map</td>
+	</tr>
+	<tr id='divicon-remove'>
+		<td><code><b>remove</b>
+		<td><code>Event</code></td>
+		<td>Fired after the layer is removed from a map</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+</section><section>
+<h3 id=''>Methods</h3>
+
+
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#icon'>Icon</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divicon-createicon'>
+		<td><code><b>createIcon</b>(<nobr>&lt;HTMLElement|null&gt;</nobr> <i>oldIcon</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>Called internally when the icon has to be shown, returns a <code>&lt;img&gt;</code> HTML element<br>
+styled according to the options.</td>
+	</tr>
+	<tr id='divicon-createshadow'>
+		<td><code><b>createShadow</b>(<nobr>&lt;HTMLElement|null&gt;</nobr> <i>oldIcon</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>As <code>createIcon</code>, but for the shadow beneath it.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divicon-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds the layer to the given map</td>
+	</tr>
+	<tr id='divicon-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the layer from the map it is currently active on.</td>
+	</tr>
+	<tr id='divicon-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the layer from the given map</td>
+	</tr>
+	<tr id='divicon-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Extension methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divicon-onadd'>
+		<td><code><b>onAdd</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Should contain code that creates DOM elements for the layer, adds them to <code>map panes</code> where they should belong and puts listeners on relevant map events. Called on <a href="#map-addlayer"><code>map.addLayer(layer)</code></a>.</td>
+	</tr>
+	<tr id='divicon-onremove'>
+		<td><code><b>onRemove</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Should contain all clean up code that removes the layer&#39;s elements from the DOM and removes listeners previously added in <a href="#layer-onadd"><code>onAdd</code></a>. Called on <a href="#map-removelayer"><code>map.removeLayer(layer)</code></a>.</td>
+	</tr>
+	<tr id='divicon-getevents'>
+		<td><code><b>getEvents</b>()</nobr></code></td>
+		<td><code>Object</code></td>
+		<td>This optional method should return an object like <code>{ viewreset: this._reset }</code> for <a href="#event-addeventlistener"><code>addEventListener</code></a>. These events will be automatically added and removed from the map with your layer.</td>
+	</tr>
+	<tr id='divicon-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td>This optional method should return a string containing HTML to be shown on the <code>Attribution control</code> whenever the layer is visible.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divicon-bindpopup'>
+		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Binds a popup to the layer with the passed <code>content</code> and sets up the<br>
+neccessary event listeners. If a <code>Function</code> is passed it will receive
+the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</td>
+	</tr>
+	<tr id='divicon-unbindpopup'>
+		<td><code><b>unbindPopup</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes the popup previously bound with <code>bindPopup</code>.</td>
+	</tr>
+	<tr id='divicon-openpopup'>
+		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Opens the bound popup at the specificed <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</td>
+	</tr>
+	<tr id='divicon-closepopup'>
+		<td><code><b>closePopup</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Closes the popup bound to this layer if it is open.<br>
+<p>Opens or closes the popup bound to this layer depending on its current state.</p>
+<p>Returns <code>true</code> if the popup bound to this layer is currently open.</p></td>
+	</tr>
+	<tr id='divicon-setpopupcontent'>
+		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Sets the content of the popup bound to this layer.</td>
+	</tr>
+	<tr id='divicon-getpopup'>
+		<td><code><b>getPopup</b>()</nobr></code></td>
+		<td><code><a href='#popup'>Popup</a></code></td>
+		<td>Returns the popup bound to this layer.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divicon-on'>
+		<td><code><b>on</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. <code>&#39;click dblclick&#39;</code>).</td>
+	</tr>
+	<tr id='divicon-on'>
+		<td><code><b>on</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></td>
+	</tr>
+	<tr id='divicon-off'>
+		<td><code><b>off</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn?</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to <code>on</code>, you must pass the same context to <code>off</code> in order to remove the listener.</td>
+	</tr>
+	<tr id='divicon-off'>
+		<td><code><b>off</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a set of type/listener pairs.</td>
+	</tr>
+	<tr id='divicon-off'>
+		<td><code><b>off</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes all listeners to all events on the object.</td>
+	</tr>
+	<tr id='divicon-fire'>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Fires an event of the specified type. You can optionally provide an data object — the first argument of the listener function will contain its properties.</td>
+	</tr>
+	<tr id='divicon-listens'>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if a particular event type has any listeners attached to it.</td>
+	</tr>
+	<tr id='divicon-once'>
+		<td><code><b>once</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Behaves as <a href="#evented-on"><code>on(…)</code></a>, except the listener will only get fired once and then removed.</td>
+	</tr>
+	<tr id='divicon-addeventlistener'>
+		<td><code><b>addEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-on"><code>on(…)</code></a></td>
+	</tr>
+	<tr id='divicon-removeeventlistener'>
+		<td><code><b>removeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-off"><code>off(…)</code></a></td>
+	</tr>
+	<tr id='divicon-clearalleventlisteners'>
+		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-off"><code>off()</code></a></td>
+	</tr>
+	<tr id='divicon-addonetimeeventlistener'>
+		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-once"><code>once(…)</code></a></td>
+	</tr>
+	<tr id='divicon-fireevent'>
+		<td><code><b>fireEvent</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-fire"><code>fire(…)</code></a></td>
+	</tr>
+	<tr id='divicon-haseventlisteners'>
+		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#evented-listens"><code>listens(…)</code></a></td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+</section><h2 id='control-zoom'>Control.Zoom</h2>
+<p>A basic zoom control with two buttons (zoom in and zoom out). It is put on the map by default unless you set its <a href="#map-zoomcontrol"><code>zoomControl</code> option</a> to <code>false</code>. Extends <a href="#control"><code>Control</code></a>.</p>
+
+<section>
+<h3 id='control-zoom-factory'>Creation</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Factory</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-zoom-l-control-zoom'>
+		<td><code><b>L.control.zoom</b>(<nobr>&lt;<a href='#control-zoom-option'>Control.Zoom options</a>&gt;</nobr> <i>options</i>)</nobr></code></td>
+		<td>Creates a zoom control</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+</section><section>
+<h3 id='control-zoom-option'>Options</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-zoom-zoomintext'>
+		<td><code><b>zoomInText</b></code></td>
+		<td><code>String </code>
+		<td><code>&#x27;+&#x27;</code></td>
+		<td>The text set on the &#39;zoom in&#39; button.</td>
+	</tr>
+	<tr id='control-zoom-zoomintitle'>
+		<td><code><b>zoomInTitle</b></code></td>
+		<td><code>String </code>
+		<td><code>&#x27;Zoom in&#x27;</code></td>
+		<td>The title set on the &#39;zoom in&#39; button.</td>
+	</tr>
+	<tr id='control-zoom-zoomouttext'>
+		<td><code><b>zoomOutText</b></code></td>
+		<td><code>String </code>
+		<td><code>&#x27;-&#x27;</code></td>
+		<td>The text set on the &#39;zoom out&#39; button.</td>
+	</tr>
+	<tr id='control-zoom-zoomouttitle'>
+		<td><code><b>zoomOutTitle</b></code></td>
+		<td><code>String </code>
+		<td><code>&#x27;Zoom out&#x27;</code></td>
+		<td>The title set on the &#39;zoom out&#39; button.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#control'>Control</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-zoom-position'>
+		<td><code><b>position</b></code></td>
+		<td><code>String </code>
+		<td><code>&#x27;topleft&#x27;</code></td>
+		<td>The position of the control (one of the map corners). Possible values are <code>&#39;topleft&#39;</code>,<br>
+<code>&#39;topright&#39;</code>, <code>&#39;bottomleft&#39;</code> or <code>&#39;bottomright&#39;</code></td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+</section><h2 id='control-attribution'>Control.Attribution</h2>
+<p>The attribution control allows you to display attribution data in a small text box on a map. It is put on the map by default unless you set its <a href="#map-attributioncontrol"><code>attributionControl</code> option</a> to <code>false</code>, and it fetches attribution texts from layers with the <a href="#layer-getattribution"><code>getAttribution</code> method</a> automatically. Extends Control.</p>
+
+<section>
+<h3 id='control-attribution-factory'>Creation</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Factory</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-attribution-l-control-attribution'>
+		<td><code><b>L.control.attribution</b>(<nobr>&lt;<a href='#control-attribution-option'>Control.Attribution options</a>&gt;</nobr> <i>options</i>)</nobr></code></td>
+		<td>Creates an attribution control.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+</section><section>
+<h3 id='control-attribution-option'>Options</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-attribution-prefix'>
+		<td><code><b>prefix</b></code></td>
+		<td><code>String </code>
+		<td><code>&#x27;Leaflet&#x27;</code></td>
+		<td>The HTML text shown before the attributions. Pass <code>false</code> to disable.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#control'>Control</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-attribution-position'>
+		<td><code><b>position</b></code></td>
+		<td><code>String </code>
+		<td><code>&#x27;topleft&#x27;</code></td>
+		<td>The position of the control (one of the map corners). Possible values are <code>&#39;topleft&#39;</code>,<br>
+<code>&#39;topright&#39;</code>, <code>&#39;bottomleft&#39;</code> or <code>&#39;bottomright&#39;</code></td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+</section><section>
+<h3 id='control-attribution-method'>Methods</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-attribution-setprefix'>
+		<td><code><b>setPrefix</b>(<nobr>&lt;String&gt;</nobr> <i>prefix</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Sets the text before the attributions.</td>
+	</tr>
+	<tr id='control-attribution-addattribution'>
+		<td><code><b>addAttribution</b>(<nobr>&lt;String&gt;</nobr> <i>text</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds an attribution text (e.g. <code>&#39;Vector data &amp;copy; Mapbox&#39;</code>).</td>
+	</tr>
+	<tr id='control-attribution-removeattribution'>
+		<td><code><b>removeAttribution</b>(<nobr>&lt;String&gt;</nobr> <i>text</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes an attribution text.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+</section><h2 id='control-layers'>Control.Layers</h2>
+<p>The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the <a href="http://leafletjs.com/examples/layers-control.html">detailed example</a>). Extends <a href="#control"><code>Control</code></a>.</p>
+
+<section>
+<h3 id='control-layers-example'>Usage example</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+
+<pre><code class="lang-js">var baseLayers = {
+    &quot;Mapbox&quot;: mapbox,
+    &quot;OpenStreetMap&quot;: osm
+};
+
+var overlays = {
+    &quot;Marker&quot;: marker,
+    &quot;Roads&quot;: roadsLayer
+};
+
+L.control.layers(baseLayers, overlays).addTo(map);
+</code></pre>
+<p>The <code>baseLayers</code> and <code>overlays</code> parameters are object literals with layer names as keys and <a href="#layer"><code>Layer</code></a> objects as values:</p>
+<pre><code class="lang-js">{
+    &quot;&lt;someName1&gt;&quot;: layer1,
+    &quot;&lt;someName2&gt;&quot;: layer2
+}
+</code></pre>
+<p>The layer names can contain HTML, which allows you to add additional styling to the items:</p>
+<pre><code class="lang-js">{&quot;&lt;img src=&#39;my-layer-icon&#39; /&gt; &lt;span class=&#39;my-layer-item&#39;&gt;My Layer&lt;/span&gt;&quot;: myLayer}
+</code></pre>
+
+
+
+</section>
+
+</section><section>
+<h3 id='control-layers-factory'>Creation</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Factory</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-layers-l-control-layers'>
+		<td><code><b>L.control.layers</b>(<nobr>&lt;Object&gt;</nobr> <i>baselayers?</i>, <nobr>&lt;Object&gt;</nobr> <i>overlays?</i>, <nobr>&lt;<a href='#control-layers-option'>Control.Layers options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td>Creates an attribution control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes. Note that all base layers should be passed in the base layers object, but only one should be added to the map during map instantiation.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+</section><section>
+<h3 id='control-layers-option'>Options</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-layers-collapsed'>
+		<td><code><b>collapsed</b></code></td>
+		<td><code>Boolean </code>
+		<td><code>true</code></td>
+		<td>If <code>true</code>, the control will be collapsed into an icon and expanded on mouse hover or touch.</td>
+	</tr>
+	<tr id='control-layers-autozindex'>
+		<td><code><b>autoZIndex</b></code></td>
+		<td><code>Boolean </code>
+		<td><code>true</code></td>
+		<td>If <code>true</code>, the control will assign zIndexes in increasing order to all of its layers so that the order is preserved when switching them on/off.</td>
+	</tr>
+	<tr id='control-layers-hidesinglebase'>
+		<td><code><b>hideSingleBase</b></code></td>
+		<td><code>Boolean </code>
+		<td><code>false</code></td>
+		<td>If <code>true</code>, the base layers in the control will be hidden when there is only one.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#control'>Control</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-layers-position'>
+		<td><code><b>position</b></code></td>
+		<td><code>String </code>
+		<td><code>&#x27;topleft&#x27;</code></td>
+		<td>The position of the control (one of the map corners). Possible values are <code>&#39;topleft&#39;</code>,<br>
+<code>&#39;topright&#39;</code>, <code>&#39;bottomleft&#39;</code> or <code>&#39;bottomright&#39;</code></td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
+</section><section>
+<h3 id='control-layers-event'>Events</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-layers-baselayerchange'>
+		<td><code><b>baselayerchange</b>
+		<td><code>LayersControlEvent</code></td>
+		<td>Fired when the base layer is changed through the control.</td>
+	</tr>
+	<tr id='control-layers-overlayadd'>
+		<td><code><b>overlayadd</b>
+		<td><code>LayersControlEvent</code></td>
+		<td>Fired when an overlay is selected through the control.</td>
+	</tr>
+	<tr id='control-layers-overlayremove'>
+		<td><code><b>overlayremove</b>
+		<td><code>LayersControlEvent</code></td>
+		<td>Fired when an overlay is deselected through the control.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+</section><section>
+<h3 id='control-layers-method'>Methods</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-layers-addbaselayer'>
+		<td><code><b>addBaseLayer</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>, <nobr>&lt;String&gt;</nobr> <i>name</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a base layer (radio button entry) with the given name to the control.</td>
+	</tr>
+	<tr id='control-layers-addoverlay'>
+		<td><code><b>addOverlay</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>, <nobr>&lt;String&gt;</nobr> <i>name</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds an overlay (checkbox entry) with the given name to the control.</td>
+	</tr>
+	<tr id='control-layers-removelayer'>
+		<td><code><b>removeLayer</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Remove the given layer from the control.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+</section><h2 id='control-scale'>Control.Scale</h2>
+<p>A simple scale control that shows the scale of the current center of screen in metric (m/km) and imperial (mi/ft) systems. Extends <a href="#control"><code>Control</code></a>.</p>
+
+<section>
+<h3 id='control-scale-example'>Usage example</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+
+<pre><code class="lang-js">L.control.scale().addTo(map);
+</code></pre>
+
+
+
+</section>
+
+</section><section>
+<h3 id='control-scale-factory'>Creation</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Factory</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-scale-l-control-scale'>
+		<td><code><b>L.control.scale</b>(<nobr>&lt;<a href='#control-scale-option'>Control.Scale options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td>Creates an scale control with the given options.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+</section><section>
+<h3 id='control-scale-option'>Options</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-scale-maxwidth'>
+		<td><code><b>maxWidth</b></code></td>
+		<td><code>Number </code>
+		<td><code>100</code></td>
+		<td>Maximum width of the control in pixels. The width is set dynamically to show round values (e.g. 100, 200, 500).</td>
+	</tr>
+	<tr id='control-scale-metric'>
+		<td><code><b>metric</b></code></td>
+		<td><code>Boolean </code>
+		<td><code>True</code></td>
+		<td>Whether to show the metric scale line (m/km).</td>
+	</tr>
+	<tr id='control-scale-imperial'>
+		<td><code><b>imperial</b></code></td>
+		<td><code>Boolean </code>
+		<td><code>True</code></td>
+		<td>Whether to show the imperial scale line (mi/ft).</td>
+	</tr>
+	<tr id='control-scale-updatewhenidle'>
+		<td><code><b>updateWhenIdle</b></code></td>
+		<td><code>Boolean </code>
+		<td><code>false</code></td>
+		<td>If <code>true</code>, the control is updated on <a href="#map-moveend"><code>moveend</code></a>, otherwise it&#39;s always up-to-date (updated on <a href="#map-move"><code>move</code></a>).</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#control'>Control</a></label>
+	<div class='accordion-content'><section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-scale-position'>
+		<td><code><b>position</b></code></td>
+		<td><code>String </code>
+		<td><code>&#x27;topleft&#x27;</code></td>
+		<td>The position of the control (one of the map corners). Possible values are <code>&#39;topleft&#39;</code>,<br>
+<code>&#39;topright&#39;</code>, <code>&#39;bottomleft&#39;</code> or <code>&#39;bottomright&#39;</code></td>
+	</tr>
+</tbody></table>
+
+</section></div>
+</div>
+
 </section><h2 id='evented'>Evented</h2>
 <p>A set of methods shared between event-powered classes (like <a href="#map"><code>Map</code></a> and <a href="#marker"><code>Marker</code></a>). Generally, events allow you to execute some function when something happens with an object (e.g. the user clicks on the map, causing the map to fire <code>&#39;click&#39;</code> event).</p>
 
@@ -9728,6 +11441,38 @@ map.off(&#39;click&#39;, onClick);
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td>Alias to <a href="#evented-listens"><code>listens(…)</code></a></td>
+	</tr>
+</tbody></table>
+
+</section>
+
+</section><h2 id='control'>Control</h2>
+<p>L.Control is a base class for implementing map controls. Handles positioning.
+All other controls extend from this class.</p>
+
+<section>
+<h3 id='control-option'>Options</h3>
+
+<section >
+
+
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-position'>
+		<td><code><b>position</b></code></td>
+		<td><code>String </code>
+		<td><code>&#x27;topleft&#x27;</code></td>
+		<td>The position of the control (one of the map corners). Possible values are <code>&#39;topleft&#39;</code>,<br>
+<code>&#39;topright&#39;</code>, <code>&#39;bottomleft&#39;</code> or <code>&#39;bottomright&#39;</code></td>
 	</tr>
 </tbody></table>
 
