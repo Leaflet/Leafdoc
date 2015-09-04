@@ -7,8 +7,8 @@ Leafdoc (or 🍂doc for short) is a NaturalDocs- and JSdoc-like documentation ge
 Leafdoc's goals are to help produce documentation which is:
 * **Concise**: If you need half a page to describe what a function does, then Leafdoc is probably not for you.
 * **Non-intrusive**: Allow devs to write the minimum possible amount of documentation lines. A two-line function shouldn't need 15 lines of docs.
-* **Narrative**: Forget about exhaustive code introspection, and focus into providing human-readable explanations and per-class code examples using Markdown to do the heavy lifting.
-* **Language-independent**: Designed with Javascript in mind (and its dozens of ways of doing class inheritance or defining methods), Leafdoc doesn't parse your source code, just the comments.
+* **Narrative**: Forget about exhaustive code introspection, and focus into providing freeform human-readable explanations and per-class code examples using Markdown to do the heavy lifting.
+* **Language-agnostic**: Designed with Javascript in mind (and its dozens of ways of doing class inheritance or defining methods), Leafdoc doesn't parse your source code, just the comments.
 
 ## Try
 
