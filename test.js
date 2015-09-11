@@ -4,7 +4,8 @@ var LeafDoc = require('./src/leafdoc');
 var doc = new LeafDoc();
 
 
-doc.addFile('src/leafdoc.js');
+// doc.addFile('src/leafdoc.js');
+doc.addDir('src');
 
 
 

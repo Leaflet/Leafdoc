@@ -65,13 +65,13 @@ function replaceAKAs(str) {
 Handlebars.registerHelper('markdown', function(str) {
 	if (!str) return;
 	if (str instanceof Array) {
-		str = str.join('\n');
+		str = str.join('\n').trim();
+// 		str = str.join(' ');
 	}
 	return marked(replaceAKAs(str))
 		.trim()
 		.replace('<p>','')
-		.replace('</p>','')
-		.replace('\n','<br>\n');
+		.replace('</p>','');
 });
 
 Handlebars.registerHelper('rawmarkdown', function(str) {

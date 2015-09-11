@@ -1,4 +1,5 @@
-var sander = require('sander');
+var sander = require('sander'),
+    path = require('path');
 
 var template = require('./template'),
     getTemplate = template.getTemplate,
@@ -54,33 +55,54 @@ function Leafdoc(options){
 
 
 
-// 🍂method addDir (dirname: String, extension: String): this
-// Recursively scans a directory, and parses any files that match the given `extension`
-Leafdoc.prototype.addDir = function(dirname, extension) {
+// 🍂method addDir (dirname: String, extensions?: String[]): this
+// Recursively scans a directory, and parses any files that match the
+// given `extensions` (by default `.js` and `.leafdoc`, mind the dots).
+// Files with a `.leafdoc` extension will be treated as leafdoc-only
+// instead of source.
+Leafdoc.prototype.addDir = function(dirname, extensions) {
 
-	/// TODO
+	if (!extensions) {
+		extensions = ['.js', '.leafdoc'];
+	}
+
+	var filenames = sander.readdirSync(dirname);
+
+	for (var i in filenames) {
+		var filename = path.join(dirname, filenames[i]);
+		// Check if dir, recurse if so
+
+		var stats = sander.statSync(filename);
+		if (stats.isDirectory()) {
+			this.addDir(filename, extensions)
+		} else if (extensions.indexOf(path.extname(filename)) !== -1){
+			console.log('Leafdoc processing file: ', filename);
+			this.addFile(filename, path.extname(filename) !== '.leafdoc');
+		}
+	}
 	return this;
 };
 
 
 
-// 🍂method addFile(filename: String): this
-// Parses the given file
-Leafdoc.prototype.addFile = function(filename) {
-	return this.addBuffer(sander.readFileSync(filename));
+// 🍂method addFile(filename: String, isSource?: Boolean): this
+// Parses the given file using `addBuffer` underneath.
+Leafdoc.prototype.addFile = function(filename, isSource) {
+	return this.addBuffer(sander.readFileSync(filename), isSource);
 };
 
 
 
-// 🍂method addBuffer(buf: Buffer): this
-// Parses the given buffer
-Leafdoc.prototype.addBuffer = function(buf) {
-	return this.addStr(buf.toString());
+// 🍂method addBuffer(buf: Buffer, isSource?: Boolean): this
+// Parses the given buffer using `addStr` underneath.
+Leafdoc.prototype.addBuffer = function(buf, isSource) {
+	return this.addStr(buf.toString(), isSource);
 };
 
-// 🍂method addStr(str: String): this
-// Parses the given string for Leafdoc comments
-Leafdoc.prototype.addStr = function(str) {
+// 🍂method addStr(str: String, isSource?: Boolean): this
+// Parses the given string for Leafdoc comments. The string is assumed to
+// be source code with comments, unless `isSource` is explicitly set to `false`.
+Leafdoc.prototype.addStr = function(str, isSource) {
 
 	// Leaflet files use DOS line feeds, which screw up things.
 	str = str.replace(/\r\n?/g, '\n');
@@ -106,19 +128,18 @@ Leafdoc.prototype.addStr = function(str) {
 	var sectionComments = [];
 	var sectionAKA = [];
 
-
-	/// TODO: Instead of using a regexp for comment blocks, allow using
-	/// another regexp which matches a whole file, for files containing just docs.
+	var blockRegex = isSource ? regexps.commentBlock : regexps.leafdocFile;
 
 	// 1: Fetch comment blocks (in a regexp loop). For each block...
 	var match;
-	while(match = regexps.commentBlock.exec(str)) {
+	while(match = blockRegex.exec(str)) {
 
-		var multilineComment = match[1];
-		var blockComment = match[2];
-		var commentBlock = multilineComment || blockComment;
+		var multilineComment = isSource && match[1];
+		var blockComment = isSource && match[2];
+		var leafdocFile = !isSource && match[1];
+		var commentBlock = multilineComment || blockComment || leafdocFile;
 		var blockIsEmpty = true;
-// 		console.error('new block: ', commentBlock);
+// 		console.error('new block: ', commentBlock, match);
 // 		console.log('new block');
 
 // 		if (multilineComment) {
@@ -128,8 +149,9 @@ Leafdoc.prototype.addStr = function(str) {
 // 		}
 
 		// Which regex should we use to clean each line?
-// 		var regex = multilineComment ? this._leadingLineRegex : regexps.leadingBlock;
-		var regex = multilineComment ? regexps.leadingLine : regexps.leadingBlock;
+		var regex = isSource ?
+			( multilineComment ? regexps.leadingLine : regexps.leadingBlock ) :
+			regexps.anyLine;
 
 		// 2: Strip leading asterisk/slashes and whitespace and split into lines
 		var lines = commentBlock.split('\n');
@@ -183,6 +205,7 @@ Leafdoc.prototype.addStr = function(str) {
 
 				if (scope === 'ns') {
 					if (!namespaces.hasOwnProperty(ns)) {
+// 						console.log('Defining class/namespace ', ns);
 						namespaces[ns] = {
 							name: ns,
 							aka: [],
@@ -215,6 +238,11 @@ Leafdoc.prototype.addStr = function(str) {
 				}
 
 				if (scope === 'dc') {
+
+					if (!currentNamespace) {
+						console.error('Error: No class/namespace set when parsing through:');
+						console.error(commentBlock);
+					}
 
 					if (!currentNamespace.supersections.hasOwnProperty(dt)) {
 						currentNamespace.supersections[dt] = {
