@@ -451,6 +451,17 @@ Leafdoc.prototype._stringifySupersection = function(supersection, ancestors, nam
 	var sections = '';
 	var inheritances = '';
 
+	// The "__default" section should show above any named sections
+	if ('__default' in supersection.sections) {
+		var oldSections = supersection.sections;
+		supersection.sections = { __default: oldSections.__default };
+		for (var s in oldSections) {
+			if (s !== '__default')
+				supersection.sections[s] = oldSections[s];
+		}
+	}
+
+
 	for (var s in supersection.sections) {
 		sections += this._stringifySection(supersection.sections[s], supersection.name, false);
 	}
