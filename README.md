@@ -49,7 +49,9 @@ Leafdoc was designed with compactness in mind, so it accepts comment blocks cons
 
 ### Valid directives
 
-* `🍂class` and `🍂namespace` should be at the top of your files. They define the context of the rest of the directives. A namespace can be used in more than one file (for example, when plugging more functionality to an existing class).
+* `🍂class` and `🍂namespace` should be at the top of your files. They define
+the context of the rest of the directives. A namespace can be used in more than
+one file (for example, when plugging more functionality to an existing class).
 * `🍂example` lets some space to demonstrate how the class / namespace is meant to be used.
 * `🍂section` allows you to group several functions, events, methods or options together, thematically.
 * Methods, functions, options, etc are a generic thing internally named "documentable":
@@ -58,10 +60,18 @@ Leafdoc was designed with compactness in mind, so it accepts comment blocks cons
 	* `🍂factory`
 	* `🍂option`
 	* `🍂event`
-* Functions/methods/factories can have parameters, specified with `🍂param (name)`, `🍂param (name): (type)` or inline (see below).
-* Classes, namespaces and documentables can have `🍂aka (alternative name)`, (short for Also Known As). This allows to create links to the same thing using different names.
-* Anything can have several `🍂comment`s, explaining the thing. `🍂comment` directives can be implicit, because any (non-empty) line without an explicit directive equals to a comment.
-* If a function (or any other documentable) has several alternative uses, use the `🍂alternative` directive after to re-defining the documentable, e.g.:
+	* `🍂example`
+	* `🍂property`
+* Functions/methods/factories can have parameters, specified with
+`🍂param (name)`, `🍂param (name): (type)` or inline (see below).
+* Classes, namespaces and documentables can have `🍂aka (alternative name)`,
+(short for Also Known As). This allows to create links to the same thing using
+different names.
+* Anything can have several `🍂comment`s, explaining the thing. `🍂comment`
+directives can be implicit, because any (non-empty) line without an explicit
+directive equals to a comment.
+* If a function (or any other documentable) has several alternative uses, use
+the `🍂alternative` directive after to re-defining the documentable, e.g.:
   ```
   /*
   🍂method on(type: String, fn: Function): this
@@ -74,7 +84,8 @@ Leafdoc was designed with compactness in mind, so it accepts comment blocks cons
   ```
   In this example, the two alternatives are `on(type, fn)` and `on(fnMap)`. They will be shown as two different documentables.
 
-* `🍂inherits (parent)` means that a class or namespace inherits all documentables from another class or namespace.
+* `🍂inherits (parent)` means that a class or namespace inherits all documentables
+from another class or namespace.
 
 ### Shorthand syntax
 
@@ -140,7 +151,7 @@ You can specify everything (name, params, type, default), but no documentable us
 | factory    |   X    |      |         |
 
 
-### Customization
+### Output customization
 
 The output relies on a set of `handlebars` templates. By default, the ones in `templates/basic` will be used. In order to use another set of templates, pass the `templateDir` option to the Leafdoc constructor, like so:
 
@@ -150,9 +161,38 @@ var l = new Leafdoc({templateDir: 'leaflet'});
 
 I will write no detailed docs on how to modify the templates. If you know some HTML and `handlebars`, just copy them and hack things away :-)
 
+### Custom documentables
+
+Your code might have several things of the same kind, which you want to show
+in the same fashion as documentables. Maybe it's files, or icons, or you have
+5 trivial sub-classes which only merit one line.
+
+You can define custom documentables by doing so:
+
+```js
+var l = new Leafdoc();
+l.registerDocumentable('icon', 'Available icons');
+```
+
+Whenever you add a custom documentable, you'll need to create its `handlebars`
+template too! Failure to do so will throw an error when you are building your
+documentation.
+
+Your custom documentable will accept parameters, type, and default as the rest
+of documentables, and can follow the shorthand syntax. You will have to map
+parameters, type and default to something that makes sense for that documentable.
+For example, the template might map an icon's filename to the documentable's default:
+
+```
+🍂icon happy = 'icons/happy.gif'
+A happy face
+```
+
 ## Known gotchas
 
-* Leafdoc relies on some ugly per-module globals, so having more than one instance in your code (in the same process) might break things up. The use case for Leafdoc is to have just one instance when building docs for your code.
+* Leafdoc relies on some ugly per-module globals, so having more than one
+instance in your code (in the same process) might break things up. The use case
+for Leafdoc is to have just one instance when building docs for your code.
 
 
 ## Troubleshooting
