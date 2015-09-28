@@ -20,6 +20,17 @@ function Leafdoc(options){
 		'function',
 		'property'
 	];
+
+	this._documentableLabels = {
+		'example': 'Usage example',
+		'factory': 'Creation',
+		'option': 'Options',
+		'event': 'Events',
+		'method': 'Methods',
+		'function': 'Functions',
+		'property': 'Properties'
+	};
+
 	this._AKAs = {};
 
 	if (options) {
@@ -54,6 +65,23 @@ function Leafdoc(options){
  */
 
 
+// 🍂method registerDocumentable (name: String, label?: String): this
+// Registers a new documentable type, beyond the preset ones (function,
+// property, etc). New documentable should also not be an already used
+// keyword (class, namespace, inherits, etc).
+// When registering new documentables, make sure that there is an appropiate
+// template file for it.
+// Set `label` to the text for the sections in the generated docs.
+Leafdoc.prototype.registerDocumentable = function(name, label) {
+
+	this._knownDocumentables.push(name, label);
+
+	if (label) {
+		this._documentableLabels[name] = label;
+	}
+
+	return this;
+};
 
 // 🍂method addDir (dirname: String, extensions?: String[]): this
 // Recursively scans a directory, and parses any files that match the
@@ -361,26 +389,6 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 };
 
 
-// Matches: functionName (parameters): returnType
-/// TODO: Use regenerate + unicode-7.0.0 npm packages to build regexps which
-/// respect ID_Start and ID_Continue
-Leafdoc.prototype._functionRexExp = new RegExp(/^(\S+)\s*(?:\((.*)\))?(?::\s*(\S+))/);
-
-// Given a string, returns the documentable skeleton, like a factory.
-// The function might have parameters and return value.
-// Also works for methods, so `type` must be either `'function'` or `'method'`.
-Leafdoc.prototype._parseFunction = function(str, type) {
-
-
-
-
-
-};
-
-
-
-
-
 
 
 /*
@@ -468,15 +476,7 @@ Leafdoc.prototype._stringifySupersection = function(supersection, ancestors, nam
 
 	var name = supersection.name;
 
-	var label = name;
-	if (name === 'method')   { label = 'Methods';       }
-	if (name === 'function') { label = 'Functions';     }
-	if (name === 'factory')  { label = 'Creation';      }
-	if (name === 'example')  { label = 'Usage example'; }
-	if (name === 'event')    { label = 'Events';        }
-	if (name === 'option')   { label = 'Options';       }
-	if (name === 'property') { label = 'Properties';    }
-
+	var label = this._documentableLabels[name] || name;
 
 	// Calculate inherited documentables.
 	// In the order of the ancestors, check if each documentable has already been
