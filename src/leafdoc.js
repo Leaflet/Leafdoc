@@ -31,6 +31,10 @@ function Leafdoc(options){
 		'property': 'Properties'
 	};
 
+	// Holds a list of miniclasses, with the miniclass as key and the real
+	// class as value.
+	this._miniclasses = {};
+
 	this._AKAs = {};
 
 	if (options) {
@@ -208,6 +212,20 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 					ns = content.trim();
 					sec = '__default';
 					scope = 'ns';
+				} else if (directive === 'miniclass') {
+					var split = regexps.miniclassDefinition.exec(content);
+
+					if (!split) {
+						console.error('Invalid miniclass definition: ', content);
+						console.log(split);
+					} else {
+						ns = split[1].trim();
+						var miniparent = split[2];
+						sec = '__default';
+						scope = 'ns';
+						this._miniclasses[ns] = miniparent;
+					}
+
 				} else if (directive === 'section') {
 					sec = content || '__default';
 					scope = 'sec';
@@ -309,8 +327,7 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 							var split = regexps.functionDefinition.exec(content);
 							if (!split) {
 								console.error('Invalid ' + directive + ' definition: ', content);
-							}
-							else {
+							} else {
 								name = split[1];
 								paramString = split[2];
 								type = split[3];
@@ -406,10 +423,15 @@ Leafdoc.prototype.outputStr = function() {
 		out += this._stringifyNamespace(this._namespaces[ns]);
 	}
 
+	console.log('miniclasses: ', this._miniclasses);
+
 	return (getTemplate('html'))({body: out});
 
 };
 
+
+//// TODO: Skip miniclasses
+//// TODO: Iterate through miniclasses and output the ones inside this namespace.
 Leafdoc.prototype._stringifyNamespace = function(namespace) {
 	var out = '';
 

@@ -53,6 +53,11 @@ var functionDefinition = XRegExp.build('^ (?<name> {{identifier}} ) \\s* (?<para
 var functionParam = XRegExp.build('\\s* (?<name> ( {{identifier}} | … ) \\?{0,1} ) \\s* ( \\: \\s* (?<type> [^,]+ ) \\s* )? (, | \\)) ', {identifier: identifier}, 'gnx');
 
 
+
+// Parses a miniclass name and its real class between parentheses.
+var miniclassDefinition = XRegExp('^ (?<miniclass> .+ ) \\s* \\( (?<realclass> .+ ) \\) $','nx');
+
+
 module.exports = {
 	commentBlock: commentBlock,
 	leafdocFile: leafdocFile,
@@ -61,7 +66,8 @@ module.exports = {
 	anyLine: anyLine,
 	leafDirective: leafDirective,
 	functionDefinition: functionDefinition,
-	functionParam: functionParam
+	functionParam: functionParam,
+	miniclassDefinition: miniclassDefinition
 }
 
 
