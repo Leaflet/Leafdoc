@@ -159,6 +159,7 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 	// the documentable type is known
 	var sectionComments = [];
 	var sectionAKA = [];
+	var sectionIsUninheritable = false;
 
 	var blockRegex = isSource ? regexps.commentBlock : regexps.leafdocFile;
 
@@ -281,6 +282,9 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 					if (directive === 'aka') {
 						sectionAKA.push(content);
 					}
+					if (directive === 'uninheritable') {
+						sectionIsUninheritable = true;
+					}
 				}
 
 				if (scope === 'dc') {
@@ -303,11 +307,13 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 							name: sec,
 							aka: sectionAKA,
 							comments: sectionComments,
+							uninheritable: sectionIsUninheritable,
 							documentables: {},
 							type: dt
 						};
 						sectionAKA = [];
 						sectionComments = [];
+						sectionIsUninheritable = false;
 					}
 					currentSection = currentNamespace.supersections[dt].sections[sec];
 
@@ -450,11 +456,20 @@ Leafdoc.prototype._stringifyNamespace = function(namespace) {
 				var ancestor = ancestors[i];
 // 				console.log(ancestor, this._namespaces[ancestor].supersections.hasOwnProperty(s));
 				if (this._namespaces[ancestor].supersections.hasOwnProperty(s)) {
-					supersectionHasSomething = true;
-					namespace.supersections[s] = {
-						name: this._namespaces[ancestor].supersections[s].name,
-						sections: {}
-					};
+
+					for (var sec in this._namespaces[ancestor].supersections[s].sections) {
+						if (!this._namespaces[ancestor].supersections[s].sections[sec].uninheritable) {
+							supersectionHasSomething = true;
+						}
+					}
+
+// 					console.log(this._namespaces[ancestor].supersections[s]);
+					if (supersectionHasSomething) {
+						namespace.supersections[s] = {
+							name: this._namespaces[ancestor].supersections[s].name,
+							sections: {}
+						};
+					}
 				}
 			}
 		}
@@ -535,7 +550,8 @@ Leafdoc.prototype._stringifySupersection = function(supersection, ancestors, nam
 					for (var s in parentSupersection.sections) {
 
 						var parentSection = parentSupersection.sections[s];
-						if (parentSection) {
+						if (parentSection && !parentSection.uninheritable) {
+
 							var inheritedSection = {
 								name: parentSection.name === '__default' ? label : parentSection.name,
 								parent: parent,
@@ -598,6 +614,7 @@ Leafdoc.prototype._stringifySection = function(section, documentableType, inheri
 	// If inheriting, recreate the documentable changing the ID.
 	var docs = section.documentables;
 	if (inheritingNamespace) {
+
 		docs = [];
 		for (var i in section.documentables) {
 			var oldDoc = section.documentables[i];
@@ -616,10 +633,10 @@ Leafdoc.prototype._stringifySection = function(section, documentableType, inheri
 // 	console.log(documentableType, section.name === '__default');
 
 	return (getTemplate('section'))({
-		name: name,
-		id: section.id,
-		comments: section.comments,
-		documentables:(getTemplate(documentableType))({
+			name: name,
+			id: section.id,
+			comments: section.comments,
+			documentables:(getTemplate(documentableType))({
 			documentables: docs
 		}),
 		isSecondarySection: ( section.name !== '__default' && documentableType !== 'example' && !inheritingNamespace),
