@@ -26,10 +26,15 @@ var leadingLine = XRegExp('^ \\s*/{0,4}\\s{0,1} (?<line> .* )  $','nx');
 var anyLine = XRegExp('^ (?<line> .* ) $','nx');
 
 
-// Parses a 🍂 directive
-var leafDirective = XRegExp('^  \\s* 🍂 (?<directive> \\S+ ) (\\s+ (?<content> .+ )){0,1}  $', 'nx');
+// Parses a 🍂 directive, init'd at redoLeafDirective()
+var leafDirective;
 
+// Re-builds the 🍂 directive based on a different leading character
+function redoLeafDirective(char) {
+	leafDirective = XRegExp('^  \\s* ' + char + ' (?<directive> \\S+ ) (\\s+ (?<content> .+ )){0,1}  $', 'nx');
+}
 
+redoLeafDirective('🍂');
 
 
 // Parses an identifier, allowing only unicode ID_Start and ID_Continue characters
@@ -67,7 +72,8 @@ module.exports = {
 	leafDirective: leafDirective,
 	functionDefinition: functionDefinition,
 	functionParam: functionParam,
-	miniclassDefinition: miniclassDefinition
+	miniclassDefinition: miniclassDefinition,
+	redoLeafDirective: redoLeafDirective
 }
 
 

@@ -88,6 +88,17 @@ Leafdoc.prototype.registerDocumentable = function(name, label) {
 	return this;
 };
 
+
+// 🍂method setLeadingCharacter(char: String): this
+// In the rare case you don't want to use '🍂' as the leading character for
+// leaf directives, run this function with the desired character, e.g.
+// `setLeadingCharacter('@');`
+// The new leading character will apply only to files/dirs/strings parsed from
+// that moment on, so it's a good idea to call this before anything else.
+Leafdoc.prototype.setLeadingCharacter = function(char) {
+	regexps.redoLeafDirective(char);
+}
+
 // 🍂method addDir (dirname: String, extensions?: String[]): this
 // Recursively scans a directory, and parses any files that match the
 // given `extensions` (by default `.js` and `.leafdoc`, mind the dots).
@@ -439,7 +450,7 @@ Leafdoc.prototype.outputStr = function() {
 
 Leafdoc.prototype._stringifyNamespace = function(namespace, isMini) {
 
-	if (!isMini && this._miniclasses.hasOwnProperty(namespace.name)) { return; }
+	if (!isMini && this._miniclasses.hasOwnProperty(namespace.name)) { return ''; }
 
 	var out = '';
 
@@ -487,6 +498,7 @@ Leafdoc.prototype._stringifyNamespace = function(namespace, isMini) {
 		for (var i in this._miniclasses) {
 			if (this._miniclasses[i] === namespace.name) {
 				out += this._stringifyNamespace(this._namespaces[i], true);
+// 				console.log('out is now', out);
 			}
 		}
 	}
