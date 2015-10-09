@@ -33,6 +33,7 @@ function Leafdoc(options){
 
 	// Holds a list of miniclasses, with the miniclass as key and the real
 	// class as value.
+	// Maybe a better name would be "subnamespaces" or whatever.
 	this._miniclasses = {};
 
 	this._AKAs = {};
@@ -429,16 +430,17 @@ Leafdoc.prototype.outputStr = function() {
 		out += this._stringifyNamespace(this._namespaces[ns]);
 	}
 
-	console.log('miniclasses: ', this._miniclasses);
+// 	console.log('miniclasses: ', this._miniclasses);
 
 	return (getTemplate('html'))({body: out});
 
 };
 
 
-//// TODO: Skip miniclasses
-//// TODO: Iterate through miniclasses and output the ones inside this namespace.
-Leafdoc.prototype._stringifyNamespace = function(namespace) {
+Leafdoc.prototype._stringifyNamespace = function(namespace, isMini) {
+
+	if (!isMini && this._miniclasses.hasOwnProperty(namespace.name)) { return; }
+
 	var out = '';
 
 	var ancestors = this._flattenInheritances(namespace.name);
@@ -476,14 +478,23 @@ Leafdoc.prototype._stringifyNamespace = function(namespace) {
 
 
 		if (supersectionHasSomething) {
-			out += this._stringifySupersection(namespace.supersections[s], ancestors, namespace.name);
+			out += this._stringifySupersection(namespace.supersections[s], ancestors, namespace.name, isMini);
+		}
+	}
+
+
+	if (!isMini) {
+		for (var i in this._miniclasses) {
+			if (this._miniclasses[i] === namespace.name) {
+				out += this._stringifyNamespace(this._namespaces[i], true);
+			}
 		}
 	}
 
 // 	console.log(namespace);
 
 	return (getTemplate('namespace'))({
-		name: namespace.name,
+		name: isMini ? undefined : namespace.name,
 		id: namespace.id,
 		comments: namespace.comments,
 		supersections: out
@@ -492,7 +503,7 @@ Leafdoc.prototype._stringifyNamespace = function(namespace) {
 
 
 
-Leafdoc.prototype._stringifySupersection = function(supersection, ancestors, namespacename) {
+Leafdoc.prototype._stringifySupersection = function(supersection, ancestors, namespacename, isMini) {
 	var sections = '';
 	var inheritances = '';
 
@@ -594,7 +605,7 @@ Leafdoc.prototype._stringifySupersection = function(supersection, ancestors, nam
 
 
 	return (getTemplate('supersection'))({
-		name: label,
+		name: isMini ? namespacename : label,
 		id: supersection.id,
 		comments: supersection.comments,
 		sections: sections,
