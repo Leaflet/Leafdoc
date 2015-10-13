@@ -7,8 +7,7 @@ var template = require('./template'),
 
 var regexps = require('./regexps');
 
-// 🍂class Leafdoc
-// Represents the Leafdoc parser
+// 🍂class Leafdoc; Represents the Leafdoc parser
 function Leafdoc(options){
 	this._namespaces = {};
 	this._knownDocumentables = [
@@ -53,8 +52,7 @@ function Leafdoc(options){
 };
 
 /*
- * 🍂factory Leafdoc(options: Leafdoc options)
- * Constructor for a new Leafdoc parser
+ * 🍂factory Leafdoc(options: Leafdoc options); Constructor for a new Leafdoc parser
  *
  * 🍂example
  *
@@ -200,212 +198,227 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 
 		// 2: Strip leading asterisk/slashes and whitespace and split into lines
 		var lines = commentBlock.split('\n');
-// 		while(match = regex.exec(commentBlock)) {
+
+		// 3: Split lines into directives (separated by ";")
+		var directives = [];
 		for (var i in lines) {
 			var line = lines[i];
-// 			console.log('Line: ' + (multilineComment?'/':'*') + ' <' + line + '>');
-			var match = regex.exec(line);
-			var lineStr = match[1];
-			var validLine = false;
-			var directive, content;
 
+			var match = regex.exec(line);	// Skips extra comment characters
+			var lineStr = match[1];
+			var lineIsValid = false;
+			var parsedCharacters = 0;
+// 			console.log('Line: ' + (multilineComment?'/':'*') + ' <' + line + '>');
 // 			console.log('Line→ ' + (multilineComment?'/':'*') + ' <' + lineStr + '>');
 
-			// 3: Parse 🍂 directives
-// 			match = this._leafDirectiveRegex.exec(lineStr);
-			match = regexps.leafDirective.exec(lineStr);
-			if (match) {
+// 			var match = regex.exec(line);
+
+			while (match = regexps.leafDirective.exec(lineStr)) {
 				// In "🍂param foo, bar", directive is "param" and content is "foo, bar"
-				directive = match[1];
-				content = match[2];
-				if (content) {content = content.trimRight(); }
-				validLine = true;
-// 				if (multilineComment) console.log(directive, match);
-				if (directive === 'class' || directive === 'namespace') {
-					ns = content.trim();
-					sec = '__default';
-					scope = 'ns';
-				} else if (directive === 'miniclass') {
-					var split = regexps.miniclassDefinition.exec(content);
-
-					if (!split) {
-						console.error('Invalid miniclass definition: ', content);
-						console.log(split);
-					} else {
-						ns = split[1].trim();
-						var miniparent = split[2];
-						sec = '__default';
-						scope = 'ns';
-						this._miniclasses[ns] = miniparent;
-					}
-
-				} else if (directive === 'section') {
-					sec = content || '__default';
-					scope = 'sec';
-				} else if (this._knownDocumentables.indexOf(directive) !== -1 ) {
-					scope = 'dc';
-					dt = directive;
-					dc = '';	// The name of the documentable will be set later
-				}
-
+				if (match[2]) { match[2] = match[2].trim(); }
+				directives.push([match[1], match[2]]);	// [directive, content]
+// 				console.log('match: ', match);
 				blockIsEmpty = false;
-			} else {
-				if (!blockIsEmpty) {
-					directive = 'comment';
-					content = lineStr;
-					validLine = true;
+				lineIsValid = true;
+				parsedCharacters = match.index + match[0].length;
+			}
+
+			if (lineIsValid) {
+// 				console.log('After having matched a line:', match);
+				var trailing = lineStr.substr(parsedCharacters + 1).trim();
+// 				console.log('After having matched a line:', trailing);
+				if (trailing) {
+					directives.push(['comment', trailing]);
 				}
 			}
 
+			if (!lineIsValid && !blockIsEmpty && lineStr) {
+				// implicit 🍂comment directive.
+				directives.push(['comment', lineStr]);
+			}
+		}
 
-			if (validLine) {
+// 		console.log('directives', directives);
+
+		for (var i in directives) {
+			var directive = directives[i][0],
+			    content = directives[i][1];
+
+			// 4: Parse 🍂 directives
+
+// 				if (multilineComment) console.log(directive, match);
+			if (directive === 'class' || directive === 'namespace') {
+				ns = content.trim();
+				sec = '__default';
+				scope = 'ns';
+			} else if (directive === 'miniclass') {
+				var split = regexps.miniclassDefinition.exec(content);
+
+				if (!split) {
+					console.error('Invalid miniclass definition: ', content);
+					console.log(split);
+				} else {
+					ns = split[1].trim();
+					var miniparent = split[2];
+					sec = '__default';
+					scope = 'ns';
+					this._miniclasses[ns] = miniparent;
+				}
+
+			} else if (directive === 'section') {
+				sec = content || '__default';
+				scope = 'sec';
+			} else if (this._knownDocumentables.indexOf(directive) !== -1 ) {
+				scope = 'dc';
+				dt = directive;
+				dc = '';	// The name of the documentable will be set later
+			}
+
 
 // 				console.log(scope, '-', directive, '-', content);
 
-				if (scope === 'ns') {
-					if (!namespaces.hasOwnProperty(ns)) {
+			if (scope === 'ns') {
+				if (!namespaces.hasOwnProperty(ns)) {
 // 						console.log('Defining class/namespace ', ns);
-						namespaces[ns] = {
-							name: ns,
-							aka: [],
-							comments: [],
-							supersections: {},
-							inherits: []
-						};
-					}
-
-					if (directive === 'aka') {
-						namespaces[ns].aka.push(content);
-					}
-					if (directive === 'comment') {
-						namespaces[ns].comments.push(content);
-					}
-					if (directive === 'inherits') {
-						namespaces[ns].inherits.push(content);
-					}
-
-					currentNamespace = namespaces[ns];
+					namespaces[ns] = {
+						name: ns,
+						aka: [],
+						comments: [],
+						supersections: {},
+						inherits: []
+					};
 				}
 
-				if (scope === 'sec') {
-					if (directive === 'comment') {
-						sectionComments.push(content);
-					}
-					if (directive === 'aka') {
-						sectionAKA.push(content);
-					}
-					if (directive === 'uninheritable') {
-						sectionIsUninheritable = true;
-					}
+				if (directive === 'aka') {
+					namespaces[ns].aka.push(content);
+				}
+				if (directive === 'comment') {
+					namespaces[ns].comments.push(content);
+				}
+				if (directive === 'inherits') {
+					namespaces[ns].inherits.push(content);
 				}
 
-				if (scope === 'dc') {
+				currentNamespace = namespaces[ns];
+			}
 
-					if (!currentNamespace) {
-						console.error('Error: No class/namespace set when parsing through:');
-						console.error(commentBlock);
-					}
+			if (scope === 'sec') {
+				if (directive === 'comment') {
+					sectionComments.push(content);
+				}
+				if (directive === 'aka') {
+					sectionAKA.push(content);
+				}
+				if (directive === 'uninheritable') {
+					sectionIsUninheritable = true;
+				}
+			}
 
-					if (!currentNamespace.supersections.hasOwnProperty(dt)) {
-						currentNamespace.supersections[dt] = {
-							name: dt,
-							aka: [],
-							comments: [],
-							sections: {}
-						};
-					}
-					if (!currentNamespace.supersections[dt].sections.hasOwnProperty(sec)) {
-						currentNamespace.supersections[dt].sections[sec] = {
-							name: sec,
-							aka: sectionAKA,
-							comments: sectionComments,
-							uninheritable: sectionIsUninheritable,
-							documentables: {},
-							type: dt
-						};
-						sectionAKA = [];
-						sectionComments = [];
-						sectionIsUninheritable = false;
-					}
-					currentSection = currentNamespace.supersections[dt].sections[sec];
+			if (scope === 'dc') {
+
+				if (!currentNamespace) {
+					console.error('Error: No class/namespace set when parsing through:');
+					console.error(commentBlock);
+				}
+
+				if (!currentNamespace.supersections.hasOwnProperty(dt)) {
+					currentNamespace.supersections[dt] = {
+						name: dt,
+						aka: [],
+						comments: [],
+						sections: {}
+					};
+				}
+				if (!currentNamespace.supersections[dt].sections.hasOwnProperty(sec)) {
+					currentNamespace.supersections[dt].sections[sec] = {
+						name: sec,
+						aka: sectionAKA,
+						comments: sectionComments,
+						uninheritable: sectionIsUninheritable,
+						documentables: {},
+						type: dt
+					};
+					sectionAKA = [];
+					sectionComments = [];
+					sectionIsUninheritable = false;
+				}
+				currentSection = currentNamespace.supersections[dt].sections[sec];
 
 // 					console.log(currentSection);
 // 					console.log(directive);
 
-					if (this._knownDocumentables.indexOf(directive) !== -1 ) {
-						// Documentables might have more than their name as content.
-						// All documentables will follow the syntax for functions,
-						//   with optional parameters, optional type, and optional default value.
+				if (this._knownDocumentables.indexOf(directive) !== -1 ) {
+					// Documentables might have more than their name as content.
+					// All documentables will follow the syntax for functions,
+					//   with optional parameters, optional type, and optional default value.
 
 // 						console.log(content, ', ', alt);
 
-						var name, params = {}, type = null, defaultValue = null;
+					var name, params = {}, type = null, defaultValue = null;
 
-						if (content) {
-							var split = regexps.functionDefinition.exec(content);
-							if (!split) {
-								console.error('Invalid ' + directive + ' definition: ', content);
-							} else {
-								name = split[1];
-								paramString = split[2];
-								type = split[3];
-								defaultValue = split[4];
+					if (content) {
+						var split = regexps.functionDefinition.exec(content);
+						if (!split) {
+							console.error('Invalid ' + directive + ' definition: ', content);
+						} else {
+							name = split[1];
+							paramString = split[2];
+							type = split[3];
+							defaultValue = split[4];
 
-								if (paramString) {
-									while(match = regexps.functionParam.exec(paramString)) {
-										params[ match[1] ] = {name: match[1], type: match[2]};
-									}
-// 									console.log("\"" + paramString + "\"\n\t", params);
+							if (paramString) {
+								while(match = regexps.functionParam.exec(paramString)) {
+									params[ match[1] ] = {name: match[1], type: match[2]};
 								}
-							}
-
-						} else {
-							name = '__default';
-						}
-
-						// Handle alternatives - just modify the name if 'alt' and 'altAppliesTo' match
-						if (altAppliesTo === name) {
-							dc = name + '-alternative-' + alt;
-						} else {
-							dc = name;
-							alt = 0;
-							altAppliesTo = null;
-						}
-
-						if (!currentSection.documentables.hasOwnProperty(dc)) {
-							currentSection.documentables[dc] = {
-								name: name,
-								aka: [],
-								comments: [],
-								params: params,	// Only for functions/methods/factories
-								type: type || null,
-								defaultValue: defaultValue || null	// Only for options, properties
+// 									console.log("\"" + paramString + "\"\n\t", params);
 							}
 						}
-						currentDocumentable = currentSection.documentables[dc];
 
-					} else if (directive === 'alternative') {
-						alt++;
-						// Alternative applies to current documentable name; if name
-						// doesn't match, alternative has no effect.
-						altAppliesTo = currentDocumentable.name;
-
-					} else if (directive === 'param') {
-						// Params are param name, type.
-						/// TODO: Think about default values, or param explanation.
-						var split = content.split(',');
-						var paramName = split[0].trim();
-
-						var paramType = split[1] ? split[1].trim() : '';
-						currentDocumentable.params[paramName] = {name: paramName, type: paramType};
-
-					} else if (directive === 'aka') {
-						currentDocumentable.aka.push(content);
-					} else if (directive === 'comment') {
-// 						console.log('Doing stuff with a method comments: ', content);
-						currentDocumentable.comments.push(content);
+					} else {
+						name = '__default';
 					}
 
+					// Handle alternatives - just modify the name if 'alt' and 'altAppliesTo' match
+					if (altAppliesTo === name) {
+						dc = name + '-alternative-' + alt;
+					} else {
+						dc = name;
+						alt = 0;
+						altAppliesTo = null;
+					}
+
+					if (!currentSection.documentables.hasOwnProperty(dc)) {
+						currentSection.documentables[dc] = {
+							name: name,
+							aka: [],
+							comments: [],
+							params: params,	// Only for functions/methods/factories
+							type: type || null,
+							defaultValue: defaultValue || null	// Only for options, properties
+						}
+					}
+					currentDocumentable = currentSection.documentables[dc];
+
+				} else if (directive === 'alternative') {
+					alt++;
+					// Alternative applies to current documentable name; if name
+					// doesn't match, alternative has no effect.
+					altAppliesTo = currentDocumentable.name;
+
+				} else if (directive === 'param') {
+					// Params are param name, type.
+					/// TODO: Think about default values, or param explanation.
+					var split = content.split(',');
+					var paramName = split[0].trim();
+
+					var paramType = split[1] ? split[1].trim() : '';
+					currentDocumentable.params[paramName] = {name: paramName, type: paramType};
+
+				} else if (directive === 'aka') {
+					currentDocumentable.aka.push(content);
+				} else if (directive === 'comment') {
+// 						console.log('Doing stuff with a method comments: ', content);
+					currentDocumentable.comments.push(content);
 				}
 
 			}
