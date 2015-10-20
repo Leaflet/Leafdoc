@@ -2,7 +2,7 @@
 # Leafdoc
 
 
-Leafdoc (or 🍂📄 for short) is a NaturalDocs- and JSdoc-like documentation generator.
+Leafdoc (or 🍂doc for short) is a NaturalDocs- and JSdoc-like documentation generator.
 
 Leafdoc's goals are to help produce documentation which is:
 * **Concise**: If you need half a page to describe what a function does, then Leafdoc is probably not for you.
@@ -27,7 +27,9 @@ js test.js > leafdoc.html
 
 ## Write
 
-The syntax is pretty much the tried-and-true directives-in-comment-blocks from JSdoc, NaturalDocs and a gazillion others. But instead of an `@` symbol, Leafdoc uses a leaf:
+The syntax is pretty much the tried-and-true directives-in-comment-blocks from
+JSdoc, NaturalDocs and a gazillion others. But instead of an `@` symbol, Leafdoc
+uses a leaf:
 
 ```
 /*
@@ -46,6 +48,12 @@ Leafdoc was designed with compactness in mind, so it accepts comment blocks cons
 // Recursively scans a directory, and parses any files that match the given `extension`
 ```
 
+If you need to be even *more* compact, use a semicolon (`;`) to put several
+directives in the same line:
+```
+// 🍂namespace Math; 🍂method sum(a: Int, b: Int): Int ; Returns the sum of two numbers
+```
+
 
 ### Valid directives
 
@@ -53,7 +61,9 @@ Leafdoc was designed with compactness in mind, so it accepts comment blocks cons
 the context of the rest of the directives. A namespace can be used in more than
 one file (for example, when plugging more functionality to an existing class).
 * `🍂example` lets some space to demonstrate how the class / namespace is meant to be used.
-* `🍂section` allows you to group several functions, events, methods or options together, thematically.
+* `🍂section` allows you to group several functions, events, methods or options
+together, thematically. You may need to have sections without an explicit name
+to add stuff to the default section.
 * Methods, functions, options, etc are a generic thing internally named "documentable":
 	* `🍂method`
 	* `🍂function`
@@ -86,6 +96,8 @@ the `🍂alternative` directive after to re-defining the documentable, e.g.:
 
 * `🍂inherits (parent)` means that a class or namespace inherits all documentables
 from another class or namespace.
+* `🍂uninheritable` is applied only to *sections*, and hides them from the
+documentation of children classes.
 
 ### Shorthand syntax
 
@@ -153,13 +165,16 @@ You can specify everything (name, params, type, default), but no documentable us
 
 ### Output customization
 
-The output relies on a set of `handlebars` templates. By default, the ones in `templates/basic` will be used. In order to use another set of templates, pass the `templateDir` option to the Leafdoc constructor, like so:
+The output relies on a set of `handlebars` templates. By default, the ones in
+`templates/basic` will be used. In order to use another set of templates, pass
+`the `templateDir` option to the Leafdoc constructor, like so:
 
 ```js
 var l = new Leafdoc({templateDir: 'leaflet'});
 ```
 
-I will write no detailed docs on how to modify the templates. If you know some HTML and `handlebars`, just copy them and hack things away :-)
+I will write no detailed docs on how to modify the templates. If you know some
+HTML and `handlebars`, just copy them and hack things away :-)
 
 ### Custom documentables
 
@@ -195,6 +210,12 @@ instance in your code (in the same process) might break things up. The use case
 for Leafdoc is to have just one instance when building docs for your code.
 
 
+## Legalese
+
+Licensed under the GNU General Public License version 3 (or "GPL3"). Check the
+full text at https://www.gnu.org/licenses/gpl-3.0.html.
+
+
 ## Troubleshooting
 
 ### I'm using Debian and I cannot see the leaf character!
@@ -210,3 +231,5 @@ keycode  46 = l L l L U1F342 Lstroke lstroke
 ```
 
 Then run `xmodmap name-of-the-file`. Now 🍂 is mapped to `AltGr+l`.
+
+Of course, you can always do `leafdoc.setLeadingCharacter('@');`, but that's boring.
