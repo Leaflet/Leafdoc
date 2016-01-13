@@ -3,24 +3,28 @@
 <head>
 	<title>{{ title }}</title>
 	<meta charset="utf-8">
+	<style>
+	table {
+		border-collapse: collapse;
+	}
+	table td, table th {
+		border: 1px solid #888;
+	}
+	pre code {
+		display: inline-block;
+		background: #eee;
+	}
+	td:last-child code {
+		background: #eee;
+	}
+	body {
+		font-family: Sans;
+	}
+	</style>
 </head>
 <body>
 	<h2>Leafdoc generated API reference</h2>
 
 	{{{ body }}}
 
-
-	<style>
-		table {
-			border-collapse: collapse;
-		}
-		table td, table th {
-			border: 1px solid #888;
-		}
-
-		pre code {
-			display: inline-block;
-			background: #eee;
-		}
-	</style>
 </body></html>

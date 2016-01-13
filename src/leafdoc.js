@@ -38,8 +38,9 @@ function Leafdoc(options){
 	this._AKAs = {};
 
 	if (options) {
-		// 🍂option templateDir: String = 'basic'
-		// Defines which subdirectory in `templates/` to use for building up the HTML.
+		// 🍂option templateDir: String = 'templates/basic'
+		// Defines which subdirectory (relative to the directory the curent JS
+		// script is running) holds the handlebars template files for building up the HTML.
 		if (options.templateDir) {
 			setTemplateDir(options.templateDir);
 		}
@@ -48,6 +49,22 @@ function Leafdoc(options){
 		// When `true`, child classes/namespaces will display documentables from ancestors, even if the child class doesn't have any of such documentables.
 		// e.g. display inherited events even if the child doesn't define any new events.
 		this.showInheritancesWhenEmpty = options.showInheritancesWhenEmpty || false;
+
+		// 🍂option leadingCharacter: String = '🍂'
+		// Overrides the Leaf symbol as the leading character for documentation lines.
+		// See also [`setLeadingCharacter`](#leafdoc-setleadingcharacter).
+		if (options.leadingCharacter) {
+			this.setLeadingCharacter(options.leadingCharacter);
+		}
+
+		// 🍂option customDocumentables: Map = {}
+		// A key-value map. Each pair will be passed to [`registerDocumentable`](#leafdoc-registerdocumentable).
+		if (options.customDocumentables) {
+			for (var i in options.customDocumentables) {
+				this.registerDocumentable(i, options.customDocumentables[i]);
+			}
+		}
+
 	}
 };
 
@@ -88,7 +105,7 @@ Leafdoc.prototype.registerDocumentable = function(name, label) {
 
 
 // 🍂method setLeadingCharacter(char: String): this
-// In the rare case you don't want to use '🍂' as the leading character for
+// In the rare case you don't want to use &#x1f342; as the leading character for
 // leaf directives, run this function with the desired character, e.g.
 // `setLeadingCharacter('@');`
 // The new leading character will apply only to files/dirs/strings parsed from
@@ -128,7 +145,7 @@ Leafdoc.prototype.addDir = function(dirname, extensions) {
 
 
 // 🍂method addFile(filename: String, isSource?: Boolean): this
-// Parses the given file using `addBuffer` underneath.
+// Parses the given file using [`addBuffer`](#leafdoc-addbuffer).
 Leafdoc.prototype.addFile = function(filename, isSource) {
 	return this.addBuffer(sander.readFileSync(filename), isSource);
 };
@@ -136,7 +153,7 @@ Leafdoc.prototype.addFile = function(filename, isSource) {
 
 
 // 🍂method addBuffer(buf: Buffer, isSource?: Boolean): this
-// Parses the given buffer using `addStr` underneath.
+// Parses the given buffer using [`addStr`](#leafdoc-addstr) underneath.
 Leafdoc.prototype.addBuffer = function(buf, isSource) {
 	return this.addStr(buf.toString(), isSource);
 };

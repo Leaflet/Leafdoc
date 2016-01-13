@@ -5,7 +5,7 @@ var sander = require('sander');
 var path = require('path');
 var Handlebars = require('handlebars');
 
-var templateDir = 'basic';
+var templateDir = 'templates/basic';
 
 module.exports.setTemplateDir = function(newDir) {
 	templateDir = newDir;
@@ -13,7 +13,7 @@ module.exports.setTemplateDir = function(newDir) {
 
 module.exports.getTemplate = function(templateName) {
 	
-	return Handlebars.compile(sander.readFileSync(path.join('templates/', templateDir, templateName + '.hbs')).toString());
+	return Handlebars.compile(sander.readFileSync(templateDir, templateName + '.hbs').toString());
 	
 };
 
