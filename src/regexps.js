@@ -31,7 +31,7 @@ var leafDirective;
 
 // Re-builds the 🍂 directive based on a different leading character
 function redoLeafDirective(char) {
-	leafDirective = XRegExp('  \\s* ' + char + ' (?<directive> \\S+ ) (\\s+ (?<content> [^;\\n]+ )){0,1} ', 'gnx');
+	return leafDirective = XRegExp('  \\s* ' + char + ' (?<directive> \\S+ ) (\\s+ (?<content> [^;\\n]+ )){0,1} ', 'gnx');
 }
 
 redoLeafDirective('🍂');

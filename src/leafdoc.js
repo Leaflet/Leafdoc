@@ -111,7 +111,7 @@ Leafdoc.prototype.registerDocumentable = function(name, label) {
 // The new leading character will apply only to files/dirs/strings parsed from
 // that moment on, so it's a good idea to call this before anything else.
 Leafdoc.prototype.setLeadingCharacter = function(char) {
-	regexps.redoLeafDirective(char);
+	regexps.leafDirective = regexps.redoLeafDirective(char);
 }
 
 // 🍂method addDir (dirname: String, extensions?: String[]): this
