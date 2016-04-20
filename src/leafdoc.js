@@ -410,7 +410,7 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 							aka: [],
 							comments: [],
 							params: params,	// Only for functions/methods/factories
-							type: type || null,
+							type: type ? type.trim() : null,
 							defaultValue: defaultValue || null	// Only for options, properties
 						}
 					}
