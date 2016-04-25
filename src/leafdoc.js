@@ -25,6 +25,8 @@ function Leafdoc(options){
 	this._documentableLabels = {
 		'example': 'Usage example',
 		'factory': 'Creation',
+		'constructor': 'Constructor',
+		'destructor': 'Destructor',
 		'option': 'Options',
 		'event': 'Events',
 		'method': 'Methods',
@@ -39,6 +41,8 @@ function Leafdoc(options){
 
 	this._AKAs = {};
 
+	// 🍂section
+	// 🍂aka Leafdoc options
 	if (options) {
 		// 🍂option templateDir: String = 'templates/basic'
 		// Defines which subdirectory (relative to the directory the curent JS
@@ -76,19 +80,19 @@ function Leafdoc(options){
 };
 
 /*
- * 🍂factory Leafdoc(options: Leafdoc options); Constructor for a new Leafdoc parser
- *
- * 🍂example
- *
- * Output Leafdoc's own documentation to the console with:
- *
- * ```
- * var LeafDoc = require('./src/leafdoc.js');
- * var doc = new LeafDoc();
- * 	doc.addFile('src/leafdoc.js');
- *
- * console.log( doc.outputStr() );
- * ```
+🍂constructor Leafdoc(options: Leafdoc options); Constructor for a new Leafdoc parser
+
+🍂example
+
+Output Leafdoc's own documentation to the console with:
+
+```
+var LeafDoc = require('./src/leafdoc.js');
+var doc = new LeafDoc();
+	doc.addFile('src/leafdoc.js');
+
+console.log( doc.outputStr() );
+```
  */
 
 
@@ -162,7 +166,7 @@ Leafdoc.prototype.addFile = function(filename, isSource) {
 
 
 // 🍂method addBuffer(buf: Buffer, isSource?: Boolean): this
-// Parses the given buffer using [`addStr`](#leafdoc-addstr) underneath.
+// Parses the given buffer using [`addStr`](#leafdoc-addstr) underneath. Set `isSource` to `true` to parse Leafdoc directives inside comment blocks. Otherwise, the whole file is interpreted as Leafdoc directives.
 Leafdoc.prototype.addBuffer = function(buf, isSource) {
 	return this.addStr(buf.toString(), isSource);
 };

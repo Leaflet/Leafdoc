@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<style>
+	table {
+		border-collapse: collapse;
+	}
+	table td, table th {
+		border: 1px solid #888;
+	}
+	pre code {
+		display: inline-block;
+		background: #eee;
+	}
+	td:last-child code {
+		background: #eee;
+	}
+	body {
+		font-family: Sans;
+	}
+	</style>
+</head>
+<body>
+	<h2>Leafdoc generated API reference</h2>
+
+	<h2 id='leafdoc'>Leafdoc</h2>
+<p>Represents the Leafdoc parser</p>
+
+<h3 id='leafdoc-example'>Usage example</h3>
+
+<section data-type='[object Object]'>
+
+
+
+<p>Output Leafdoc&#39;s own documentation to the console with:</p>
+<pre><code>var LeafDoc = require(&#39;./src/leafdoc.js&#39;);
+var doc = new LeafDoc();
+    doc.addFile(&#39;src/leafdoc.js&#39;);
+console.log( doc.outputStr() );
+</code></pre>
+
+</section>
+
+<h3 id='leafdoc-constructor'>Constructor</h3>
+
+<section data-type='[object Object]'>
+
+
+<table><thead>
+	<tr>
+		<th>Constructor</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='leafdoc-leafdoc'>
+		<td><code>new <b>Leafdoc</b>(<nobr>&lt;<a href='#leafdoc-option'>Leafdoc options</a>&gt; <i>options</i></nobr>)</nobr></code></td>
+		<td>Constructor for a new Leafdoc parser</td>
+	</tr>
+</tbody></table>
+</section>
+
+<h3 id='leafdoc-option'>Options</h3>
+
+<section data-type='[object Object]'>
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='leafdoc-templatedir'>
+		<td><code><b>templateDir</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;templates/basic&#x27;</code></td>
+		<td>Defines which subdirectory (relative to the directory the curent JS
+script is running) holds the handlebars template files for building up the HTML.</td>
+	</tr>
+	<tr id='leafdoc-showinheritanceswhenempty'>
+		<td><code><b>showInheritancesWhenEmpty</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>When <code>true</code>, child classes/namespaces will display documentables from ancestors, even if the child class doesn&#39;t have any of such documentables.
+e.g. display inherited events even if the child doesn&#39;t define any new events.</td>
+	</tr>
+	<tr id='leafdoc-leadingcharacter'>
+		<td><code><b>leadingCharacter</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;🍂&#x27;</code></td>
+		<td>Overrides the Leaf symbol as the leading character for documentation lines.
+See also <a href="#leafdoc-setleadingcharacter"><code>setLeadingCharacter</code></a>.</td>
+	</tr>
+	<tr id='leafdoc-customdocumentables'>
+		<td><code><b>customDocumentables</b></code></td>
+		<td><code>Map</code>
+		<td><code>{}</code></td>
+		<td>A key-value map. Each pair will be passed to <a href="#leafdoc-registerdocumentable"><code>registerDocumentable</code></a>.</td>
+	</tr>
+	<tr id='leafdoc-verbose'>
+		<td><code><b>verbose</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>Set to <code>true</code> to display more information as files are being read.</td>
+	</tr>
+</tbody></table>
+</section>
+
+<h3 id='leafdoc-method'>Methods</h3>
+
+<section data-type='[object Object]'>
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='leafdoc-registerdocumentable'>
+		<td><code><b>registerDocumentable</b>(<nobr>&lt;String&gt; <i>name</i></nobr>, <nobr>&lt;String&gt; <i>label?</i></nobr>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Registers a new documentable type, beyond the preset ones (function,
+property, etc). New documentable should also not be an already used
+keyword (class, namespace, inherits, etc).
+When registering new documentables, make sure that there is an appropiate
+template file for it.
+Set <code>label</code> to the text for the sections in the generated docs.</td>
+	</tr>
+	<tr id='leafdoc-setleadingcharacter'>
+		<td><code><b>setLeadingCharacter</b>(<nobr>&lt;String&gt; <i>char</i></nobr>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>In the rare case you don&#39;t want to use &#x1f342; as the leading character for
+leaf directives, run this function with the desired character, e.g.
+<code>setLeadingCharacter(&#39;@&#39;);</code>
+The new leading character will apply only to files/dirs/strings parsed from
+that moment on, so it&#39;s a good idea to call this before anything else.</td>
+	</tr>
+	<tr id='leafdoc-adddir'>
+		<td><code><b>addDir</b>(<nobr>&lt;String&gt; <i>dirname</i></nobr>, <nobr>&lt;String[]&gt; <i>extensions?</i></nobr>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Recursively scans a directory, and parses any files that match the
+given <code>extensions</code> (by default <code>.js</code> and <code>.leafdoc</code>, mind the dots).
+Files with a <code>.leafdoc</code> extension will be treated as leafdoc-only
+instead of source.</td>
+	</tr>
+	<tr id='leafdoc-addfile'>
+		<td><code><b>addFile</b>(<nobr>&lt;String&gt; <i>filename</i></nobr>, <nobr>&lt;Boolean&gt; <i>isSource?</i></nobr>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Parses the given file using <a href="#leafdoc-addbuffer"><code>addBuffer</code></a>.</td>
+	</tr>
+	<tr id='leafdoc-addbuffer'>
+		<td><code><b>addBuffer</b>(<nobr>&lt;Buffer&gt; <i>buf</i></nobr>, <nobr>&lt;Boolean&gt; <i>isSource?</i></nobr>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Parses the given buffer using <a href="#leafdoc-addstr"><code>addStr</code></a> underneath. Set <code>isSource</code> to <code>true</code> to parse Leafdoc directives inside comment blocks. Otherwise, the whole file is interpreted as Leafdoc directives.</td>
+	</tr>
+	<tr id='leafdoc-addstr'>
+		<td><code><b>addStr</b>(<nobr>&lt;String&gt; <i>str</i></nobr>, <nobr>&lt;Boolean&gt; <i>isSource?</i></nobr>, <nobr>&lt;bar"&gt; <i>foo</i></nobr>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Parses the given string for Leafdoc comments. The string is assumed to
+be source code with comments, unless <code>isSource</code> is explicitly set to <code>false</code>.
+directive.</td>
+	</tr>
+	<tr id='leafdoc-outputstr'>
+		<td><code><b>outputStr</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td>Outputs the documentation to a string.
+Use only after all the needed files have been parsed.</td>
+	</tr>
+</tbody></table>
+</section>
+
+<h2 id='command-line-usage'>Command-line usage</h2>
+<p>Leafdoc includes a small command-line utility, useful when running from a console or a shell script, accepting some of the Leafdoc options. The syntax is:
+<code>leafdoc [options] [files]</code></p>
+
+<h3 id='command-line-usage-example'>Usage example</h3>
+
+<section data-type='[object Object]'>
+
+
+
+<p><code>leafdoc -t templates/pretty -c &#39;@&#39; --verbose -o documentation.html src/*.js</code></p>
+
+
+</section>
+
+<h3 id='command-line-usage-option'>Options</h3>
+
+<section data-type='[object Object]'>
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='command-line-usage-template'>
+		<td><code><b>template</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;templates/basic&#x27;</code></td>
+		<td>Akin to <a href="#leafdoc.templatedir">Leafdoc.templateDir</a></td>
+	</tr>
+	<tr id='command-line-usage-t'>
+		<td><code><b>t</b></code></td>
+		<td><code></code>
+		<td><code></code></td>
+		<td>Alias of <code>template</code></td>
+	</tr>
+	<tr id='command-line-usage-character'>
+		<td><code><b>character</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;🍂&#x27;</code></td>
+		<td>Akin to <a href="#leafdoc.leadingcharacter">Leafdoc.leadingCharacter</a></td>
+	</tr>
+	<tr id='command-line-usage-c'>
+		<td><code><b>c</b></code></td>
+		<td><code></code>
+		<td><code></code></td>
+		<td>Alias of <code>character</code></td>
+	</tr>
+	<tr id='command-line-usage-verbose'>
+		<td><code><b>verbose</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>Akin to <a href="#leafdoc.verbose">Leafdoc.verbose</a></td>
+	</tr>
+	<tr id='command-line-usage-v'>
+		<td><code><b>v</b></code></td>
+		<td><code></code>
+		<td><code></code></td>
+		<td>Alias of <code>verbose</code></td>
+	</tr>
+	<tr id='command-line-usage-output'>
+		<td><code><b>output</b></code></td>
+		<td><code>String</code>
+		<td><code>undefined</code></td>
+		<td>File to write the documentation to. If left empty, documentation will be outputted to <code>stdout</code> instead.</td>
+	</tr>
+	<tr id='command-line-usage-o'>
+		<td><code><b>o</b></code></td>
+		<td><code></code>
+		<td><code></code></td>
+		<td>Alias of <code>output</code></td>
+	</tr>
+</tbody></table>
+</section>
+
+
+
+</body></html>
