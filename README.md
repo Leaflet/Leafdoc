@@ -69,6 +69,8 @@ to add stuff to the default section.
 	* `🍂method`
 	* `🍂function`
 	* `🍂factory`
+	* `🍂constructor`
+	* `🍂destructor`
 	* `🍂option`
 	* `🍂event`
 	* `🍂example`
@@ -153,15 +155,17 @@ Use ellipsis to mark optional parameters:
 
 You can specify everything (name, params, type, default), but no documentable uses them all in the templates. The usual schema is:
 
-|            | Params | Type | Default |
-| ---------- | ------ | ---- | ------- |
-| example    |        |      |         |
-| option     |        |  X   |   X     |
-| property   |        |  X   |   X     |
-| event      |        |  X   |         |
-| method     |   X    |  X   |         |
-| function   |   X    |  X   |         |
-| factory    |   X    |      |         |
+|             | Params | Type | Default |
+| ----------- | ------ | ---- | ------- |
+| example     |        |      |         |
+| option      |        |  X   |   X     |
+| property    |        |  X   |   X     |
+| event       |        |  X   |         |
+| method      |   X    |  X   |         |
+| function    |   X    |  X   |         |
+| factory     |   X    |      |         |
+| constructor |   X    |      |         |
+| factory     |   X    |      |         |
 
 
 ### Output customization

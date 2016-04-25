@@ -12,6 +12,8 @@ function Leafdoc(options){
 	this._namespaces = {};
 	this._knownDocumentables = [
 		'example',
+		'constructor',
+		'destructor',
 		'factory',
 		'option',
 		'event',
@@ -65,6 +67,11 @@ function Leafdoc(options){
 			}
 		}
 
+		// 🍂option verbose: Boolean = false
+		// Set to `true` to display more information as files are being read.
+		if (options.verbose) {
+			this._verbose = options.verbose;
+		}
 	}
 };
 
@@ -135,7 +142,9 @@ Leafdoc.prototype.addDir = function(dirname, extensions) {
 		if (stats.isDirectory()) {
 			this.addDir(filename, extensions)
 		} else if (extensions.indexOf(path.extname(filename)) !== -1){
-			console.log('Leafdoc processing file: ', filename);
+			if (this._verbose) {
+				console.log('Leafdoc processing file: ', filename);
+			}
 			this.addFile(filename, path.extname(filename) !== '.leafdoc');
 		}
 	}
