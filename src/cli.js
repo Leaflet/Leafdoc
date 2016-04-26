@@ -48,7 +48,6 @@ var doc = new Leafdoc({
 });
 
 argv._.forEach( function(filepath) {
-	console.log(filepath);
 	try {
 		var stats = sander.statSync(filepath);
 
