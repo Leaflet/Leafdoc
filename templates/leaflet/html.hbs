@@ -35,7 +35,7 @@
 			<h4>Map Misc</h4>
 			<ul>
 				<li><a href="#map-property">Properties</a></li>
-<!-- 				<li><a href="#map-panes">Panes</a></li> -->
+				<li><a href="#map-panes">Panes</a></li>
 			</ul>
 		</div>
 		<div class="toc-col">
@@ -58,6 +58,8 @@
 				<li><a href="#rectangle">Rectangle</a></li>
 				<li><a href="#circle">Circle</a></li>
 				<li><a href="#circlemarker">CircleMarker</a></li>
+				<li><a href="#svg">SVG</a></li>
+				<li><a href="#canvas">Canvas</a></li>
 			</ul>
 		</div>
 		<div class="toc-col">
@@ -86,12 +88,12 @@
 			</ul>
 		</div>
 		<div class="toc-col">
-			<h4>Shared Methods</h4>
-			<ul>
+<!-- 			<h4>Shared Methods</h4> -->
+<!-- 			<ul> -->
 <!-- 				<li><a href="#evented">Event</a></li> -->
 <!-- 				<li><a href="#layers">Layer</a></li> -->
-				<li><a href="#popup">Popup</a></li>
-			</ul>
+<!-- 				<li><a href="#popup">Popup</a></li> -->
+<!-- 			</ul> -->
 			<h4>Utility</h4>
 			<ul>
 				<li><a href="#browser">Browser</a></li>
@@ -117,23 +119,31 @@
 				<li><a href="#control">Control</a></li>
 				<li><a href="#handler">Handler</a></li>
 				<!--<li><a class="nodocs" href="#">IFeature</a></li>-->
-<!-- 				<li><a href="#projection">Projection</a></li> -->
-<!-- 				<li><a href="#crs">CRS</a></li> -->
+				<li><a href="#projection">Projection</a></li>
+				<li><a href="#crs">CRS</a></li>
+				<li><a href="#renderer">Renderer</a></li>
 			</ul>
 
 			<h4>Misc</h4>
 			<ul>
-<!-- 				<li><a href="#event-objects">Event objects</a></li> -->
-<!-- 				<li><a href="#global">global switches</a></li> -->
-<!-- 				<li><a href="#noconflict">noConflict</a></li> -->
-<!-- 				<li><a href="#version">version</a></li> -->
+				<li><a href="#event-objects">Event objects</a></li>
+ 				<li><a href="#global-switches">global switches</a></li>
+				<li><a href="#noconflict">noConflict</a></li>
+				<li><a href="#version">version</a></li>
 			</ul>
 		</div>
 	</div>
 
 	{{{ body }}}
 
+
+
+	<div class="footer">
+		<p>© 2015 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Maps © <a 	href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
 	</div>
+
+	</div>
+
 	<script src="http://leafletjs.com/docs/js/docs.js"></script>
 	<script>
 	hljs.configure({tabReplace: '    '});
@@ -153,6 +163,16 @@
 			} else {
 				// For table rows, insert the anchor inside the first <td>
 				el.querySelector('td').appendChild(anchor);
+
+				// Clicking on the row (meaning "the link icon on the ::before)
+				// jumps to the item
+				el.parentNode.onclick = function(hash){
+					return function(ev) {
+						if (ev.offsetX < 0) {
+							window.location.hash = '#' + ev.target.parentNode.id;
+						}
+					};
+				}(el.id);
 			}
 		}
 	}
@@ -168,7 +188,6 @@
 				} else {
 					c.className = 'accordion expanded';
 				}
-				console.log(c);
 			};
 		}(el));
 
@@ -178,39 +197,52 @@
 
 </script>
 <style>
+
+	h2 {
+		margin-top: 2em;
+	}
+
+	h3 {
+		margin-top: 1em;
+		margin-bottom: .5em;
+	}
+
 	div.accordion {
+		width: 100%;
+/* 		overflow: hidden; */
+	}
+
+	div.accordion-overflow {
 		width: 100%;
 		overflow: hidden;
 	}
 
-	div.accordion > label,
-	section.collapsable h4 {
+	label,
+	section > h4 {
 		display: block;
-		background: #EEE;
-		padding: 0.5em 1em;
-		font-weight: bold;
-		font-size: 12px;
-		margin: 0;
+		font-weight: 500;
+		margin: 1em 0 0.25em;
 	}
 
-	div.accordion > label {
+	label {
 		cursor: pointer;
 	}
 
-	div.accordion > div.accordion-content {
+	div.accordion > div.accordion-overflow > div.accordion-content {
 		max-height: 0;
 		display: none;
 	}
 
-	div.accordion.collapsed > div.accordion-content {
+	div.accordion.collapsed > div.accordion-overflow > div.accordion-content {
 		animation-duration: 0.4s;
 		animation-name: collapse;
 /* 		height: 0; */
 		max-height: 0;
 		display: block;
+		overflow: hidden;
 	}
 
-	div.accordion.expanded > div.accordion-content {
+	div.accordion.expanded > div.accordion-overflow > div.accordion-content {
 		animation-duration: 0.4s;
 		animation-name: expand;
 /* 		height: auto; */
@@ -239,28 +271,43 @@
 	div.accordion > label > span.expander {
 		transition: transform 0.4s ease-out 0s;
 		display: inline-block;
+		font-size: 12px;
 	}
+
 
 	table {
 		margin-bottom: 0;
 	}
 
-	section.collapsable {
-/* 		background: pink; */
+/* 	Markdown renders some spurious <p>s inside the table cells */
+	td > p {
+		margin:0;
 	}
 
-	section.collapsable div.section-comments {
-		background: #eee;
-		padding: 0 1em;
-		font-size: 12px;
+/* 	This just looks bad (with the current grey headers for sections which Vlad doesn't really like, so might have to change this) */
+	section.collapsable > div.section-comments > p {
+		margin:0;
 	}
+
+	div.section-comments {
+		margin-bottom: 0.25em;
+	}
+
+/*	section.collapsable div.section-comments {
+		margin: 1em;
+		font-size: 12px;
+	}*/
 
 	section.collapsable pre {
 		margin:0;
 	}
 
-	section.collapsable p:last-child {
-		margin-bottom: 0;
+	section {
+		margin-left: 0.5em;
+	}
+
+	section h4, section.collapsable h4 {
+		margin-left: -0.5em;
 	}
 
 
