@@ -5,7 +5,7 @@ var sander = require('sander');
 var path = require('path');
 var Handlebars = require('handlebars');
 
-var templateDir = 'templates/basic';
+var templateDir = __dirname + '/../templates/basic';
 
 module.exports.setTemplateDir = function(newDir) {
 	templateDir = newDir;
