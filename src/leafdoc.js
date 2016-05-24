@@ -226,7 +226,12 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 			( multilineComment ? regexps.leadingLine : regexps.leadingBlock ) :
 			regexps.anyLine;
 
-		// 2: Strip leading asterisk/slashes and whitespace and split into lines
+		// Edge case: some comment blocks in markdown might choke up
+		if (!commentBlock) {
+			break;
+		}
+
+		// 2: Split into lines
 		var lines = commentBlock.split('\n');
 
 		// 3: Split lines into directives (separated by ";")
@@ -235,6 +240,11 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 			var line = lines[i];
 
 			var match = regex.exec(line);	// Skips extra comment characters
+			if (!match) {
+				// Might happen in some binary files
+				console.log(line);
+				break;
+			}
 			var lineStr = match[1];
 			var lineIsValid = false;
 			var parsedCharacters = 0;
@@ -245,6 +255,7 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 
 			while (match = regexps.leafDirective.exec(lineStr)) {
 				// In "🍂param foo, bar", directive is "param" and content is "foo, bar"
+// 				console.log('matching directives: ', match);
 				if (match[2]) { match[2] = match[2].trim(); }
 				directives.push([match[1], match[2]]);	// [directive, content]
 // 				console.log('match: ', match);
@@ -305,7 +316,7 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 			}
 
 
-// 				console.log(scope, '-', directive, '-', content);
+// 			console.log(scope, '-', directive, '-', content);
 
 			if (scope === 'ns') {
 				if (!namespaces.hasOwnProperty(ns)) {
