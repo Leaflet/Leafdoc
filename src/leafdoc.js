@@ -569,7 +569,17 @@ Leafdoc.prototype._stringifyNamespace = function(namespace, isMini) {
 	});
 };
 
-
+/*
+ * ðmethod isDocumentableInheritable(name: String): Boolean
+ * Determines documentable can be inherited.
+ */
+Leafdoc.prototype.isDocumentableInheritable = function(name) {
+	return (name === 'method' ||
+		name === 'function' ||
+		name === 'event' ||
+		name === 'option' ||
+		name === 'property');
+};
 
 Leafdoc.prototype._stringifySupersection = function(supersection, ancestors, namespacename, isMini) {
 	var sections = '';
@@ -597,11 +607,7 @@ Leafdoc.prototype._stringifySupersection = function(supersection, ancestors, nam
 	// Calculate inherited documentables.
 	// In the order of the ancestors, check if each documentable has already been
 	// selected for output, skip it if so. Group rest into inherited sections.
-	if (name === 'method' ||
-	    name === 'function' ||
-	    name === 'event' ||
-	    name === 'option' ||
-	    name === 'property') {
+	if (this.isDocumentableInheritable(name)) {
 
 		if (ancestors.length) {
 // 			inheritances += 'Inherits stuff from: ' + inheritances.join(',');
