@@ -47,7 +47,7 @@ var identifier= XRegExp.build('^({{ID_Start}}  ( {{ID_Continue}} | \\. )*)$', {
 // Parses a function name, its return type, and its parameters
 // Funny thing about functions is that not all printable characters are allowed. Thus,
 //   use unicode ID_Start and ID_Continue character sets via 'identifier' sub-regexp.
-var functionDefinition = XRegExp.build('^ (?<name> {{identifier}} ) \\s* (?<params> \\( .* \\) ){0,1}   \\s* ( \\: \\s* (?<type> .+? ) )? ( = \\s* (?<default> .+ ) \\s* ){0,1} \$', {
+var functionDefinition = XRegExp.build('^ (?<name> {{identifier}} ) (?<required> (\\?{0,1}) ) \\s* (?<params> \\( .* \\) ){0,1}   \\s* ( \\: \\s* (?<type> .+? ) )? ( = \\s* (?<default> .+ ) \\s* ){0,1} \$', {
 	identifier: identifier
 },'nx');
 

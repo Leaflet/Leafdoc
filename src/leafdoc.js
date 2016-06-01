@@ -395,7 +395,7 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 
 // 						console.log(content, ', ', alt);
 
-					var name, params = {}, type = null, defaultValue = null;
+					var name, params = {}, type = null, defaultValue = null, optional = false;
 
 					if (content) {
 						var split = regexps.functionDefinition.exec(content);
@@ -403,9 +403,10 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 							console.error('Invalid ' + directive + ' definition: ', content);
 						} else {
 							name = split[1];
-							paramString = split[2];
-							type = split[3];
-							defaultValue = split[4];
+							optional = split[2] == '?';
+							paramString = split[3];
+							type = split[4];
+							defaultValue = split[5];
 
 							if (paramString) {
 								while(match = regexps.functionParam.exec(paramString)) {
@@ -435,6 +436,7 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 							comments: [],
 							params: params,	// Only for functions/methods/factories
 							type: type ? type.trim() : null,
+							optional: optional,
 							defaultValue: defaultValue || null	// Only for options, properties
 						}
 					}
