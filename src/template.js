@@ -6,25 +6,29 @@ var path = require('path');
 var Handlebars = require('handlebars');
 
 var templateDir = __dirname + '/../templates/basic';
+var templates = {};
 
-module.exports.setTemplateDir = function(newDir) {
+exports.setTemplateDir = function(newDir) {
 	templateDir = newDir;
 };
 
-module.exports.getTemplate = function(templateName) {
-	
-	return Handlebars.compile(sander.readFileSync(templateDir, templateName + '.hbs').toString());
-	
+exports.getTemplate = function(templateName) {
+	if (!templates[templateName]) {
+		templates[templateName] = Handlebars.compile(sander.readFileSync(templateDir, templateName + '.hbs').toString());
+	}
+	return templates[templateName];
 };
 
 
 var _AKAs = {};
 
-module.exports.setAKAs = function(akas){
+exports.setAKAs = function(akas){
 
 // 	console.log('Template thing updating AKAs');
 	_AKAs = akas;
 };
+
+exports.engine = Handlebars;
 
 
 

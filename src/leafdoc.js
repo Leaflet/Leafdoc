@@ -114,6 +114,13 @@ Leafdoc.prototype.registerDocumentable = function(name, label) {
 	return this;
 };
 
+// 🍂method getTemplateEngine(): Handlebars
+// Returns handlebars template engine used to render templates.
+// You can use it for override helpers or register new.
+Leafdoc.prototype.getTemplateEngine = function() {
+	return template.engine;
+};
+
 
 // 🍂method setLeadingCharacter(char: String): this
 // In the rare case you don't want to use &#x1f342; as the leading character for
@@ -570,7 +577,7 @@ Leafdoc.prototype._stringifyNamespace = function(namespace, isMini) {
 };
 
 /*
- * ðmethod isDocumentableInheritable(name: String): Boolean
+ * 🍂method isDocumentableInheritable(name: String): Boolean
  * Determines documentable can be inherited.
  */
 Leafdoc.prototype.isDocumentableInheritable = function(name) {
