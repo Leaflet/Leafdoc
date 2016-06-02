@@ -274,7 +274,7 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 // 			var match = regex.exec(line);
 
 			while (match = regexps.leafDirective.exec(lineStr)) {
-				// In "ðparam foo, bar", directive is "param" and content is "foo, bar"
+				// In "param foo, bar", directive is "param" and content is "foo, bar"
 // 				console.log('matching directives: ', match);
 				if (match[2]) { match[2] = match[2].trim(); }
 				directives.push([match[1], match[2]]);	// [directive, content]
