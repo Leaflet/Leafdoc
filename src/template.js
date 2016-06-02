@@ -6,7 +6,7 @@ var path = require('path');
 var Handlebars = require('handlebars');
 
 var templateDir = __dirname + '/../templates/basic';
-var templates = {};
+var templates = Object.create(null)
 
 exports.setTemplateDir = function(newDir) {
 	templateDir = newDir;
