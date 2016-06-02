@@ -34,6 +34,14 @@ function Leafdoc(options){
 		'property': 'Properties'
 	};
 
+	this._inheritableDocumentables = [
+		'method',
+		'function',
+		'event',
+		'option',
+		'property'
+	];
+
 	// Holds a list of miniclasses, with the miniclass as key and the real
 	// class as value.
 	// Maybe a better name would be "subnamespaces" or whatever.
@@ -96,19 +104,24 @@ console.log( doc.outputStr() );
  */
 
 
-// 🍂method registerDocumentable (name: String, label?: String): this
+// 🍂method registerDocumentable (name: String, label?: String, inheritable?: Boolean): this
 // Registers a new documentable type, beyond the preset ones (function,
 // property, etc). New documentable should also not be an already used
 // keyword (class, namespace, inherits, etc).
-// When registering new documentables, make sure that there is an appropiate
+// When registering new documentables, make sure that there is an appropriate
 // template file for it.
 // Set `label` to the text for the sections in the generated docs.
-Leafdoc.prototype.registerDocumentable = function(name, label) {
+// `inheritable` parameter determines documentable can be inherited via inherits keyword in a subclass.
+Leafdoc.prototype.registerDocumentable = function(name, label, inheritable) {
 
 	this._knownDocumentables.push(name, label);
 
 	if (label) {
 		this._documentableLabels[name] = label;
+	}
+
+	if (inheritable) {
+		this._inheritableDocumentables.push(name);
 	}
 
 	return this;
@@ -261,7 +274,7 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 // 			var match = regex.exec(line);
 
 			while (match = regexps.leafDirective.exec(lineStr)) {
-				// In "🍂param foo, bar", directive is "param" and content is "foo, bar"
+				// In "ðparam foo, bar", directive is "param" and content is "foo, bar"
 // 				console.log('matching directives: ', match);
 				if (match[2]) { match[2] = match[2].trim(); }
 				directives.push([match[1], match[2]]);	// [directive, content]
@@ -576,18 +589,6 @@ Leafdoc.prototype._stringifyNamespace = function(namespace, isMini) {
 	});
 };
 
-/*
- * 🍂method isDocumentableInheritable(name: String): Boolean
- * Determines documentable can be inherited.
- */
-Leafdoc.prototype.isDocumentableInheritable = function(name) {
-	return (name === 'method' ||
-		name === 'function' ||
-		name === 'event' ||
-		name === 'option' ||
-		name === 'property');
-};
-
 Leafdoc.prototype._stringifySupersection = function(supersection, ancestors, namespacename, isMini) {
 	var sections = '';
 	var inheritances = '';
@@ -614,7 +615,7 @@ Leafdoc.prototype._stringifySupersection = function(supersection, ancestors, nam
 	// Calculate inherited documentables.
 	// In the order of the ancestors, check if each documentable has already been
 	// selected for output, skip it if so. Group rest into inherited sections.
-	if (this.isDocumentableInheritable(name)) {
+	if (this._inheritableDocumentables.indexOf(name) !== -1) {
 
 		if (ancestors.length) {
 // 			inheritances += 'Inherits stuff from: ' + inheritances.join(',');
@@ -725,10 +726,10 @@ Leafdoc.prototype._stringifySection = function(section, documentableType, inheri
 // 	console.log(documentableType, section.name === '__default');
 
 	return (getTemplate('section'))({
-			name: name,
-			id: section.id,
-			comments: section.comments,
-			documentables:(getTemplate(documentableType))({
+		name: name,
+		id: section.id,
+		comments: section.comments,
+		documentables:(getTemplate(documentableType))({
 			documentables: docs
 		}),
 		isSecondarySection: ( section.name !== '__default' && documentableType !== 'example' && !inheritingNamespace),
