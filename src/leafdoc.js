@@ -471,7 +471,7 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 				} else if (directive === 'param') {
 					// Params are param name, type.
 					/// TODO: Think about default values, or param explanation.
-					var split = content.split(',');
+					var split = content.split(':');
 					var paramName = split[0].trim();
 
 					var paramType = split[1] ? split[1].trim() : '';
