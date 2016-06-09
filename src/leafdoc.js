@@ -411,7 +411,7 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 				if (this._knownDocumentables.indexOf(directive) !== -1 ) {
 					// Documentables might have more than their name as content.
 					// All documentables will follow the syntax for functions,
-					//   with optional parameters, optional type, and optional default value.
+					//   with optional parameters, optional required flag, optional type, and optional default value.
 
 // 						console.log(content, ', ', alt);
 
