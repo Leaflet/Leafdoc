@@ -39,7 +39,7 @@ redoLeafDirective('🍂');
 
 // Parses an identifier, allowing only unicode ID_Start and ID_Continue characters
 // An identifier allows dots in it, to allow for namespacing identifiers.
-var identifier= XRegExp.build('^({{ID_Start}}  ( {{ID_Continue}} | \\. )*)$', {
+var identifier= XRegExp.build('^({{ID_Start}}  ( {{ID_Continue}} | \\. | : )*)$', {
 	ID_Start: require('unicode-7.0.0/properties/ID_Start/regex'),
 	ID_Continue: require('unicode-7.0.0/properties/ID_Continue/regex')
 }, 'nx');
