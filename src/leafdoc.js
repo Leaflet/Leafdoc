@@ -411,7 +411,7 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 				if (this._knownDocumentables.indexOf(directive) !== -1 ) {
 					// Documentables might have more than their name as content.
 					// All documentables will follow the syntax for functions,
-					//   with optional parameters, optional type, and optional default value.
+					//   with optional parameters, optional required flag, optional type, and optional default value.
 
 // 						console.log(content, ', ', alt);
 
@@ -471,7 +471,7 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 				} else if (directive === 'param') {
 					// Params are param name, type.
 					/// TODO: Think about default values, or param explanation.
-					var split = content.split(',');
+					var split = content.split(':');
 					var paramName = split[0].trim();
 
 					var paramType = split[1] ? split[1].trim() : '';

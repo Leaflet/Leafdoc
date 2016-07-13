@@ -204,14 +204,21 @@ See also <a href="#leafdoc-setleadingcharacter"><code>setLeadingCharacter</code>
 	</tr>
 	</thead><tbody>
 	<tr id='leafdoc-registerdocumentable'>
-		<td><code><b>registerDocumentable</b>(<nobr>&lt;String&gt; <i>name</i></nobr>, <nobr>&lt;String&gt; <i>label?</i></nobr>)</nobr></code></td>
+		<td><code><b>registerDocumentable</b>(<nobr>&lt;String&gt; <i>name</i></nobr>, <nobr>&lt;String&gt; <i>label?</i></nobr>, <nobr>&lt;Boolean&gt; <i>inheritable?</i></nobr>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td>Registers a new documentable type, beyond the preset ones (function,
 property, etc). New documentable should also not be an already used
 keyword (class, namespace, inherits, etc).
-When registering new documentables, make sure that there is an appropiate
+When registering new documentables, make sure that there is an appropriate
 template file for it.
-Set <code>label</code> to the text for the sections in the generated docs.</td>
+Set <code>label</code> to the text for the sections in the generated docs.
+<code>inheritable</code> parameter determines documentable can be inherited via inherits keyword in a subclass.</td>
+	</tr>
+	<tr id='leafdoc-gettemplateengine'>
+		<td><code><b>getTemplateEngine</b>()</nobr></code></td>
+		<td><code>Handlebars</code></td>
+		<td>Returns handlebars template engine used to render templates.
+You can use it for override helpers or register new.</td>
 	</tr>
 	<tr id='leafdoc-setleadingcharacter'>
 		<td><code><b>setLeadingCharacter</b>(<nobr>&lt;String&gt; <i>char</i></nobr>)</nobr></code></td>
@@ -241,7 +248,7 @@ instead of source.</td>
 		<td>Parses the given buffer using <a href="#leafdoc-addstr"><code>addStr</code></a> underneath. Set <code>isSource</code> to <code>true</code> to parse Leafdoc directives inside comment blocks. Otherwise, the whole file is interpreted as Leafdoc directives.</td>
 	</tr>
 	<tr id='leafdoc-addstr'>
-		<td><code><b>addStr</b>(<nobr>&lt;String&gt; <i>str</i></nobr>, <nobr>&lt;Boolean&gt; <i>isSource?</i></nobr>, <nobr>&lt;bar"&gt; <i>foo</i></nobr>)</nobr></code></td>
+		<td><code><b>addStr</b>(<nobr>&lt;String&gt; <i>str</i></nobr>, <nobr>&lt;Boolean&gt; <i>isSource?</i></nobr>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td>Parses the given string for Leafdoc comments. The string is assumed to
 be source code with comments, unless <code>isSource</code> is explicitly set to <code>false</code>.
@@ -254,7 +261,6 @@ directive.</td>
 Use only after all the needed files have been parsed.</td>
 	</tr>
 </tbody></table>
-
 
 
 

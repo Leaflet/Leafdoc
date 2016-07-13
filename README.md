@@ -111,10 +111,10 @@ documentation of children classes.
 
 ### Shorthand syntax
 
-Any documentable has the same syntax: name, optional parameters, optional type / return type/value, default value.
+Any documentable has the same syntax: name, optional required flag, optional parameters, optional type / return type/value, default value.
 
 ```
-name [ ( params ) ] [: type] [= default]
+name[?] [ ( params ) ] [: type] [= default]
 ```
 where `params` is
 ```
@@ -160,7 +160,7 @@ Use ellipsis to mark optional parameters:
 🍂function update(…): null
 ```
 
-You can specify everything (name, params, type, default), but no documentable uses them all in the templates. The usual schema is:
+You can specify everything (name, optional, params, type, default), but no documentable uses them all in the templates. The usual schema is:
 
 |             | Params | Type | Default |
 | ----------- | ------ | ---- | ------- |
@@ -213,6 +213,21 @@ For example, the template might map an icon's filename to the documentable's def
 ```
 🍂icon happy = 'icons/happy.gif'
 A happy face
+```
+
+Also documentables can be inheritable or not. For example you have some entities in namespace which can be inherited.
+Pass `true` to third argument of [registerDocumentable](./Leafdoc.md#leafdoc-registerdocumentable) to make documentable inheritable:
+
+```js
+var l = new Leafdoc();
+l.registerDocumentable('field', 'Fields', true);
+```
+
+And later in your documentation:
+
+```
+🍂field limit? = 5
+A limit for query
 ```
 
 ## Known gotchas
