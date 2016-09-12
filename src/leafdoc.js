@@ -523,6 +523,16 @@ Leafdoc.prototype.outputStr = function() {
 
 };
 
+/*
+ * 🍂method outputJSON: String
+ * Outputs the internal documentation tree to a JSON blob, without any formatting.
+ * Use only after all the needed files have been parsed.
+ */
+Leafdoc.prototype.outputJSON = function() {
+	this._resolveAKAs();
+	return JSON.stringify(this._namespaces, undefined, 1);
+};
+
 
 Leafdoc.prototype._stringifyNamespace = function(namespace, isMini) {
 

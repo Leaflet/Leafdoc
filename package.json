@@ -1,6 +1,6 @@
 {
   "name": "leafdoc",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A lightweight NaturalDocs-like LeafletJS-style documentation generator",
   "main": "src/leafdoc.js",
   "author": "Iván Sánchez Ortega <ivan@sanchezortega.es>",

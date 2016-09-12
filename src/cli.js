@@ -34,9 +34,12 @@ var argv = minimist( process.argv.slice( 2 ), {
 		v: 'verbose',
 		// 🍂option output: String=undefined; File to write the documentation to. If left empty, documentation will be outputted to `stdout` instead.
 		// 🍂option o; Alias of `output`
-		o: 'output'
+		o: 'output',
+		// 🍂option json: Boolean=false; Write the internal JSON representation of the documentation instead of a templated HTML file.
+		// 🍂option o; Alias of `output`
+		j: 'json'
 	},
-	boolean: ['v', 'verbose'],
+	boolean: ['v', 'verbose', 'j', 'json'],
 	string: ['t', 'template', 'c', 'character'],
 	default: { verbose: false, template: 'templates/basic', character: '🍂' }
 });
@@ -63,8 +66,12 @@ argv._.forEach( function(filepath) {
 	}
 } );
 
-
-var out = doc.outputStr();
+var out;
+if (argv.json) {
+	out = doc.outputJSON();
+} else {
+	out = doc.outputStr();
+}
 
 if (argv.output) {
 	sander.writeFileSync(argv.output, out);
