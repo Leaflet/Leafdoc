@@ -47,7 +47,7 @@ var argv = minimist( process.argv.slice( 2 ), {
 var doc = new Leafdoc({
 	verbose: argv.verbose,
 	templateDir: argv.template,
-	character: argv.character
+	leadingCharacter: argv.character
 });
 
 argv._.forEach( function(filepath) {
