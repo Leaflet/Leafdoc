@@ -16,7 +16,8 @@
   "scripts": {
     "update-markdown-leafdoc": "src/cli.js -t templates/markdown src/cli.js src/leafdoc.js --verbose -o Leafdoc.md",
     "update-html-leafdoc": "src/cli.js -t templates/basic src/leafdoc.js src/cli.js --verbose -o Leafdoc.html",
-    "prepublish": "npm run update-markdown-leafdoc && npm run update-html-leafdoc"
+    "prepublish": "npm run update-markdown-leafdoc && npm run update-html-leafdoc",
+    "test": "./test.js"
   },
   "repository": {
     "type": "git",
