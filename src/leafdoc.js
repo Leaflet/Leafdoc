@@ -1,14 +1,15 @@
-var sander = require('sander'),
-    path = require('path');
 
-var template = require('./template'),
-    getTemplate = template.getTemplate,
-    setTemplateDir = template.setTemplateDir;
+import sander from 'sander';
+import path from 'path';
 
-var regexps = require('./regexps');
+import {getTemplate, setTemplateDir, setAKAs} from './template';
+import * as regexps from './regexps';
+import parserTrivial from './parsers/trivial.js';
+import parserCLike from './parsers/c-like.js';
+
 
 // 🍂class Leafdoc; Represents the Leafdoc parser
-function Leafdoc(options){
+export default function Leafdoc(options) {
 	this._namespaces = {};
 	this._knownDocumentables = [
 		'example',
@@ -85,7 +86,7 @@ function Leafdoc(options){
 			this._verbose = options.verbose;
 		}
 	}
-};
+}
 
 /*
 🍂constructor Leafdoc(options: Leafdoc options); Constructor for a new Leafdoc parser
@@ -141,16 +142,17 @@ Leafdoc.prototype.getTemplateEngine = function() {
 // `setLeadingCharacter('@');`
 // The new leading character will apply only to files/dirs/strings parsed from
 // that moment on, so it's a good idea to call this before anything else.
-Leafdoc.prototype.setLeadingCharacter = function(char) {
-	regexps.leafDirective = regexps.redoLeafDirective(char);
-}
+Leafdoc.prototype.setLeadingCharacter = function (char) {
+    console.log('Setting leading character to', char);
+	regexps.redoLeafDirective(char);
+};
 
 // 🍂method addDir (dirname: String, extensions?: String[]): this
 // Recursively scans a directory, and parses any files that match the
 // given `extensions` (by default `.js` and `.leafdoc`, mind the dots).
 // Files with a `.leafdoc` extension will be treated as leafdoc-only
 // instead of source.
-Leafdoc.prototype.addDir = function(dirname, extensions) {
+Leafdoc.prototype.addDir = function (dirname, extensions) {
 
 	if (!extensions) {
 		extensions = ['.js', '.leafdoc'];
@@ -164,8 +166,8 @@ Leafdoc.prototype.addDir = function(dirname, extensions) {
 
 		var stats = sander.statSync(filename);
 		if (stats.isDirectory()) {
-			this.addDir(filename, extensions)
-		} else if (extensions.indexOf(path.extname(filename)) !== -1){
+			this.addDir(filename, extensions);
+		} else if (extensions.indexOf(path.extname(filename)) !== -1) {
 			if (this._verbose) {
 				console.log('Leafdoc processing file: ', filename);
 			}
@@ -179,7 +181,7 @@ Leafdoc.prototype.addDir = function(dirname, extensions) {
 
 // 🍂method addFile(filename: String, isSource?: Boolean): this
 // Parses the given file using [`addBuffer`](#leafdoc-addbuffer).
-Leafdoc.prototype.addFile = function(filename, isSource) {
+Leafdoc.prototype.addFile = function (filename, isSource) {
 	return this.addBuffer(sander.readFileSync(filename), isSource);
 };
 
@@ -187,14 +189,14 @@ Leafdoc.prototype.addFile = function(filename, isSource) {
 
 // 🍂method addBuffer(buf: Buffer, isSource?: Boolean): this
 // Parses the given buffer using [`addStr`](#leafdoc-addstr) underneath. Set `isSource` to `true` to parse Leafdoc directives inside comment blocks. Otherwise, the whole file is interpreted as Leafdoc directives.
-Leafdoc.prototype.addBuffer = function(buf, isSource) {
+Leafdoc.prototype.addBuffer = function (buf, isSource) {
 	return this.addStr(buf.toString(), isSource);
 };
 
 // 🍂method addStr(str: String, isSource?: Boolean): this
 // Parses the given string for Leafdoc comments. The string is assumed to
 // be source code with comments, unless `isSource` is explicitly set to `false`.
-Leafdoc.prototype.addStr = function(str, isSource) {
+Leafdoc.prototype.addStr = function (str, isSource) {
 
 	// Leaflet files use DOS line feeds, which screw up things.
 	str = str.replace(/\r\n?/g, '\n');
@@ -221,30 +223,28 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 	var sectionAKA = [];
 	var sectionIsUninheritable = false;
 
-	var blockRegex = isSource ? regexps.commentBlock : regexps.leafdocFile;
+	const parser = isSource ? parserCLike : parserTrivial;
 
-	// 1: Fetch comment blocks (in a regexp loop). For each block...
-	var match;
-	while(match = blockRegex.exec(str)) {
+	const parsedBlocks = parser(str);
 
-		var multilineComment = isSource && match[1];
-		var blockComment = isSource && match[2];
-		var leafdocFile = !isSource && match[1];
-		var commentBlock = multilineComment || blockComment || leafdocFile;
+	// 1: Fetch comment blocks (from the parser). For each block...
+	for (let i = 0, l = parsedBlocks.length; i < l; i++) {
+		const commentBlock = parsedBlocks[i];
+
 		var blockIsEmpty = true;
-// 		console.error('new block: ', commentBlock, match);
-// 		console.log('new block');
+//         console.error('new block: ', commentBlock);
+        console.log('new block');
 
-// 		if (multilineComment) {
-// 			console.log('multiline block: {{{\n', multilineComment , '}}}');
-// 		} else {
-// 			console.log('block comment: {{{\n', blockComment , '}}}');
-// 		}
+		// 		if (multilineComment) {
+		// 			console.log('multiline block: {{{\n', multilineComment , '}}}');
+		// 		} else {
+		// 			console.log('block comment: {{{\n', blockComment , '}}}');
+		// 		}
 
-		// Which regex should we use to clean each line?
-		var regex = isSource ?
-			( multilineComment ? regexps.leadingLine : regexps.leadingBlock ) :
-			regexps.anyLine;
+		// 		// Which regex should we use to clean each line?
+		// 		var regex = isSource ?
+		// 			(multilineComment ? regexps.leadingLine : regexps.leadingBlock) :
+		// 			regexps.anyLine;
 
 		// Edge case: some comment blocks in markdown might choke up
 		if (!commentBlock) {
@@ -256,58 +256,57 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 
 		// 3: Split lines into directives (separated by ";")
 		var directives = [];
-		for (var i in lines) {
+		for (let i in lines) {
 			var line = lines[i];
 
-			var match = regex.exec(line);	// Skips extra comment characters
-			if (!match) {
+			// 			var match = regex.exec(line);	// Skips extra comment characters
+			// 			var lineStr = match[1];
 				// Might happen in some binary files
 				console.log(line);
 				break;
 			}
-			var lineStr = match[1];
 			var lineIsValid = false;
 			var parsedCharacters = 0;
-// 			console.log('Line: ' + (multilineComment?'/':'*') + ' <' + line + '>');
-// 			console.log('Line→ ' + (multilineComment?'/':'*') + ' <' + lineStr + '>');
 
-// 			var match = regex.exec(line);
+            console.log('Line: ', i, line);
+			// 			var match = regex.exec(line);
 
-			while (match = regexps.leafDirective.exec(lineStr)) {
+			let match;
 				// In "param foo, bar", directive is "param" and content is "foo, bar"
-// 				console.log('matching directives: ', match);
+			while (match = regexps.leafDirective.exec(line)) {
 				if (match[2]) { match[2] = match[2].trim(); }
 				directives.push([match[1], match[2]]);	// [directive, content]
-// 				console.log('match: ', match);
+                console.log('directive match: ', match);
 				blockIsEmpty = false;
 				lineIsValid = true;
 				parsedCharacters = match.index + match[0].length;
 			}
 
 			if (lineIsValid) {
-// 				console.log('After having matched a line:', match);
-				var trailing = lineStr.substr(parsedCharacters + 1).trim();
-// 				console.log('After having matched a line:', trailing);
+				// 				console.log('After having matched a line:', match);
+				var trailing = line.substr(parsedCharacters + 1).trim();
+				// 				console.log('After having matched a line:', trailing);
 				if (trailing) {
 					directives.push(['comment', trailing]);
 				}
 			}
 
-			if (!lineIsValid && !blockIsEmpty && lineStr) {
+			if (!lineIsValid && !blockIsEmpty && line) {
 				// implicit 🍂comment directive.
-				directives.push(['comment', lineStr]);
+				directives.push(['comment', line]);
 			}
 		}
 
-// 		console.log('directives', directives);
+        console.log('directives', directives);
 
-		for (var i in directives) {
+		for (let i in directives) {
 			var directive = directives[i][0],
 			    content = directives[i][1];
 
 			// 4: Parse 🍂 directives
 
-// 				if (multilineComment) console.log(directive, match);
+			//             console.log(directive, '-', content);
+
 			if (directive === 'class' || directive === 'namespace') {
 				ns = content.trim();
 				sec = '__default';
@@ -329,18 +328,18 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 			} else if (directive === 'section') {
 				sec = content || '__default';
 				scope = 'sec';
-			} else if (this._knownDocumentables.indexOf(directive) !== -1 ) {
+			} else if (this._knownDocumentables.indexOf(directive) !== -1) {
 				scope = 'dc';
 				dt = directive;
 				dc = '';	// The name of the documentable will be set later
 			}
 
 
-// 			console.log(scope, '-', directive, '-', content);
+// 				console.log(scope, '-', directive, '-', content);
 
 			if (scope === 'ns') {
 				if (!namespaces.hasOwnProperty(ns)) {
-// 						console.log('Defining class/namespace ', ns);
+					// 						console.log('Defining class/namespace ', ns);
 					namespaces[ns] = {
 						name: ns,
 						aka: [],
@@ -405,34 +404,35 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 				}
 				currentSection = currentNamespace.supersections[dt].sections[sec];
 
-// 					console.log(currentSection);
-// 					console.log(directive);
+				// 					console.log(currentSection);
+				// 					console.log(directive);
 
-				if (this._knownDocumentables.indexOf(directive) !== -1 ) {
+				if (this._knownDocumentables.indexOf(directive) !== -1) {
 					// Documentables might have more than their name as content.
 					// All documentables will follow the syntax for functions,
 					//   with optional parameters, optional required flag, optional type, and optional default value.
 
-// 						console.log(content, ', ', alt);
+					// 						console.log(content, ', ', alt);
 
-					var name, params = {}, type = null, defaultValue = null, optional = false;
+					let name, paramString, params = {}, type = null, defaultValue = null, optional=false;
 
 					if (content) {
-						var split = regexps.functionDefinition.exec(content);
+						let split = regexps.functionDefinition.exec(content);
 						if (!split) {
 							console.error('Invalid ' + directive + ' definition: ', content);
 						} else {
-							name = split[1];
-							optional = split[2] == '?';
-							paramString = split[3];
-							type = split[4];
-							defaultValue = split[5];
+							[, name, paramString, type, defaultValue] = split;
+							// 							name = split[1];
+							// 							paramString = split[2];
+							// 							type = split[3];
+							// 							defaultValue = split[4];
 
 							if (paramString) {
-								while(match = regexps.functionParam.exec(paramString)) {
+								let match;
+								while (match = regexps.functionParam.exec(paramString)) {
 									params[ match[1] ] = {name: match[1], type: match[2]};
 								}
-// 									console.log("\"" + paramString + "\"\n\t", params);
+								// 									console.log("\"" + paramString + "\"\n\t", params);
 							}
 						}
 
@@ -458,7 +458,7 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 							type: type ? type.trim() : null,
 							optional: optional,
 							defaultValue: defaultValue || null	// Only for options, properties
-						}
+						};
 					}
 					currentDocumentable = currentSection.documentables[dc];
 
@@ -480,7 +480,7 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 				} else if (directive === 'aka') {
 					currentDocumentable.aka.push(content);
 				} else if (directive === 'comment') {
-// 						console.log('Doing stuff with a method comments: ', content);
+					// 						console.log('Doing stuff with a method comments: ', content);
 					currentDocumentable.comments.push(content);
 				}
 
@@ -490,11 +490,11 @@ Leafdoc.prototype.addStr = function(str, isSource) {
 
 	}
 
-// 	console.log(this._namespaces.Leafdoc.__default[0]);
-// 	console.log(this._namespaces.Marker.__default[0]);
-// 	console.log(this._namespaces);
-// 	console.log(this._namespaces.Marker.supersections.method.sections.__default);
-// 	console.log('namespaces after addStr', this._namespaces);
+	// 	console.log(this._namespaces.Leafdoc.__default[0]);
+	// 	console.log(this._namespaces.Marker.__default[0]);
+	// 	console.log(this._namespaces);
+	// 	console.log(this._namespaces.Marker.supersections.method.sections.__default);
+	// 	console.log('namespaces after addStr', this._namespaces);
 
 	return this;
 };
@@ -507,7 +507,7 @@ Leafdoc.prototype.addStr = function(str, isSource) {
  * Outputs the documentation to a string.
  * Use only after all the needed files have been parsed.
  */
-Leafdoc.prototype.outputStr = function() {
+Leafdoc.prototype.outputStr = function () {
 
 	this._resolveAKAs();
 
@@ -517,7 +517,7 @@ Leafdoc.prototype.outputStr = function() {
 		out += this._stringifyNamespace(this._namespaces[ns]);
 	}
 
-// 	console.log('miniclasses: ', this._miniclasses);
+	// 	console.log('miniclasses: ', this._miniclasses);
 
 	return (getTemplate('html'))({body: out});
 
@@ -534,7 +534,7 @@ Leafdoc.prototype.outputJSON = function() {
 };
 
 
-Leafdoc.prototype._stringifyNamespace = function(namespace, isMini) {
+Leafdoc.prototype._stringifyNamespace = function (namespace, isMini) {
 
 	if (!isMini && this._miniclasses.hasOwnProperty(namespace.name)) { return ''; }
 
@@ -550,10 +550,10 @@ Leafdoc.prototype._stringifyNamespace = function(namespace, isMini) {
 		var supersectionHasSomething = namespace.supersections.hasOwnProperty(s);
 
 		if (s !== 'example' && this.showInheritancesWhenEmpty && !supersectionHasSomething) {
-// 			console.log('checking for empty section with inherited stuff, ', namespace.name, s, ancestors);
+			// 			console.log('checking for empty section with inherited stuff, ', namespace.name, s, ancestors);
 			for (var i in ancestors) {
 				var ancestor = ancestors[i];
-// 				console.log(ancestor, this._namespaces[ancestor].supersections.hasOwnProperty(s));
+				// 				console.log(ancestor, this._namespaces[ancestor].supersections.hasOwnProperty(s));
 				if (this._namespaces[ancestor].supersections.hasOwnProperty(s)) {
 
 					for (var sec in this._namespaces[ancestor].supersections[s].sections) {
@@ -562,7 +562,7 @@ Leafdoc.prototype._stringifyNamespace = function(namespace, isMini) {
 						}
 					}
 
-// 					console.log(this._namespaces[ancestor].supersections[s]);
+					// 					console.log(this._namespaces[ancestor].supersections[s]);
 					if (supersectionHasSomething) {
 						namespace.supersections[s] = {
 							name: this._namespaces[ancestor].supersections[s].name,
@@ -584,12 +584,12 @@ Leafdoc.prototype._stringifyNamespace = function(namespace, isMini) {
 		for (var i in this._miniclasses) {
 			if (this._miniclasses[i] === namespace.name) {
 				out += this._stringifyNamespace(this._namespaces[i], true);
-// 				console.log('out is now', out);
+				// 				console.log('out is now', out);
 			}
 		}
 	}
 
-// 	console.log(namespace);
+	// 	console.log(namespace);
 
 	return (getTemplate('namespace'))({
 		name: isMini ? undefined : namespace.name,
@@ -599,14 +599,14 @@ Leafdoc.prototype._stringifyNamespace = function(namespace, isMini) {
 	});
 };
 
-Leafdoc.prototype._stringifySupersection = function(supersection, ancestors, namespacename, isMini) {
+Leafdoc.prototype._stringifySupersection = function (supersection, ancestors, namespacename, isMini) {
 	var sections = '';
 	var inheritances = '';
 
 	// The "__default" section should show above any named sections
 	if ('__default' in supersection.sections) {
 		var oldSections = supersection.sections;
-		supersection.sections = { __default: oldSections.__default };
+		supersection.sections = {__default: oldSections.__default};
 		for (var s in oldSections) {
 			if (s !== '__default')
 				supersection.sections[s] = oldSections[s];
@@ -628,7 +628,7 @@ Leafdoc.prototype._stringifySupersection = function(supersection, ancestors, nam
 	if (this._inheritableDocumentables.indexOf(name) !== -1) {
 
 		if (ancestors.length) {
-// 			inheritances += 'Inherits stuff from: ' + inheritances.join(',');
+			// 			inheritances += 'Inherits stuff from: ' + inheritances.join(',');
 
 			var inheritedSections = [];
 
@@ -640,13 +640,13 @@ Leafdoc.prototype._stringifySupersection = function(supersection, ancestors, nam
 					skip.push(d);
 				}
 			}
-// 			console.log('Will skip: ', skip);
+			// 			console.log('Will skip: ', skip);
 
 			for (var i in ancestors) {
 				var id = [];	// Inherited documentables
 				var parent = ancestors[i];
 
-// 				console.log('Processing ancestor ', parent);
+				// 				console.log('Processing ancestor ', parent);
 
 				if (this._namespaces[parent].supersections.hasOwnProperty(name)) {
 					var parentSupersection = this._namespaces[parent].supersections[name];
@@ -663,19 +663,19 @@ Leafdoc.prototype._stringifySupersection = function(supersection, ancestors, nam
 							};
 
 							for (var d in parentSection.documentables) {
-// 								console.log('Checking if should show inherited ', d);
+								// 								console.log('Checking if should show inherited ', d);
 								if (skip.indexOf(d) === -1) {
 									skip.push(d);
 									inheritedSection.documentables.push(parentSection.documentables[d]);
 								}
 							}
 
-// 							console.log(inheritedSection.documentables);
+							// 							console.log(inheritedSection.documentables);
 
 							if (inheritedSection.documentables.length) {
 								inheritedSections.push(inheritedSection);
 							} else {
-// 								console.log('Everything from inherited section has been overwritten', parent, name);
+								// 								console.log('Everything from inherited section has been overwritten', parent, name);
 							}
 						}
 					}
@@ -707,11 +707,11 @@ Leafdoc.prototype._stringifySupersection = function(supersection, ancestors, nam
 
 
 
-Leafdoc.prototype._stringifySection = function(section, documentableType, inheritingNamespace) {
+Leafdoc.prototype._stringifySection = function (section, documentableType, inheritingNamespace) {
 	var name = (section.name === '__default' || inheritingNamespace) ? '' : section.name;
 
-// 	if (name) console.log('Named section:', section);
-// 	console.log('Section:', section);
+	// 	if (name) console.log('Named section:', section);
+	// 	console.log('Section:', section);
 
 
 	// If inheriting, recreate the documentable changing the ID.
@@ -733,7 +733,7 @@ Leafdoc.prototype._stringifySection = function(section, documentableType, inheri
 
 	}
 
-// 	console.log(documentableType, section.name === '__default');
+	// 	console.log(documentableType, section.name === '__default');
 
 	return (getTemplate('section'))({
 		name: name,
@@ -742,7 +742,7 @@ Leafdoc.prototype._stringifySection = function(section, documentableType, inheri
 		documentables:(getTemplate(documentableType))({
 			documentables: docs
 		}),
-		isSecondarySection: ( section.name !== '__default' && documentableType !== 'example' && !inheritingNamespace),
+		isSecondarySection: (section.name !== '__default' && documentableType !== 'example' && !inheritingNamespace),
 		isInherited: !!inheritingNamespace
 	});
 };
@@ -751,52 +751,52 @@ Leafdoc.prototype._stringifySection = function(section, documentableType, inheri
 
 // Loop through all the documentables, create an _anchor property, and
 // return a plain object containing a map of all valid link names to their anchors.
-Leafdoc.prototype._resolveAKAs = function() {
+Leafdoc.prototype._resolveAKAs = function () {
 	for (var ns in this._namespaces) {
 		var namespace = this._namespaces[ns];
 		namespace.id = this._normalizeName(namespace.name);
 		this._assignAKAs(namespace.id, namespace.aka);
 		this._assignAKAs(namespace.id, [namespace.name]);
-// 		console.log('Resolve namespace AKAs: ', namespace.id, namespace.name, namespace.aka);
+		// 		console.log('Resolve namespace AKAs: ', namespace.id, namespace.name, namespace.aka);
 
 		for (var ss in namespace.supersections) {
-// 			console.log(namespace.supersections[ss]);
+			// 			console.log(namespace.supersections[ss]);
 			var supersection = namespace.supersections[ss];
 			var documentableType = supersection.name;
 			supersection.id = this._normalizeName(namespace.name, supersection.name);
 
-			this._assignAKAs(supersection.id, [supersection.id + 's'])
+			this._assignAKAs(supersection.id, [supersection.id + 's']);
 
 			for (var s in supersection.sections) {
 				var section = supersection.sections[s];
 				section.id = this._normalizeName(namespace.name, section.name === '__default' ? documentableType : section.name);
 				this._assignAKAs(section.id, section.aka);
-// 				console.log('Resolve section AKAs: ', section.id, section.name, section.aka);
+				// 				console.log('Resolve section AKAs: ', section.id, section.name, section.aka);
 				for (var d in section.documentables) {
 					var doc = section.documentables[d];
 
 					if (doc.name !== '__default') {	// Skip comments and examples
 						doc.id = this._normalizeName(namespace.name, doc.name);
 						this._assignAKAs(doc.id, doc.aka);
-// 						console.log('Resolve doc AKAs: ', doc.id, doc.name, doc.aka);
+						// 						console.log('Resolve doc AKAs: ', doc.id, doc.name, doc.aka);
 					}
 				}
 			}
 		}
 	}
 
-	template.setAKAs(this._AKAs);
+	setAKAs(this._AKAs);
 // 	console.log(this._AKAs);
 };
 
 
-Leafdoc.prototype._normalizeName = function(namespace, name) {
+Leafdoc.prototype._normalizeName = function (namespace, name) {
 	var id = namespace + (name ? '-' + name : '');
 	id = id.trim().replace(/[\s\.]/g, '-');
 	return id.toLowerCase();
 };
 
-Leafdoc.prototype._assignAKAs = function(id, akas) {
+Leafdoc.prototype._assignAKAs = function (id, akas) {
 	this._AKAs[id] = id;
 	for (var i in akas) {
 		this._AKAs[akas[i].trim()] = id;
@@ -806,10 +806,10 @@ Leafdoc.prototype._assignAKAs = function(id, akas) {
 
 // Given a class/namespace, recurse through inherited classes to build
 // up an ordered list of clases/namespaces this class inherits from.
-Leafdoc.prototype._flattenInheritances = function(classname, inheritancesSoFar) {
+Leafdoc.prototype._flattenInheritances = function (classname, inheritancesSoFar) {
 
 	if (!inheritancesSoFar) {
-// 		console.log('Resolving inheritances for ', classname);
+		// 		console.log('Resolving inheritances for ', classname);
 		inheritancesSoFar = [];
 	}
 
@@ -827,14 +827,9 @@ Leafdoc.prototype._flattenInheritances = function(classname, inheritancesSoFar) 
 		return [];
 	}
 
-// 	console.log(classname, '→', inheritancesSoFar);
-// 	console.log(this._namespaces[classname].inherits);
+	// 	console.log(classname, '→', inheritancesSoFar);
+	// 	console.log(this._namespaces[classname].inherits);
 
 	return inheritancesSoFar;
 };
 
-
-
-
-
-module.exports = Leafdoc;

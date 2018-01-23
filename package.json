@@ -2,14 +2,16 @@
   "name": "leafdoc",
   "version": "1.4.1",
   "description": "A lightweight NaturalDocs-like LeafletJS-style documentation generator",
-  "main": "src/leafdoc.js",
+  "main": "dist/leafdoc.cjs.js",
+  "browser": "dist/leafdoc.browser.js",
+  "module": "src/leafdoc.js",
   "author": "Iván Sánchez Ortega <ivan@sanchezortega.es>",
-  "license": "GPL",
+  "license": "GPL-3.0",
   "dependencies": {
-    "handlebars": "^3.0.3",
+    "handlebars": "^4.0.11",
     "marked": "^0.3.5",
     "minimist": "^1.2.0",
-    "sander": "^0.3.8",
+    "sander": "^0.6.0",
     "unicode-7.0.0": "^0.1.5",
     "xregexp": "^2.0.0"
   },
@@ -17,13 +19,42 @@
     "update-markdown-leafdoc": "src/cli.js -t templates/markdown src/cli.js src/leafdoc.js --verbose -o Leafdoc.md",
     "update-html-leafdoc": "src/cli.js -t templates/basic src/leafdoc.js src/cli.js --verbose -o Leafdoc.html",
     "prepublish": "npm run update-markdown-leafdoc && npm run update-html-leafdoc",
-    "test": "./test.js"
+    "rollup": "rollup -c rollup.config.js",
+    "test": "rollup -c rollup.config.js; jasmine",
+    "lint": "eslint src/ spec/",
+    "lintfix": "eslint src/ spec/ --fix"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/IvanSanchez/Leafdoc.git"
+    "url": "git://github.com/Leaflet/Leafdoc.git"
   },
-  "bin": {
-    "leafdoc": "src/cli.js"
+  "devDependencies": {
+    "eslint": "^4.16.0",
+    "eslint-config-mourner": "^2.0.3",
+    "eslint-plugin-jasmine": "^2.9.1",
+    "jasmine": "^2.9.0",
+    "rollup": "^0.55.0",
+    "rollup-plugin-buble": "^0.18.0",
+    "rollup-plugin-eslint": "^4.0.0"
+  },
+  "eslintConfig": {
+    "extends": "mourner",
+    "plugins": [
+      "jasmine"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module"
+    },
+    "rules": {
+      "indent": [
+        1,
+        "tab",
+        {
+          "VariableDeclarator": 0,
+          "flatTernaryExpressions": true
+        }
+      ]
+    }
   }
 }

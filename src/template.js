@@ -1,18 +1,20 @@
 
 // Minor wrapper over Handlebars
 
-var sander = require('sander');
-var path = require('path');
-var Handlebars = require('handlebars');
+import sander from 'sander';
+import path from 'path';
+import Handlebars from 'handlebars';
+import marked from 'marked';
+export { Handlebars };
 
-var templateDir = __dirname + '/../templates/basic';
-var templates = Object.create(null)
+let templateDir = __dirname + '/../templates/basic';
+let templates = Object.create(null)
 
-exports.setTemplateDir = function(newDir) {
+export function setTemplateDir(newDir) {
 	templateDir = newDir;
-};
+}
 
-exports.getTemplate = function(templateName) {
+export function getTemplate(templateName) {
 	if (!templates[templateName]) {
 		templates[templateName] = Handlebars.compile(sander.readFileSync(templateDir, templateName + '.hbs').toString());
 	}
@@ -22,18 +24,13 @@ exports.getTemplate = function(templateName) {
 
 var _AKAs = {};
 
-exports.setAKAs = function(akas){
+export function setAKAs(akas) {
 
 // 	console.log('Template thing updating AKAs');
 	_AKAs = akas;
-};
+}
 
-exports.engine = Handlebars;
-
-
-
-
-var marked = require('marked');
+export Handlebars as engine;
 
 
 /// TODO: Catch all code blocks and check if the contents is a known class, namespace or AKA
@@ -66,19 +63,19 @@ function replaceAKAs(str) {
 
 
 
-Handlebars.registerHelper('markdown', function(str) {
+Handlebars.registerHelper('markdown', function (str) {
 	if (!str) return;
 	if (str instanceof Array) {
 		str = str.join('\n').trim();
-// 		str = str.join(' ');
+		// 		str = str.join(' ');
 	}
 	return marked(replaceAKAs(str))
 		.trim()
-		.replace('<p>','')
-		.replace('</p>','');
+		.replace('<p>', '')
+		.replace('</p>', '');
 });
 
-Handlebars.registerHelper('rawmarkdown', function(str) {
+Handlebars.registerHelper('rawmarkdown', function (str) {
 	if (!str) { return; }
 	if (str instanceof Array) {
 		str = str.join('\n');
@@ -88,11 +85,11 @@ Handlebars.registerHelper('rawmarkdown', function(str) {
 
 
 // Automatically link to AKAs, mostly used on method/function/param/option data types.
-Handlebars.registerHelper('type', function(str) {
+Handlebars.registerHelper('type', function (str) {
 	if (!str) { return; }
-	if ( str in _AKAs ) {
+	if (str in _AKAs) {
 		var id = _AKAs[str];
-		return "<a href='#" + id + "'>" + str + "</a>"
+		return '<a href=\'#' + id + '\'>' + str + '</a>';
 	} else {
 		// Should be a built-in type
 		return str;

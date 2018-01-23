@@ -1,40 +1,39 @@
 
 // Regexps (maybe) shared between files.
 
-var XRegExp = require('xregexp').XRegExp;
+import { XRegExp } from 'xregexp';
 
 
 // One or more lines starting with whitespace and two or more forward slashes,
 // or
 // whitespace-slash-asterisk whatever asterisk-slash.
-var commentBlock = XRegExp('^(?<multiline> ( (?!\\n) \\s*\\/{2,}\\s*.*\\n )+ ) \
+export var commentBlock = XRegExp('^(?<multiline> ( (?!\\n) \\s*\\/{2,}\\s*.*\\n )+ ) \
 | \
 (\\s*\\/\\* (?<block> [\\s\\S]*?) \\*\\/)  \
-','gmnx');
+', 'gmnx');
 
-var leafdocFile = XRegExp('^(?<block> [\\s\\S]+ )$', 'gmnx');
+export var leafdocFile = XRegExp('^(?<block> [\\s\\S]+ )$', 'gmnx');
 
 
 // Inside each line of a comment /* */ block, skips the leading spaces / asterisk (if any)
-var leadingBlock = XRegExp('^  ( \\s* \\* \\s? )?   (?<line> .* )  $','nx');
+export var leadingBlock = XRegExp('^  ( \\s* \\* \\s? )?   (?<line> .* )  $', 'nx');
 
 
 // Inside each line of a comment // block, skips the leading //
-var leadingLine = XRegExp('^ \\s*/{0,4}\\s{0,1} (?<line> .* )  $','nx');
+export var leadingLine = XRegExp('^ \\s*/{0,4}\\s{0,1} (?<line> .* )  $', 'nx');
 
 // Inside .leafdoc files, match any line without skipping anything
-var anyLine = XRegExp('^ (?<line> .* ) $','nx');
+export var anyLine = XRegExp('^ (?<line> .* ) $', 'nx');
 
 
-// Parses a 🍂 directive, init'd at redoLeafDirective()
-var leafDirective;
 
 // Re-builds the 🍂 directive based on a different leading character
-function redoLeafDirective(char) {
+export function redoLeafDirective(char) {
 	return leafDirective = XRegExp('  \\s* ' + char + ' (?<directive> \\S+ ) (\\s+ (?<content> [^;\\n]+ )){0,1} ', 'gnx');
 }
 
-redoLeafDirective('🍂');
+// Parses a 🍂 directive, init'd at redoLeafDirective()
+export const leafDirective = redoLeafDirective('🍂');
 
 
 // Parses an identifier, allowing only unicode ID_Start and ID_Continue characters
@@ -49,31 +48,16 @@ var identifier= XRegExp.build('^({{ID_Start}}  ( {{ID_Continue}} | \\. | : )*)$'
 //   use unicode ID_Start and ID_Continue character sets via 'identifier' sub-regexp.
 var functionDefinition = XRegExp.build('^ (?<name> {{identifier}} ) (?<required> (\\?{0,1}) ) \\s* (?<params> \\( .* \\) ){0,1}   \\s* ( \\: \\s* (?<type> .+? ) )? ( = \\s* (?<default> .+ ) \\s* ){0,1} \$', {
 	identifier: identifier
-},'nx');
+}, 'nx');
 
 
 
 // var functionParam = XRegExp.build('^ \\s* (?<name> {{identifier}}) \\s* ( \\: \\s* (?<type> .+ ) \\s* ) $', {identifier: identifier}, 'nx');
 // var functionParam = XRegExp.build('\\s* (?<name> ( {{identifier}} | … ) \\?{0,1} ) \\s* ( \\: \\s* (?<type> [^,]+ ) \\s* ) (, | \\)) ', {identifier: identifier}, 'gnx');
-var functionParam = XRegExp.build('\\s* (?<name> ( {{identifier}} | … ) \\?{0,1} ) \\s* ( \\: \\s* (?<type> [^,]+ ) \\s* )? (, | \\)) ', {identifier: identifier}, 'gnx');
+export var functionParam = XRegExp.build('\\s* (?<name> ( {{identifier}} | … ) \\?{0,1} ) \\s* ( \\: \\s* (?<type> [^,]+ ) \\s* )? (, | \\)) ', {identifier: identifier}, 'gnx');
 
 
 
 // Parses a miniclass name and its real class between parentheses.
-var miniclassDefinition = XRegExp('^ (?<miniclass> .+ ) \\s* \\( (?<realclass> .+ ) \\) $','nx');
-
-
-module.exports = {
-	commentBlock: commentBlock,
-	leafdocFile: leafdocFile,
-	leadingBlock: leadingBlock,
-	leadingLine: leadingLine,
-	anyLine: anyLine,
-	leafDirective: leafDirective,
-	functionDefinition: functionDefinition,
-	functionParam: functionParam,
-	miniclassDefinition: miniclassDefinition,
-	redoLeafDirective: redoLeafDirective
-}
-
+export var miniclassDefinition = XRegExp('^ (?<miniclass> .+ ) \\s* \\( (?<realclass> .+ ) \\) $', 'nx');
 
