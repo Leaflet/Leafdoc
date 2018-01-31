@@ -1,0 +1,5 @@
+{
+    "templateDir": "./templates/leaflet",
+    "showInheritancesWhenEmpty": true,
+    "leadingCharacter": "@"
+}

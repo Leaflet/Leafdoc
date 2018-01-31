@@ -284,20 +284,20 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 
 			if (lineIsValid) {
 				// 				console.log('After having matched a line:', match);
-				var trailing = line.substr(parsedCharacters + 1).trim();
+				let trailing = line.substr(parsedCharacters + 1).trim();
 				// 				console.log('After having matched a line:', trailing);
 				if (trailing) {
 					directives.push(['comment', trailing]);
 				}
 			}
 
-			if (!lineIsValid && !blockIsEmpty && line) {
+			if (!lineIsValid && !blockIsEmpty) {
 				// implicit 🍂comment directive.
 				directives.push(['comment', line]);
 			}
 		}
 
-		// 		console.log('directives', directives);
+		// 	console.log('directives', directives);
 
 		for (let i in directives) {
 			var directive = directives[i][0],
@@ -305,7 +305,7 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 
 			// 4: Parse 🍂 directives
 
-			//             console.log(directive, '-', content);
+			// console.log(directive, '-', content);
 
 			if (directive === 'class' || directive === 'namespace') {
 				ns = content.trim();

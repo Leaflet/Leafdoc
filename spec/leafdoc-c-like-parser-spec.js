@@ -178,6 +178,13 @@ bar2*/
 	 */        
         `)).toEqual(['foo\n\nbar\n']);
 
+			expect(cLikeParser(`
+	/* foo
+
+	 * bar
+	 */        
+        `)).toEqual(['foo\n\nbar\n']);
+
 
 		});
 	});
@@ -242,6 +249,28 @@ var map = L.map('map', {
 });
 \`\`\`
 
+`]);
+
+	});
+
+	it('Parses correctly Leaflet\'s VML leading comment block', function () {
+
+		expect(cLikeParser(`
+/*
+ * @class SVG
+ *
+ * Although SVG is not available on IE7 and IE8, these browsers support [VML](https://en.wikipedia.org/wiki/Vector_Markup_Language), and the SVG renderer will fall back to VML in this case.
+ *
+ * VML was deprecated in 2012, which means VML functionality exists only for backwards compatibility
+ * with old versions of Internet Explorer.
+ */
+`)).toEqual([`
+@class SVG
+
+Although SVG is not available on IE7 and IE8, these browsers support [VML](https://en.wikipedia.org/wiki/Vector_Markup_Language), and the SVG renderer will fall back to VML in this case.
+
+VML was deprecated in 2012, which means VML functionality exists only for backwards compatibility
+with old versions of Internet Explorer.
 `]);
 
 

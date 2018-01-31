@@ -86,7 +86,7 @@ export default function cLikeParser(str) {
 				// if every line in the middle of block has that much whitespace and then an asterisk
 				if (lastLine.trim() === '') {
 					const lastLineRegexp = new RegExp('^' + lastLine + '\\*');
-					if (middleLines.every((line)=>line.match(lastLineRegexp))) {
+					if (middleLines.every((line)=>line.match(lastLineRegexp) || line === '')) {
 						middleLines = middleLines.map((line)=>line.replace(/^\s*\*/, ''));
 						// Remove one leading whitespace, if every line in the middle block has it
 						// (or the line is empty)
