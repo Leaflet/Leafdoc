@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>{{ title }}</title>
+	<title></title>
 	<meta charset="utf-8">
 
 	<link rel="stylesheet" href="http://leafletjs.com/docs/css/normalize.css" />
@@ -137,7 +137,44 @@
 		</div>
 	</div>
 
-	{{{ body }}}
+	<h2 id='map'>Map</h2>
+<section>
+<h3 id='map-method'>Methods</h3>
+
+<section class='collapsable'>
+
+<h4 id='map-methods-for-layers-and-controls'>Methods for Layers and Controls</h4>
+
+<div class='section-comments'></div>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-haslayer'>
+		<td><code><b>hasLayer</b>(<nobr>&lt;Layer&gt;</nobr> <i>layer</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td><p>Returns <code>true</code> if the given layer is currently added to the map</p>
+</td>
+	</tr>
+	<tr id='map-eachlayer'>
+		<td><code><b>eachLayer</b>(<nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Iterates over the layers of the map, optionally specifying context of the iterator function.</p>
+<pre><code>map.eachLayer(function(layer){
+    layer.bindPopup(&#39;Hello&#39;);
+});
+</code></pre></td>
+	</tr>
+</tbody></table>
+
+</section>
+
+
+</section>
 
 
 

@@ -1,0 +1,313 @@
+{
+ "DomEvent": {
+  "name": "DomEvent",
+  "aka": [],
+  "comments": [
+   "Utility functions to work with the [DOM events](https://developer.mozilla.org/docs/Web/API/Event), used by Leaflet internally.",
+   ""
+  ],
+  "supersections": {
+   "function": {
+    "name": "function",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "__default": {
+      "name": "__default",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "on": {
+        "name": "on",
+        "aka": [],
+        "comments": [
+         "Adds a listener function (`fn`) to a particular DOM event type of the",
+         "element `el`. You can optionally specify the context of the listener",
+         "(object the `this` keyword will point to). You can also pass several",
+         "space-separated types (e.g. `'click dblclick'`)."
+        ],
+        "params": {
+         "el": {
+          "name": "el",
+          "type": "HTMLElement"
+         },
+         "types": {
+          "name": "types",
+          "type": "String"
+         },
+         "fn": {
+          "name": "fn",
+          "type": "Function"
+         },
+         "context?": {
+          "name": "context?",
+          "type": "Object"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "domevent-on"
+       },
+       "on-alternative-1": {
+        "name": "on",
+        "aka": [],
+        "comments": [
+         "Adds a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`"
+        ],
+        "params": {
+         "el": {
+          "name": "el",
+          "type": "HTMLElement"
+         },
+         "eventMap": {
+          "name": "eventMap",
+          "type": "Object"
+         },
+         "context?": {
+          "name": "context?",
+          "type": "Object"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "domevent-on"
+       },
+       "off": {
+        "name": "off",
+        "aka": [],
+        "comments": [
+         "Removes a previously added listener function.",
+         "Note that if you passed a custom context to on, you must pass the same",
+         "context to `off` in order to remove the listener."
+        ],
+        "params": {
+         "el": {
+          "name": "el",
+          "type": "HTMLElement"
+         },
+         "types": {
+          "name": "types",
+          "type": "String"
+         },
+         "fn": {
+          "name": "fn",
+          "type": "Function"
+         },
+         "context?": {
+          "name": "context?",
+          "type": "Object"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "domevent-off"
+       },
+       "off-alternative-1": {
+        "name": "off",
+        "aka": [],
+        "comments": [
+         "Removes a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`"
+        ],
+        "params": {
+         "el": {
+          "name": "el",
+          "type": "HTMLElement"
+         },
+         "eventMap": {
+          "name": "eventMap",
+          "type": "Object"
+         },
+         "context?": {
+          "name": "context?",
+          "type": "Object"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "domevent-off"
+       },
+       "stopPropagation": {
+        "name": "stopPropagation",
+        "aka": [],
+        "comments": [
+         "Stop the given event from propagation to parent elements. Used inside the listener functions:",
+         "```js",
+         "L.DomEvent.on(div, 'click', function (ev) {",
+         "\tL.DomEvent.stopPropagation(ev);",
+         "});",
+         "```"
+        ],
+        "params": {
+         "ev": {
+          "name": "ev",
+          "type": "DOMEvent"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "domevent-stoppropagation"
+       },
+       "disableScrollPropagation": {
+        "name": "disableScrollPropagation",
+        "aka": [],
+        "comments": [
+         "Adds `stopPropagation` to the element's `'mousewheel'` events (plus browser variants)."
+        ],
+        "params": {
+         "el": {
+          "name": "el",
+          "type": "HTMLElement"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "domevent-disablescrollpropagation"
+       },
+       "disableClickPropagation": {
+        "name": "disableClickPropagation",
+        "aka": [],
+        "comments": [
+         "Adds `stopPropagation` to the element's `'click'`, `'doubleclick'`,",
+         "`'mousedown'` and `'touchstart'` events (plus browser variants)."
+        ],
+        "params": {
+         "el": {
+          "name": "el",
+          "type": "HTMLElement"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "domevent-disableclickpropagation"
+       },
+       "preventDefault": {
+        "name": "preventDefault",
+        "aka": [],
+        "comments": [
+         "Prevents the default action of the DOM Event `ev` from happening (such as",
+         "following a link in the href of the a element, or doing a POST request",
+         "with page reload when a `<form>` is submitted).",
+         "Use it inside listener functions."
+        ],
+        "params": {
+         "ev": {
+          "name": "ev",
+          "type": "DOMEvent"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "domevent-preventdefault"
+       },
+       "stop": {
+        "name": "stop",
+        "aka": [],
+        "comments": [
+         "Does `stopPropagation` and `preventDefault` at the same time."
+        ],
+        "params": {
+         "ev": {
+          "name": "ev",
+          "type": "DOMEvent"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "domevent-stop"
+       },
+       "getMousePosition": {
+        "name": "getMousePosition",
+        "aka": [],
+        "comments": [
+         "Gets normalized mouse position from a DOM event relative to the",
+         "`container` or to the whole page if not specified."
+        ],
+        "params": {
+         "ev": {
+          "name": "ev",
+          "type": "DOMEvent"
+         },
+         "container?": {
+          "name": "container?",
+          "type": "HTMLElement"
+         }
+        },
+        "type": "Point",
+        "optional": false,
+        "defaultValue": null,
+        "id": "domevent-getmouseposition"
+       },
+       "getWheelDelta": {
+        "name": "getWheelDelta",
+        "aka": [],
+        "comments": [
+         "Gets normalized wheel delta from a mousewheel DOM event, in vertical",
+         "pixels scrolled (negative if scrolling down).",
+         "Events from pointing devices without precise scrolling are mapped to",
+         "a best guess of 60 pixels."
+        ],
+        "params": {
+         "ev": {
+          "name": "ev",
+          "type": "DOMEvent"
+         }
+        },
+        "type": "Number",
+        "optional": false,
+        "defaultValue": null,
+        "id": "domevent-getwheeldelta"
+       },
+       "addListener": {
+        "name": "addListener",
+        "aka": [],
+        "comments": [
+         "Alias to [`L.DomEvent.on`](#domevent-on)"
+        ],
+        "params": {
+         "…": {
+          "name": "…"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "domevent-addlistener"
+       },
+       "removeListener": {
+        "name": "removeListener",
+        "aka": [],
+        "comments": [
+         "Alias to [`L.DomEvent.off`](#domevent-off)"
+        ],
+        "params": {
+         "…": {
+          "name": "…"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "domevent-removelistener"
+       }
+      },
+      "type": "function",
+      "id": "domevent-function"
+     }
+    },
+    "id": "domevent-function"
+   }
+  },
+  "inherits": [],
+  "id": "domevent"
+ }
+}

@@ -1,0 +1,77 @@
+{
+ "Map": {
+  "name": "Map",
+  "aka": [],
+  "comments": [
+   ""
+  ],
+  "supersections": {
+   "method": {
+    "name": "method",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "Methods for Layers and Controls": {
+      "name": "Methods for Layers and Controls",
+      "aka": [],
+      "comments": [
+       ""
+      ],
+      "uninheritable": false,
+      "documentables": {
+       "hasLayer": {
+        "name": "hasLayer",
+        "aka": [],
+        "comments": [
+         "Returns `true` if the given layer is currently added to the map"
+        ],
+        "params": {
+         "layer": {
+          "name": "layer",
+          "type": "Layer"
+         }
+        },
+        "type": "Boolean",
+        "optional": false,
+        "defaultValue": null,
+        "id": "map-haslayer"
+       },
+       "eachLayer": {
+        "name": "eachLayer",
+        "aka": [],
+        "comments": [
+         "Iterates over the layers of the map, optionally specifying context of the iterator function.",
+         "```",
+         "map.eachLayer(function(layer){",
+         "    layer.bindPopup('Hello');",
+         "});",
+         "```",
+         ""
+        ],
+        "params": {
+         "fn": {
+          "name": "fn",
+          "type": "Function"
+         },
+         "context?": {
+          "name": "context?",
+          "type": "Object"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "map-eachlayer"
+       }
+      },
+      "type": "method",
+      "id": "map-methods-for-layers-and-controls"
+     }
+    },
+    "id": "map-method"
+   }
+  },
+  "inherits": [],
+  "id": "map"
+ }
+}
