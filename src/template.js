@@ -5,10 +5,10 @@ import sander from 'sander';
 import path from 'path';
 import Handlebars from 'handlebars';
 import marked from 'marked';
-export { Handlebars };
+export {Handlebars as engine};
 
 let templateDir = __dirname + '/../templates/basic';
-let templates = Object.create(null)
+let templates = Object.create(null);
 
 export function setTemplateDir(newDir) {
 	templateDir = newDir;
@@ -19,7 +19,7 @@ export function getTemplate(templateName) {
 		templates[templateName] = Handlebars.compile(sander.readFileSync(templateDir, templateName + '.hbs').toString());
 	}
 	return templates[templateName];
-};
+}
 
 
 var _AKAs = {};
@@ -30,7 +30,7 @@ export function setAKAs(akas) {
 	_AKAs = akas;
 }
 
-export Handlebars as engine;
+// export Handlebars as engine;
 
 
 /// TODO: Catch all code blocks and check if the contents is a known class, namespace or AKA

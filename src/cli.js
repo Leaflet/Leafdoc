@@ -21,7 +21,7 @@ var sander = require('sander');
 var Leafdoc = require('./leafdoc');
 var path = require('path');
 
-var argv = minimist( process.argv.slice( 2 ), {
+var argv = minimist(process.argv.slice(2), {
 	alias: {
 		// 🍂option template: String='templates/basic'; Akin to [Leafdoc.templateDir](#leafdoc.templatedir)
 		// 🍂option t; Alias of `template`
@@ -41,7 +41,7 @@ var argv = minimist( process.argv.slice( 2 ), {
 	},
 	boolean: ['v', 'verbose', 'j', 'json'],
 	string: ['t', 'template', 'c', 'character'],
-	default: { verbose: false, template: 'templates/basic', character: '🍂' }
+	default: {verbose: false, template: 'templates/basic', character: '🍂'}
 });
 
 var doc = new Leafdoc({
@@ -50,7 +50,7 @@ var doc = new Leafdoc({
 	character: argv.character
 });
 
-argv._.forEach( function(filepath) {
+argv._.forEach(function (filepath) {
 	try {
 		var stats = sander.statSync(filepath);
 
@@ -61,10 +61,10 @@ argv._.forEach( function(filepath) {
 		if (stats.isDirectory()) {
 			doc.addDir(filepath);
 		}
-	} catch(e) {
+	} catch (e) {
 		throw e;
 	}
-} );
+});
 
 var out;
 if (argv.json) {

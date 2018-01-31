@@ -7,6 +7,9 @@
   "module": "src/leafdoc.js",
   "author": "Iván Sánchez Ortega <ivan@sanchezortega.es>",
   "license": "GPL-3.0",
+  "bin": {
+    "leafdoc": "src/cli.js"
+  },
   "dependencies": {
     "handlebars": "^4.0.11",
     "marked": "^0.3.5",

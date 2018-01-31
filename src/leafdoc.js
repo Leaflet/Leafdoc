@@ -113,7 +113,7 @@ console.log( doc.outputStr() );
 // template file for it.
 // Set `label` to the text for the sections in the generated docs.
 // `inheritable` parameter determines documentable can be inherited via inherits keyword in a subclass.
-Leafdoc.prototype.registerDocumentable = function(name, label, inheritable) {
+Leafdoc.prototype.registerDocumentable = function (name, label, inheritable) {
 
 	this._knownDocumentables.push(name, label);
 
@@ -131,7 +131,7 @@ Leafdoc.prototype.registerDocumentable = function(name, label, inheritable) {
 // 🍂method getTemplateEngine(): Handlebars
 // Returns handlebars template engine used to render templates.
 // You can use it for override helpers or register new.
-Leafdoc.prototype.getTemplateEngine = function() {
+Leafdoc.prototype.getTemplateEngine = function () {
 	return template.engine;
 };
 
@@ -143,7 +143,7 @@ Leafdoc.prototype.getTemplateEngine = function() {
 // The new leading character will apply only to files/dirs/strings parsed from
 // that moment on, so it's a good idea to call this before anything else.
 Leafdoc.prototype.setLeadingCharacter = function (char) {
-    console.log('Setting leading character to', char);
+	console.log('Setting leading character to', char);
 	regexps.redoLeafDirective(char);
 };
 
@@ -232,8 +232,8 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 		const commentBlock = parsedBlocks[i];
 
 		var blockIsEmpty = true;
-//         console.error('new block: ', commentBlock);
-        console.log('new block');
+		//         console.error('new block: ', commentBlock);
+		console.log('new block');
 
 		// 		if (multilineComment) {
 		// 			console.log('multiline block: {{{\n', multilineComment , '}}}');
@@ -261,22 +261,22 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 
 			// 			var match = regex.exec(line);	// Skips extra comment characters
 			// 			var lineStr = match[1];
-				// Might happen in some binary files
-				console.log(line);
-				break;
-			}
+			// Might happen in some binary files
+			// 				console.log(line);
+			// 				break;
+			// 			}
 			var lineIsValid = false;
 			var parsedCharacters = 0;
 
-            console.log('Line: ', i, line);
+			console.log('Line: ', i, line);
 			// 			var match = regex.exec(line);
 
 			let match;
-				// In "param foo, bar", directive is "param" and content is "foo, bar"
+			// In "param foo, bar", directive is "param" and content is "foo, bar"
 			while (match = regexps.leafDirective.exec(line)) {
 				if (match[2]) { match[2] = match[2].trim(); }
 				directives.push([match[1], match[2]]);	// [directive, content]
-                console.log('directive match: ', match);
+				console.log('directive match: ', match);
 				blockIsEmpty = false;
 				lineIsValid = true;
 				parsedCharacters = match.index + match[0].length;
@@ -297,7 +297,7 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 			}
 		}
 
-        console.log('directives', directives);
+		console.log('directives', directives);
 
 		for (let i in directives) {
 			var directive = directives[i][0],
@@ -335,7 +335,7 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 			}
 
 
-// 				console.log(scope, '-', directive, '-', content);
+			// 				console.log(scope, '-', directive, '-', content);
 
 			if (scope === 'ns') {
 				if (!namespaces.hasOwnProperty(ns)) {
@@ -414,18 +414,20 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 
 					// 						console.log(content, ', ', alt);
 
-					let name, paramString, params = {}, type = null, defaultValue = null, optional=false;
+					let name, paramString, params = {}, type = null, defaultValue = null, optional = false;
 
 					if (content) {
 						let split = regexps.functionDefinition.exec(content);
 						if (!split) {
 							console.error('Invalid ' + directive + ' definition: ', content);
 						} else {
-							[, name, paramString, type, defaultValue] = split;
+							optional = split[2] == '?';
+							[, name,, paramString, type, defaultValue] = split;
+
 							// 							name = split[1];
-							// 							paramString = split[2];
-							// 							type = split[3];
-							// 							defaultValue = split[4];
+							// 							paramString = split[3];
+							// 							type = split[4];
+							// 							defaultValue = split[5];
 
 							if (paramString) {
 								let match;
@@ -528,7 +530,7 @@ Leafdoc.prototype.outputStr = function () {
  * Outputs the internal documentation tree to a JSON blob, without any formatting.
  * Use only after all the needed files have been parsed.
  */
-Leafdoc.prototype.outputJSON = function() {
+Leafdoc.prototype.outputJSON = function () {
 	this._resolveAKAs();
 	return JSON.stringify(this._namespaces, undefined, 1);
 };
@@ -739,7 +741,7 @@ Leafdoc.prototype._stringifySection = function (section, documentableType, inher
 		name: name,
 		id: section.id,
 		comments: section.comments,
-		documentables:(getTemplate(documentableType))({
+		documentables: (getTemplate(documentableType))({
 			documentables: docs
 		}),
 		isSecondarySection: (section.name !== '__default' && documentableType !== 'example' && !inheritingNamespace),
