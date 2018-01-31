@@ -2,150 +2,59 @@
 
 const Leafdoc = require('../');
 
+const fs = require('fs');
 
-const srcCode = `
-// 🍂class Math
-// 🍂function rand(): Number
-// Returns a random number between 0.0 and 1.0
-export function rand(){
-    // Do something here.
-}
 
-// 🍂function log(x: Number): Number
-// Returns the natural logarithm (base e) of the given number
-export function log(x) {
-    // Do something
-}
-`;
-
-const expectedDocs = `<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-	<meta charset="utf-8">
-	<style>
-	table {
-		border-collapse: collapse;
+describe('e2e tests', function(){
+	const dirs = fs.readdirSync('./spec/e2e');
+	
+	console.log('Founds e2e tests: ', dirs);
+	
+	for (let i in dirs) {
+		const dirName = dirs[i];
+		const dir = './spec/e2e/' + dirName + '/';
+		
+		it(dirName, function() {
+			
+			const expectedHtml = fs.readFileSync(dir + dirName + '.expected.html').toString();
+			const expectedJson = JSON.parse(fs.readFileSync(dir + dirName + '.expected.json'));
+			
+			const doc = new Leafdoc();
+			
+			const testFiles = fs.readdirSync('./spec/e2e/' + dirName).
+				filter((name)=>name !== dirName + '.html').
+				filter((name)=>name !== dirName + '.json').
+				sort();
+			
+			console.log(testFiles);
+			
+			testFiles.forEach((filename)=>doc.addFile('./spec/e2e/' + dirName + '/' + filename, true));
+			
+			const outJson = doc.outputJSON()
+			const outHtml = doc.outputStr();
+			
+			fs.writeFileSync(dir + dirName + '.actual.json', outJson);
+			fs.writeFileSync(dir + dirName + '.actual.html', outHtml);
+			
+			expect(JSON.parse(outJson)).toEqual(expectedJson);
+			expect(outHtml).toEqual(expectedHtml);
+		});
 	}
-	table td, table th {
-		border: 1px solid #888;
-	}
-	pre code {
-		display: inline-block;
-		background: #eee;
-	}
-	td:last-child code {
-		background: #eee;
-	}
-	body {
-		font-family: Sans;
-	}
-	</style>
-</head>
-<body>
-	<h2>Leafdoc generated API reference</h2>
-
-	<h2 id='math'>Math</h2>
-
-<h3 id='math-function'>Functions</h3>
-
-<section data-type='[object Object]'>
-
-
-<table><thead>
-	<tr>
-		<th>Function</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='math-rand'>
-		<td><code><b>rand</b>()</nobr></code></td>
-		<td><code>Number</code></td>
-		<td>Returns a random number between 0.0 and 1.0</td>
-	</tr>
-	<tr id='math-log'>
-		<td><code><b>log</b>(<nobr>&lt;Number&gt; <i>x</i></nobr>)</nobr></code></td>
-		<td><code>Number</code></td>
-		<td>Returns the natural logarithm (base e) of the given number</td>
-	</tr>
-</tbody></table>
-</section>
-
-
-
-</body></html>`;
-
-const expectedJson = {
- "Math": {
-  "name": "Math",
-  "aka": [],
-  "comments": [],
-  "supersections": {
-   "function": {
-    "name": "function",
-    "aka": [],
-    "comments": [],
-    "sections": {
-     "__default": {
-      "name": "__default",
-      "aka": [],
-      "comments": [],
-      "uninheritable": false,
-      "documentables": {
-       "rand": {
-        "name": "rand",
-        "aka": [],
-        "comments": [
-         "Returns a random number between 0.0 and 1.0"
-        ],
-        "params": {},
-        "type": "Number",
-        "optional": false,
-        "defaultValue": null,
-        "id": "math-rand"
-       },
-       "log": {
-        "name": "log",
-        "aka": [],
-        "comments": [
-         "Returns the natural logarithm (base e) of the given number"
-        ],
-        "params": {
-         "x": {
-          "name": "x",
-          "type": "Number"
-         }
-        },
-        "type": "Number",
-        "optional": false,
-        "defaultValue": null,
-        "id": "math-log"
-       }
-      },
-      "type": "function",
-      "id": "math-function"
-     }
-    },
-    "id": "math-function"
-   }
-  },
-  "inherits": [],
-  "id": "math"
- }
-};
-
-describe('Math src dode', function () {
-	it('triggers the desired output', () => {
-
-		const doc = new Leafdoc();
-
-		doc.addStr(srcCode, true);
-        
-// 		console.log(doc.outputJSON());
-
-        expect(JSON.parse(doc.outputJSON())).toEqual(expectedJson);
-		expect(doc.outputStr()).toEqual(expectedDocs);
-	});
+	
 });
+
+
+// describe('Math src dode', function () {
+// 	it('triggers the desired output', () => {
+// 
+// 		const doc = new Leafdoc();
+// 
+// 		doc.addStr(srcCode, true);
+//         
+// // 		console.log(doc.outputJSON());
+// 
+//         expect(JSON.parse(doc.outputJSON())).toEqual(expectedJson);
+// 		expect(doc.outputStr()).toEqual(expectedDocs);
+// 	});
+// });
 

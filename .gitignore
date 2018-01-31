@@ -1,3 +1,5 @@
 
 node_modules
 
+*.actual.json
+*.actual.html
