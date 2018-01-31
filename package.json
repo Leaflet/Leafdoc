@@ -1,6 +1,6 @@
 {
   "name": "leafdoc",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "A lightweight NaturalDocs-like LeafletJS-style documentation generator",
   "main": "dist/leafdoc.cjs.js",
   "browser": "dist/leafdoc.browser.js",
