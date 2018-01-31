@@ -11,14 +11,14 @@ let templateDir = __dirname + '/../templates/basic';
 let templates = Object.create(null);
 
 export function setTemplateDir(newDir) {
-    templates = Object.create(null);
+	templates = Object.create(null);
 	templateDir = newDir;
 }
 
 export function getTemplate(templateName) {
 	if (!templates[templateName]) {
 		templates[templateName] = Handlebars.compile(sander.readFileSync(templateDir, templateName + '.hbs').toString());
-    }
+	}
 	return templates[templateName];
 }
 
