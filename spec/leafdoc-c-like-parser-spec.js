@@ -164,5 +164,35 @@ bar2*/
 `)).toEqual(['\nfoo\nbar\n', 'quux', 'foo2\nbar2']);
 		});
 	});
+
+	it('Parses correctly Leaflet\'s eachLayer comment block', function () {
+
+		expect(cLikeParser(`
+	/* foo
+	 * bar
+	 * baz
+	 */        
+        `)).toEqual(['foo\nbar\nbaz\n']);
+
+		expect(cLikeParser(`
+	/* @method eachLayer(fn: Function, context?: Object): this
+	 * Iterates over the layers of the map, optionally specifying context of the iterator function.
+	 * \`\`\`
+	 * map.eachLayer(function(layer){
+	 *     layer.bindPopup('Hello');
+	 * });
+	 * \`\`\`
+	 */        
+        `)).toEqual([`@method eachLayer(fn: Function, context?: Object): this
+Iterates over the layers of the map, optionally specifying context of the iterator function.
+\`\`\`
+map.eachLayer(function(layer){
+    layer.bindPopup('Hello');
+});
+\`\`\`
+`]);
+
+	});
+
 });
 

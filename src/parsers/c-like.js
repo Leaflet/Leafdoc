@@ -76,21 +76,30 @@ export default function cLikeParser(str) {
 				// Just trim whitespace around
 				lines[0] = lines[0].trim();
 			} else {
-				const firstLine = lines[0];
+				let firstLine = lines[0];
 				const lastLine = lines[lines.length - 1];
+
 
 				let middleLines = lines.slice(1, lines.length - 1); // Skip the first and last lines
 
-				// Remove leading whitespace+asterisk, if every line in the middle of block has them
-				if (middleLines.every((line)=>line.match(/^\s?\*/))) {
-					middleLines = middleLines.map((line)=>line.replace(/^\s?\*/, ''));
+				// Remove as much leading whitespace as the last line and then an asterisk,
+				// if every line in the middle of block has that much whitespace and then an asterisk
+				if (lastLine.trim() === '') {
+					//                     console.log('Last line is only whitespace');
+					const lastLineRegexp = new RegExp('^' + lastLine + '\\*');
+					if (middleLines.every((line)=>line.match(lastLineRegexp))) {
+						//                         console.log('Middle lines have the same whitespace');
+						middleLines = middleLines.map((line)=>line.replace(/^\s*\*/, ''));
 
-					// Remove one leading whitespace, if every line in the middle block has it.
-					if (middleLines.every((line)=>line.match(/^\s/))) {
-						middleLines = middleLines.map((line)=>line.replace(/^\s/, ''));
+						// Remove one leading whitespace, if every line in the middle block has it.
+						if (middleLines.every((line)=>line.match(/^\s/))) {
+							middleLines = middleLines.map((line)=>line.replace(/^\s/, ''));
+							firstLine = firstLine.replace(/^\s/, '');
+						}
 					}
 				}
 				lines = ([firstLine]).concat(middleLines, [lastLine]);
+				// console.log(JSON.stringify(blockComment), ",", JSON.stringify(lastLine), '→', lines.map(JSON.stringify));
 			}
 
 			const cleanBlock = lines

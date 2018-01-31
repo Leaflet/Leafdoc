@@ -26,8 +26,8 @@ describe('e2e tests', function () {
 			const doc = new Leafdoc(options);
 
 			const testFiles = fs.readdirSync('./spec/e2e/' + dirName)
-				.filter((name)=>name !== dirName + '.html')
-				.filter((name)=>name !== dirName + '.json')
+				.filter((name)=>!name.match(/\.html$/))
+				.filter((name)=>!name.match(/\.json$/))
 				.sort();
 
 			// 			console.log(testFiles);
