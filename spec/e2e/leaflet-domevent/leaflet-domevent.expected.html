@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>{{ title }}</title>
+	<title></title>
 	<meta charset="utf-8">
 
 	<link rel="stylesheet" href="http://leafletjs.com/docs/css/normalize.css" />
@@ -137,7 +137,111 @@
 		</div>
 	</div>
 
-	{{{ body }}}
+	<h2 id='domevent'>DomEvent</h2><p>Utility functions to work with the <a href="https://developer.mozilla.org/docs/Web/API/Event">DOM events</a>, used by Leaflet internally.</p>
+
+<section>
+<h3 id='domevent-function'>Functions</h3>
+
+<section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Function</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='domevent-on'>
+		<td><code><b>on</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;String&gt;</nobr> <i>types</i>, <nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a listener function (<code>fn</code>) to a particular DOM event type of the
+element <code>el</code>. You can optionally specify the context of the listener
+(object the <code>this</code> keyword will point to). You can also pass several
+space-separated types (e.g. <code>&#39;click dblclick&#39;</code>).</td>
+	</tr>
+	<tr id='domevent-on'>
+		<td><code><b>on</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;Object&gt;</nobr> <i>eventMap</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></td>
+	</tr>
+	<tr id='domevent-off'>
+		<td><code><b>off</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;String&gt;</nobr> <i>types</i>, <nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a previously added listener function.
+Note that if you passed a custom context to on, you must pass the same
+context to <code>off</code> in order to remove the listener.</td>
+	</tr>
+	<tr id='domevent-off'>
+		<td><code><b>off</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;Object&gt;</nobr> <i>eventMap</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></td>
+	</tr>
+	<tr id='domevent-stoppropagation'>
+		<td><code><b>stopPropagation</b>(<nobr>&lt;DOMEvent&gt;</nobr> <i>ev</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Stop the given event from propagation to parent elements. Used inside the listener functions:
+<pre><code class="lang-js">L.DomEvent.on(div, &#39;click&#39;, function (ev) {
+    L.DomEvent.stopPropagation(ev);
+});
+</code></pre></td>
+	</tr>
+	<tr id='domevent-disablescrollpropagation'>
+		<td><code><b>disableScrollPropagation</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds <code>stopPropagation</code> to the element&#39;s <code>&#39;mousewheel&#39;</code> events (plus browser variants).</td>
+	</tr>
+	<tr id='domevent-disableclickpropagation'>
+		<td><code><b>disableClickPropagation</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Adds <code>stopPropagation</code> to the element&#39;s <code>&#39;click&#39;</code>, <code>&#39;doubleclick&#39;</code>,
+<code>&#39;mousedown&#39;</code> and <code>&#39;touchstart&#39;</code> events (plus browser variants).</td>
+	</tr>
+	<tr id='domevent-preventdefault'>
+		<td><code><b>preventDefault</b>(<nobr>&lt;DOMEvent&gt;</nobr> <i>ev</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Prevents the default action of the DOM Event <code>ev</code> from happening (such as
+following a link in the href of the a element, or doing a POST request
+with page reload when a <code>&lt;form&gt;</code> is submitted).
+Use it inside listener functions.</td>
+	</tr>
+	<tr id='domevent-stop'>
+		<td><code><b>stop</b>(<nobr>&lt;DOMEvent&gt;</nobr> <i>ev</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Does <code>stopPropagation</code> and <code>preventDefault</code> at the same time.</td>
+	</tr>
+	<tr id='domevent-getmouseposition'>
+		<td><code><b>getMousePosition</b>(<nobr>&lt;DOMEvent&gt;</nobr> <i>ev</i>, <nobr>&lt;HTMLElement&gt;</nobr> <i>container?</i>)</nobr></code></td>
+		<td><code>Point</code></td>
+		<td>Gets normalized mouse position from a DOM event relative to the
+<code>container</code> or to the whole page if not specified.</td>
+	</tr>
+	<tr id='domevent-getwheeldelta'>
+		<td><code><b>getWheelDelta</b>(<nobr>&lt;DOMEvent&gt;</nobr> <i>ev</i>)</nobr></code></td>
+		<td><code>Number</code></td>
+		<td>Gets normalized wheel delta from a mousewheel DOM event, in vertical
+pixels scrolled (negative if scrolling down).
+Events from pointing devices without precise scrolling are mapped to
+a best guess of 60 pixels.</td>
+	</tr>
+	<tr id='domevent-addlistener'>
+		<td><code><b>addListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#domevent-on"><code>L.DomEvent.on</code></a></td>
+	</tr>
+	<tr id='domevent-removelistener'>
+		<td><code><b>removeListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Alias to <a href="#domevent-off"><code>L.DomEvent.off</code></a></td>
+	</tr>
+</tbody></table>
+
+</section>
+
+
+</section>
 
 
 

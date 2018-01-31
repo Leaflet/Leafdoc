@@ -143,7 +143,7 @@ Leafdoc.prototype.getTemplateEngine = function () {
 // The new leading character will apply only to files/dirs/strings parsed from
 // that moment on, so it's a good idea to call this before anything else.
 Leafdoc.prototype.setLeadingCharacter = function (char) {
-	console.log('Setting leading character to', char);
+// 	console.log('Setting leading character to', char);
 	regexps.redoLeafDirective(char);
 };
 
@@ -233,7 +233,7 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 
 		var blockIsEmpty = true;
 		//         console.error('new block: ', commentBlock);
-		console.log('new block');
+// 		console.log('new block');
 
 		// 		if (multilineComment) {
 		// 			console.log('multiline block: {{{\n', multilineComment , '}}}');
@@ -268,7 +268,7 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 			var lineIsValid = false;
 			var parsedCharacters = 0;
 
-			console.log('Line: ', i, line);
+// 			console.log('Line: ', i, line);
 			// 			var match = regex.exec(line);
 
 			let match;
@@ -276,7 +276,7 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 			while (match = regexps.leafDirective.exec(line)) {
 				if (match[2]) { match[2] = match[2].trim(); }
 				directives.push([match[1], match[2]]);	// [directive, content]
-				console.log('directive match: ', match);
+// 				console.log('directive match: ', match);
 				blockIsEmpty = false;
 				lineIsValid = true;
 				parsedCharacters = match.index + match[0].length;
@@ -297,7 +297,7 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 			}
 		}
 
-		console.log('directives', directives);
+// 		console.log('directives', directives);
 
 		for (let i in directives) {
 			var directive = directives[i][0],

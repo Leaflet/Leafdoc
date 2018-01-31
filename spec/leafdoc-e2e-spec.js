@@ -4,6 +4,8 @@ const Leafdoc = require('../');
 
 const fs = require('fs');
 
+// Runs one test for each subdirectory in /spec/e2e,
+// comparing the output of running leafdoc to some expected HTML & JSON files
 
 describe('e2e tests', function(){
 	const dirs = fs.readdirSync('./spec/e2e');
@@ -16,17 +18,19 @@ describe('e2e tests', function(){
 		
 		it(dirName, function() {
 			
-			const expectedHtml = fs.readFileSync(dir + dirName + '.expected.html').toString();
-			const expectedJson = JSON.parse(fs.readFileSync(dir + dirName + '.expected.json'));
+			let options = {};
+			try {
+				options = JSON.parse(fs.readFileSync(dir + 'leafdoc-options.json'));
+			} catch (ex) {}
 			
-			const doc = new Leafdoc();
+			const doc = new Leafdoc(options);
 			
 			const testFiles = fs.readdirSync('./spec/e2e/' + dirName).
 				filter((name)=>name !== dirName + '.html').
 				filter((name)=>name !== dirName + '.json').
 				sort();
 			
-			console.log(testFiles);
+// 			console.log(testFiles);
 			
 			testFiles.forEach((filename)=>doc.addFile('./spec/e2e/' + dirName + '/' + filename, true));
 			
@@ -35,6 +39,9 @@ describe('e2e tests', function(){
 			
 			fs.writeFileSync(dir + dirName + '.actual.json', outJson);
 			fs.writeFileSync(dir + dirName + '.actual.html', outHtml);
+
+			const expectedHtml = fs.readFileSync(dir + dirName + '.expected.html').toString();
+			const expectedJson = JSON.parse(fs.readFileSync(dir + dirName + '.expected.json'));
 			
 			expect(JSON.parse(outJson)).toEqual(expectedJson);
 			expect(outHtml).toEqual(expectedHtml);
@@ -42,19 +49,3 @@ describe('e2e tests', function(){
 	}
 	
 });
-
-
-// describe('Math src dode', function () {
-// 	it('triggers the desired output', () => {
-// 
-// 		const doc = new Leafdoc();
-// 
-// 		doc.addStr(srcCode, true);
-//         
-// // 		console.log(doc.outputJSON());
-// 
-//         expect(JSON.parse(doc.outputJSON())).toEqual(expectedJson);
-// 		expect(doc.outputStr()).toEqual(expectedDocs);
-// 	});
-// });
-
