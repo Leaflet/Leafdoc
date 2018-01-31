@@ -162,17 +162,28 @@ lorem ipsum
 /*foo2
 bar2*/
 `)).toEqual(['\nfoo\nbar\n', 'quux', 'foo2\nbar2']);
-		});
-	});
 
-	it('Parses correctly Leaflet\'s eachLayer comment block', function () {
-
-		expect(cLikeParser(`
+			expect(cLikeParser(`
 	/* foo
 	 * bar
 	 * baz
 	 */        
         `)).toEqual(['foo\nbar\nbaz\n']);
+
+
+			expect(cLikeParser(`
+	/* foo
+	 *
+	 * bar
+	 */        
+        `)).toEqual(['foo\n\nbar\n']);
+
+
+		});
+	});
+
+	it('Parses correctly Leaflet\'s eachLayer comment block', function () {
+
 
 		expect(cLikeParser(`
 	/* @method eachLayer(fn: Function, context?: Object): this
@@ -191,6 +202,48 @@ map.eachLayer(function(layer){
 });
 \`\`\`
 `]);
+	});
+
+	it('Parses correctly Leaflet\'s Map leading comment block', function () {
+
+		expect(cLikeParser(`
+/*
+ * @class Map
+ * @aka L.Map
+ * @inherits Evented
+ *
+ * The central class of the API — it is used to create a map on a page and manipulate it.
+ *
+ * @example
+ *
+ * \`\`\`js
+ * // initialize the map on the "map" div with a given center and zoom
+ * var map = L.map('map', {
+ * 	center: [51.505, -0.09],
+ * 	zoom: 13
+ * });
+ * \`\`\`
+ *
+ */
+`)).toEqual([`
+@class Map
+@aka L.Map
+@inherits Evented
+
+The central class of the API — it is used to create a map on a page and manipulate it.
+
+@example
+
+\`\`\`js
+// initialize the map on the "map" div with a given center and zoom
+var map = L.map('map', {
+	center: [51.505, -0.09],
+	zoom: 13
+});
+\`\`\`
+
+`]);
+
 
 	});
 
