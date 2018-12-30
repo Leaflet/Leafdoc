@@ -28,7 +28,7 @@ You will find a `Leafdoc.html` file. Open that file in a web browser, and you'll
 
 ```sh
 npm install leafdoc
-node_modules/.bin/leafdoc -t node_modules/leafdoc/templates/basic -o documentation.html src/*.js
+node_modules/.bin/leafdoc -t node_modules/leafdoc/templates/basic -o documentation.html src
 ```
 
 See [Leafdoc's own documentation](http://leaflet.github.io/Leafdoc/Leafdoc.html) for a reference of available parameters.
