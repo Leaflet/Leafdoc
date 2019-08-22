@@ -2,8 +2,8 @@
 
 ## Command-line usage
 
-<p>Leafdoc includes a small command-line utility, useful when running from a console or a shell script, accepting some of the Leafdoc options. The syntax is:
-<code>leafdoc [options] [files]</code></p>
+<p>Leafdoc includes a small command-line utility, useful when running from a console or a shell script, accepting some of the Leafdoc options. The syntax is:</p>
+<p><code>leafdoc [options] [files]</code></p>
 
 
 ### Usage example
@@ -82,7 +82,14 @@
 		<td><code><b>o</b></code></td>
 		<td><code></code>
 		<td><code></code></td>
-		<td>Alias of <code>output</code></td>
+		<td>Alias of <code>output</code>
+Alias of <code>output</code></td>
+	</tr>
+	<tr id='command-line-usage-json'>
+		<td><code><b>json</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>Write the internal JSON representation of the documentation instead of a templated HTML file.</td>
 	</tr>
 </tbody></table>
 
@@ -104,10 +111,13 @@
 
 
 <p>Output Leafdoc&#39;s own documentation to the console with:</p>
-<pre><code>var LeafDoc = require(&#39;./src/leafdoc.js&#39;);
+<pre><code>```
+var LeafDoc = require(&#39;./src/leafdoc.js&#39;).default;
 var doc = new LeafDoc();
     doc.addFile(&#39;src/leafdoc.js&#39;);
+
 console.log( doc.outputStr() );
+```
 </code></pre>
 
 
@@ -258,6 +268,12 @@ directive.</td>
 		<td><code><b>outputStr</b>()</nobr></code></td>
 		<td><code>String</code></td>
 		<td>Outputs the documentation to a string.
+Use only after all the needed files have been parsed.</td>
+	</tr>
+	<tr id='leafdoc-outputjson'>
+		<td><code><b>outputJSON</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td>Outputs the internal documentation tree to a JSON blob, without any formatting.
 Use only after all the needed files have been parsed.</td>
 	</tr>
 </tbody></table>
