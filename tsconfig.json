@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "alwaysStrict": true,
+    "baseUrl": "./src",
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["es2018"],
+    "target": "es2018",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "pretty": true,
+    "skipLibCheck": true,
+    "paths": {
+      "*": ["*"]
+    }
+  },
+  "compileOnSave": false,
+  "include": ["src/**/*"]
+}

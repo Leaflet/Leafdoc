@@ -3,9 +3,12 @@
 // import commonjs from 'rollup-plugin-commonjs';
 // import builtins from 'rollup-plugin-node-builtins';
 // import globals from 'rollup-plugin-node-globals';
-import buble from 'rollup-plugin-buble';
-import eslint from 'rollup-plugin-eslint';
+// import buble from 'rollup-plugin-buble';
+// import eslint from 'rollup-plugin-eslint';
+import typescript from 'rollup-plugin-typescript';
 import pkg from './package.json';
+
+// TODO eslint needs to be configured for TypeScript
 
 export default [
     // browser-friendly UMD build
@@ -19,7 +22,8 @@ export default [
         },
         plugins: [
 //             eslint(),
-            buble(),
+            // buble(),
+            typescript(),
 //             resolve(), // so Rollup can find `crc32`
 //             commonjs(),
 //             builtins(),
@@ -41,8 +45,9 @@ export default [
 //             { file: pkg.module, format: 'es', sourcemap: true }
         ],
         plugins: [
-            eslint(),
-            buble(),
+            // eslint(),
+            // buble(),
+            typescript(),
 //             resolve(), // so Rollup can find `crc32`
 // 			commonjs() // so Rollup can convert `crc32` to an ES module
         ],
@@ -52,7 +57,7 @@ export default [
     
     // Experimental code-splitting build, for exposing all modules (for unit testing)
     {
-        input: [pkg.module, 'src/parsers/c-like.js', 'src/parsers/trivial.js'],
+        input: [pkg.module, 'src/parsers/c-like.ts', 'src/parsers/trivial.ts'],
         experimentalCodeSplitting: true,
         experimentalDynamicImport: true,
         output: {
@@ -60,8 +65,9 @@ export default [
             format: 'cjs'
         },
         plugins: [
-            eslint(),
-            buble(),
+            // eslint(),
+            // buble(),
+            typescript(),
 //             resolve(), // so Rollup can find `crc32`
 // 			commonjs() // so Rollup can convert `crc32` to an ES module
         ],

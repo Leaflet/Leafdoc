@@ -1,21 +1,20 @@
 
 // Minor wrapper over Handlebars
 
-import sander from 'sander';
-import path from 'path';
-import Handlebars from 'handlebars';
-import marked from 'marked';
+import * as sander from 'sander';
+import * as Handlebars from 'handlebars';
+import * as marked from 'marked';
 export {Handlebars as engine};
 
 let templateDir = __dirname + '/../templates/basic';
 let templates = Object.create(null);
 
-export function setTemplateDir(newDir) {
+export function setTemplateDir(newDir: string) {
 	templates = Object.create(null);
 	templateDir = newDir;
 }
 
-export function getTemplate(templateName) {
+export function getTemplate(templateName: string) {
 	if (!templates[templateName]) {
 		templates[templateName] = Handlebars.compile(sander.readFileSync(templateDir, templateName + '.hbs').toString());
 	}
@@ -23,9 +22,9 @@ export function getTemplate(templateName) {
 }
 
 
-var _AKAs = {};
+var _AKAs: any = {};
 
-export function setAKAs(akas) {
+export function setAKAs(akas: any) {
 
 // 	console.log('Template thing updating AKAs');
 	_AKAs = akas;
@@ -48,7 +47,7 @@ export function setAKAs(akas) {
 /// TODO: Make the big markdown functions also automatically link to stuff.
 
 // Helper to replace AKAs in markdown links.
-function replaceAKAs(str) {
+function replaceAKAs(str: string) {
 	str = str.trim();
 	for (var i in _AKAs) {
 
@@ -70,7 +69,8 @@ Handlebars.registerHelper('markdown', function (str) {
 		str = str.join('\n').trim();
 		// 		str = str.join(' ');
 	}
-	return marked(replaceAKAs(str))
+	// return marked(replaceAKAs(str))
+	return marked.setOptions({})(replaceAKAs(str))
 		.trim()
 		.replace('<p>', '')
 		.replace('</p>', '');
@@ -81,7 +81,8 @@ Handlebars.registerHelper('rawmarkdown', function (str) {
 	if (str instanceof Array) {
 		str = str.join('\n');
 	}
-	return marked(replaceAKAs(str));
+	// return marked(replaceAKAs(str));
+	return marked.setOptions({})(replaceAKAs(str));
 });
 
 

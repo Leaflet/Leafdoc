@@ -47,7 +47,7 @@ const leadingDoubleSlashRegexp = /\s\/\//;
 // - Joins multiple single-line comments as a single block
 // - The *first* whitespace (or tab) of all single-line comments is ignored
 
-export default function cLikeParser(str) {
+export default function cLikeParser(str: string) {
 	let match;
 	let parsed = [];
 

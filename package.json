@@ -4,7 +4,7 @@
   "description": "A lightweight NaturalDocs-like LeafletJS-style documentation generator",
   "main": "dist/leafdoc.cjs.js",
   "browser": "dist/leafdoc.browser.js",
-  "module": "src/leafdoc.js",
+  "module": "src/leafdoc.ts",
   "author": "Iván Sánchez Ortega <ivan@sanchezortega.es>",
   "license": "GPL-3.0",
   "bin": {
@@ -15,15 +15,16 @@
     "marked": "^0.3.12",
     "minimist": "^1.2.0",
     "sander": "^0.6.0",
+    "ts-node": "^8.3.0",
     "unicode-7.0.0": "^0.1.5",
     "xregexp": "^2.0.0"
   },
   "scripts": {
     "update-markdown-leafdoc": "src/cli.js -t templates/markdown src/cli.js src/leafdoc.js --verbose -o Leafdoc.md",
     "update-html-leafdoc": "src/cli.js -t templates/basic src/leafdoc.js src/cli.js --verbose -o Leafdoc.html",
-    "prepublish": "npm run update-markdown-leafdoc && npm run update-html-leafdoc",
-    "rollup": "rollup -c rollup.config.js",
-    "test": "rollup -c rollup.config.js; jasmine",
+    "TMP-DISABLED-prepublish": "npm run update-markdown-leafdoc && npm run update-html-leafdoc",
+    "rollup": "rm -rf ./dist && rollup -c rollup.config.js",
+    "test": "rm -rf ./dist && rollup -c rollup.config.js && jasmine",
     "lint": "eslint src/ spec/",
     "lintfix": "eslint src/ spec/ --fix"
   },
@@ -32,13 +33,20 @@
     "url": "git://github.com/Leaflet/Leafdoc.git"
   },
   "devDependencies": {
+    "@types/marked": "^0.6.5",
+    "@types/minimist": "^1.2.0",
+    "@types/node": "^12.7.2",
+    "@types/xregexp": "^3.0.30",
     "eslint": "^4.16.0",
     "eslint-config-mourner": "^2.0.3",
     "eslint-plugin-jasmine": "^2.9.1",
     "jasmine": "^2.9.0",
     "rollup": "^0.55.0",
     "rollup-plugin-buble": "^0.18.0",
-    "rollup-plugin-eslint": "^4.0.0"
+    "rollup-plugin-eslint": "^4.0.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "tslib": "^1.10.0",
+    "typescript": "^3.5.3"
   },
   "eslintConfig": {
     "extends": "mourner",

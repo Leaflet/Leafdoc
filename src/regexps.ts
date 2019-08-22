@@ -28,12 +28,12 @@ export const anyLine = XRegExp('^ (?<line> .* ) $', 'nx');
 
 
 // Re-builds the 🍂 directive based on a different leading character
-export function redoLeafDirective(char) {
+export function redoLeafDirective(char: string): any {
 	return leafDirective = XRegExp('  \\s* ' + char + ' (?<directive> \\S+ ) (\\s+ (?<content> [^;\\n]+ )){0,1} ', 'gnx');
 }
 
 // Parses a 🍂 directive, init'd at redoLeafDirective()
-export const leafDirective = redoLeafDirective('🍂');
+export let leafDirective = redoLeafDirective('🍂');
 
 
 // Parses an identifier, allowing only unicode ID_Start and ID_Continue characters
