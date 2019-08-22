@@ -53,21 +53,6 @@ export default class Leafdoc {
 	showInheritancesWhenEmpty!: boolean
 	_verbose!: boolean
 
-	/*
-	🍂constructor Leafdoc(options: Leafdoc options); Constructor for a new Leafdoc parser
-
-	🍂example
-
-	Output Leafdoc's own documentation to the console with:
-
-	```
-	var LeafDoc = require('./src/leafdoc.js').default;
-	var doc = new LeafDoc();
-		doc.addFile('src/leafdoc.js');
-
-	console.log( doc.outputStr() );
-	```
-	*/
 	constructor(options: any) {
 
 		// 🍂section
@@ -107,6 +92,22 @@ export default class Leafdoc {
 			}
 		}
 	}
+
+	/*
+	🍂constructor Leafdoc(options: Leafdoc options); Constructor for a new Leafdoc parser
+
+	🍂example
+
+	Output Leafdoc's own documentation to the console with:
+
+	```
+	var LeafDoc = require('leafdoc');
+	var doc = new LeafDoc();
+		doc.addFile('src/leafdoc.js');
+
+	console.log( doc.outputStr() );
+	```
+	*/
 
 	// 🍂method registerDocumentable (name: String, label?: String, inheritable?: Boolean): this
 	// Registers a new documentable type, beyond the preset ones (function,
