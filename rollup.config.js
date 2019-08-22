@@ -56,6 +56,8 @@ export default [
     
     
     // Experimental code-splitting build, for exposing all modules (for unit testing)
+    // TODO, the output files in dist/split end with .ts.js for some reason. How
+    // do we configure them to end only with .js?
     {
         input: [pkg.module, 'src/parsers/c-like.ts', 'src/parsers/trivial.ts'],
         experimentalCodeSplitting: true,
