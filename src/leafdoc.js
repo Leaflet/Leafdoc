@@ -1,5 +1,5 @@
 
-import sander from 'sander';
+import fs from 'fs';
 import path from 'path';
 
 import {getTemplate, setTemplateDir, setAKAs} from './template';
@@ -158,13 +158,13 @@ Leafdoc.prototype.addDir = function (dirname, extensions) {
 		extensions = ['.js', '.leafdoc'];
 	}
 
-	var filenames = sander.readdirSync(dirname);
+	var filenames = fs.readdirSync(dirname);
 
 	for (var i in filenames) {
 		var filename = path.join(dirname, filenames[i]);
 		// Check if dir, recurse if so
 
-		var stats = sander.statSync(filename);
+		var stats = fs.lstatSync(filename);
 		if (stats.isDirectory()) {
 			this.addDir(filename, extensions);
 		} else if (extensions.indexOf(path.extname(filename)) !== -1) {
@@ -182,7 +182,7 @@ Leafdoc.prototype.addDir = function (dirname, extensions) {
 // 🍂method addFile(filename: String, isSource?: Boolean): this
 // Parses the given file using [`addBuffer`](#leafdoc-addbuffer).
 Leafdoc.prototype.addFile = function (filename, isSource) {
-	return this.addBuffer(sander.readFileSync(filename), isSource);
+	return this.addBuffer(fs.readFileSync(filename), isSource);
 };
 
 
