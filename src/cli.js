@@ -10,7 +10,7 @@ Leafdoc includes a small command-line utility, useful when running from a consol
 
 🍂example
 
-`leafdoc -t templates/pretty -c '@' --verbose -o documentation.html src/*.js`
+`leafdoc -t templates/pretty -c '@' --verbose -o documentation.html src`
 
 */
 
