@@ -25,7 +25,7 @@ export default [
 //             builtins(),
 //             globals()
         ],
-        external: ['sander', 'path']
+        external: ['fs', 'path']
     },
 
     // CommonJS (for Node) and ES module (for bundlers) build.
@@ -46,7 +46,7 @@ export default [
 //             resolve(), // so Rollup can find `crc32`
 // 			commonjs() // so Rollup can convert `crc32` to an ES module
         ],
-        external: ['sander', 'path']
+        external: ['fs', 'path']
     },
     
     
@@ -65,6 +65,6 @@ export default [
 //             resolve(), // so Rollup can find `crc32`
 // 			commonjs() // so Rollup can convert `crc32` to an ES module
         ],
-        external: ['sander', 'path']
+        external: ['fs', 'path']
     }
 ];

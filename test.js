@@ -13,6 +13,6 @@ doc.addDir('src');
 var out = doc.outputStr();
 var json = doc.outputJSON();
 
-var sander = require('sander');
-sander.writeFileSync('Leafdoc.html', out);
-sander.writeFileSync('Leafdoc.json', json);
+var fs = require('fs');
+fs.writeFileSync('Leafdoc.html', out);
+fs.writeFileSync('Leafdoc.json', json);

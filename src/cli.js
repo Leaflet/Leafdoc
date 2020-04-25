@@ -15,11 +15,10 @@ Leafdoc includes a small command-line utility, useful when running from a consol
 */
 
 
-
-var minimist = require('minimist');
-var sander = require('sander');
-var Leafdoc = require('./leafdoc');
+var fs = require("fs");
 var path = require('path');
+var minimist = require('minimist');
+var Leafdoc = require('./leafdoc');
 
 var argv = minimist(process.argv.slice(2), {
 	alias: {
@@ -52,7 +51,7 @@ var doc = new Leafdoc({
 
 argv._.forEach(function (filepath) {
 	try {
-		var stats = sander.statSync(filepath);
+		var stats = fs.lstatSync(filepath);
 
 		if (stats.isFile()) {
 			doc.addFile(filepath, path.extname(filepath) !== '.leafdoc');
@@ -74,7 +73,7 @@ if (argv.json) {
 }
 
 if (argv.output) {
-	sander.writeFileSync(argv.output, out);
+	fs.writeFileSync(argv.output, out);
 } else {
 	console.log(out);
 }

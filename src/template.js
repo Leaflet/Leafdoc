@@ -1,7 +1,7 @@
 
 // Minor wrapper over Handlebars
 
-import sander from 'sander';
+import fs from 'fs';
 import path from 'path';
 import Handlebars from 'handlebars';
 import marked from 'marked';
@@ -17,7 +17,7 @@ export function setTemplateDir(newDir) {
 
 export function getTemplate(templateName) {
 	if (!templates[templateName]) {
-		templates[templateName] = Handlebars.compile(sander.readFileSync(templateDir, templateName + '.hbs').toString());
+		templates[templateName] = Handlebars.compile(fs.readFileSync(path.join(templateDir, templateName + '.hbs')).toString());
 	}
 	return templates[templateName];
 }
