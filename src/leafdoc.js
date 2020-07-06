@@ -6,6 +6,7 @@ import {getTemplate, setTemplateDir, setAKAs} from './template';
 import * as regexps from './regexps';
 import parserTrivial from './parsers/trivial.js';
 import parserCLike from './parsers/c-like.js';
+import parserMec from './parsers/multilang.js';
 
 
 // 🍂class Leafdoc; Represents the Leafdoc parser
@@ -201,7 +202,6 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 	// Leaflet files use DOS line feeds, which screw up things.
 	str = str.replace(/\r\n?/g, '\n');
 
-
 	var ns = '__default';	// namespace (or class)
 	var sec = '__default';	// section
 	var dt = '';	// Type of documentable
@@ -223,7 +223,8 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 	var sectionAKA = [];
 	var sectionIsUninheritable = false;
 
-	const parser = isSource ? parserCLike : parserTrivial;
+	const parser = isSource ? parserMec : parserTrivial;
+// 	const parser = isSource ? parserCLike : parserTrivial;
 
 	const parsedBlocks = parser(str);
 
@@ -259,33 +260,33 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 		for (let i in lines) {
 			var line = lines[i];
 
-			// 			var match = regex.exec(line);	// Skips extra comment characters
-			// 			var lineStr = match[1];
+			// var match = regex.exec(line);	// Skips extra comment characters
+			// var lineStr = match[1];
 			// Might happen in some binary files
-			// 				console.log(line);
-			// 				break;
-			// 			}
+			// console.log(line);
+			// break;
+			// }
 			var lineIsValid = false;
 			var parsedCharacters = 0;
 
-			// 			console.log('Line: ', i, line);
-			// 			var match = regex.exec(line);
+			// console.log('Line: ', i, line);
+			// var match = regex.exec(line);
 
 			let match;
 			// In "param foo, bar", directive is "param" and content is "foo, bar"
 			while (match = regexps.leafDirective.exec(line)) {
 				if (match[2]) { match[2] = match[2].trim(); }
 				directives.push([match[1], match[2]]);	// [directive, content]
-				// 				console.log('directive match: ', match);
+				// console.log('directive match: ', match);
 				blockIsEmpty = false;
 				lineIsValid = true;
 				parsedCharacters = match.index + match[0].length;
 			}
 
 			if (lineIsValid) {
-				// 				console.log('After having matched a line:', match);
+				// console.log('After having matched a line:', match);
 				let trailing = line.substr(parsedCharacters + 1).trim();
-				// 				console.log('After having matched a line:', trailing);
+				// console.log('After having matched a line:', trailing);
 				if (trailing) {
 					directives.push(['comment', trailing]);
 				}

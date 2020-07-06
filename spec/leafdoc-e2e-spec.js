@@ -30,7 +30,7 @@ describe('e2e tests', function () {
 				.filter((name)=>!name.match(/\.json$/))
 				.sort();
 
-			// 			console.log(testFiles);
+			// console.log(testFiles);
 
 			testFiles.forEach((filename)=>doc.addFile('./spec/e2e/' + dirName + '/' + filename, true));
 
