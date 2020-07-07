@@ -1,9 +1,9 @@
 
 // Regexps (maybe) shared between files.
 
-import {XRegExp as xRegExp} from 'xregexp';
-import unicodeRegExpIDStart from 'unicode-7.0.0/properties/ID_Start/regex';
-import unicodeRegExpIDContinue from 'unicode-7.0.0/properties/ID_Continue/regex';
+import xRegExp from 'xregexp';
+import unicodeRegExpIDStart from 'regenerate-unicode-properties/Binary_Property/ID_Start.js';
+import unicodeRegExpIDContinue from 'regenerate-unicode-properties/Binary_Property/ID_Continue.js';
 
 // One or more lines starting with whitespace and two or more forward slashes,
 // or
@@ -37,7 +37,7 @@ export function redoLeafDirective(char) {
 
 // Parses an identifier, allowing only unicode ID_Start and ID_Continue characters
 // An identifier allows dots in it, to allow for namespacing identifiers.
-// TODO: An identifier shall allow an underscore at the beginning, as JS does.
+// TODO: An identifier shall allow an underscore or dollar at the beginning, as JS does.
 var identifier = xRegExp.build('^({{ID_Start}}  ( {{ID_Continue}} | \\. | : )*)$', {
 	ID_Start: unicodeRegExpIDStart,	// eslint-disable-line camelcase
 	ID_Continue: unicodeRegExpIDContinue	// eslint-disable-line camelcase

@@ -4,7 +4,7 @@
 import fs from 'fs';
 import path from 'path';
 import Handlebars from 'handlebars';
-import marked from 'marked';
+import { Parser as CommonMarkParser, HtmlRenderer as CommonMarkHtmlRenderer } from 'commonmark/dist/commonmark.js';
 export {Handlebars as engine};
 
 let templateDir = __dirname + '/../templates/basic';
@@ -29,6 +29,12 @@ export function setAKAs(akas) {
 
 // 	console.log('Template thing updating AKAs');
 	_AKAs = akas;
+}
+
+const markdownParser = new CommonMarkParser();
+const markdownRenderer = new CommonMarkHtmlRenderer();
+function markdown(str) {
+	return markdownRenderer.render(markdownParser.parse(str));
 }
 
 // export Handlebars as engine;
@@ -70,7 +76,7 @@ Handlebars.registerHelper('markdown', function (str) {
 		str = str.join('\n').trim();
 		// 		str = str.join(' ');
 	}
-	return marked(replaceAKAs(str))
+	return markdown(replaceAKAs(str))
 		.trim()
 		.replace('<p>', '')
 		.replace('</p>', '');
@@ -81,7 +87,7 @@ Handlebars.registerHelper('rawmarkdown', function (str) {
 	if (str instanceof Array) {
 		str = str.join('\n');
 	}
-	return marked(replaceAKAs(str));
+	return markdown(replaceAKAs(str));
 });
 
 
@@ -95,6 +101,13 @@ Handlebars.registerHelper('type', function (str) {
 		// Should be a built-in type
 		return str;
 	}
+});
+
+
+// JSON stringify the stuff.
+Handlebars.registerHelper('json', function (obj) {
+	console.log(obj);
+	return JSON.stringify(obj, undefined, 1);
 });
 
 

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<style>
+	table {
+		border-collapse: collapse;
+	}
+	table td, table th {
+		border: 1px solid #888;
+	}
+	pre code {
+		display: inline-block;
+		background: #eee;
+	}
+	td:last-child code {
+		background: #eee;
+	}
+	body {
+		font-family: Sans;
+	}
+	</style>
+</head>
+<body>
+	<h2>Leafdoc generated API reference</h2>
+
+	<h2 id='treenode'>TreeNode</h2>
+<p>This class models the nodes for an <em>N-ary</em> tree data structure. The
+nodes are <em>named</em>, and have a place-holder for the node data (i.e.,
+<em>content</em> of the node). The node names are required to be <em>unique</em>
+amongst the sibling/peer nodes. Note that the name is implicitly
+used as an <em>ID</em> within the data structure).</p>
+<p>The node's <em>content</em> is <em>not</em> required to be unique across
+different nodes in the tree, and can be +nil+ as well.</p>
+<p>The class provides various methods to navigate the tree, traverse
+the structure, modify contents of the node, change position of the
+node in the tree, and to make structural changes to the tree.</p>
+<p>A node can have any number of <em>child</em> nodes attached to it and
+hence can be used to create N-ary trees.  Access to the child
+nodes can be made in order (with the conventional left to right
+access), or randomly.</p>
+<p>The node also provides direct access to its <em>parent</em> node as well
+as other superior parents in the path to root of the tree.  In
+addition, a node can also access its <em>sibling</em> nodes, if present.</p>
+<p>Note that while this implementation does not <em>explicitly</em> support
+directed graphs, the class itself makes no restrictions on
+associating a node's <em>content</em> with multiple nodes in the tree.
+However, having duplicate nodes within the structure is likely to
+cause unpredictable behavior.</p>
+
+<h3 id='treenode-example'>Usage example</h3>
+
+<section>
+
+
+
+<p>{include:file:examples/example_basic.rb}</p>
+
+
+</section>
+
+
+<h3 id='treenode-method'>Methods</h3>
+
+<section>
+<h4 id='treenode-core-attributes'>Core Attributes</h4>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='treenode-root'>
+		<td><code><b>root</b>()</nobr></code></td>
+		<td><code><a href='#treenode'>TreeNode</a></code></td>
+		<td>Gets the root node for the (sub)tree to which this node belongs.
+A root node's root is itself.</td>
+	</tr>
+	<tr id='treenode-is_root'>
+		<td><code><b>is_root</b>()</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code>true</code> if this is a root node.  Note that
+orphaned children will also be reported as root nodes.</td>
+	</tr>
+</tbody></table>
+</section>
+<section>
+<h4 id='treenode-node-creation'>Node Creation</h4>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='treenode-initialize'>
+		<td><code><b>initialize</b>(<nobr>&lt;String|Integer&gt; <i>name</i></nobr>, <nobr><i>content</i></nobr>)</nobr></code></td>
+		<td><code>nil</code></td>
+		<td>Creates a new node with a name and optional content.
+The node name is expected to be unique within the tree.
+<p>The content can be of any type, and defaults to <code>nil</code>.</p>
+<p>Note: If the name is an <code>Integer</code>, then the semantics of {#[]} access
+method can be surprising, as an <code>Integer</code> parameter to that method
+normally acts as an index to the children array, and follows the
+<em>zero-based</em> indexing convention.</p></td>
+	</tr>
+	<tr id='treenode-add'>
+		<td><code><b>add</b>(<nobr>&lt;<a href='#treenode'>TreeNode</a>&gt; <i>child</i></nobr>, <nobr>&lt;Integer=1&gt; <i>at_index</i></nobr>)</nobr></code></td>
+		<td><code><a href='#treenode'>TreeNode</a></code></td>
+		<td>Adds the specified child node to this node.
+<p>This method can also be used for <em>grafting</em> a subtree into this
+node's tree, if the specified child node is the root of a subtree (i.e.,
+has child nodes under it).</p>
+<p>this node becomes parent of the node passed in as the argument, and
+the child is added as the last child (&quot;right most&quot;) in the current set of
+children of this node.</p>
+<p>Additionally you can specify a insert position. The new node will be
+inserted BEFORE that position. If you don't specify any position the node
+will be just appended. This feature is provided to make implementation of
+node movement within the tree very simple.</p>
+<p>If an insertion position is provided, it needs to be within the valid
+range of:</p>
+<p>-children.size..children.size</p>
+<p>This is to prevent <code>nil</code> nodes being created as children if a non-existent
+position is used.</p>
+<p>If the new node being added has an existing parent node, then it will be
+removed from this pre-existing parent prior to being added as a child to
+this node. I.e., the child node will effectively be moved from its old
+parent to this node. In this situation, after the operation is complete,
+the node will no longer exist as a child for its old parent.</p>
+<p>Returns the added child node.</p></td>
+	</tr>
+	<tr id='treenode-rename'>
+		<td><code><b>rename</b>(<nobr>&lt;String|Integer&gt; <i>new_name</i></nobr>)</nobr></code></td>
+		<td><code>String|Integer</code></td>
+		<td>Renames the node and updates the parent's reference to it. Returns the old name.</td>
+	</tr>
+</tbody></table>
+</section>
+
+
+<h3 id='treenode-property'>Properties</h3>
+
+<section>
+<h4 id='treenode-core-attributes'>Core Attributes</h4>
+
+<table><thead>
+	<tr>
+		<th>Property</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='treenode-name'>
+		<td><code><b>name</b>
+		<td><code>String|Integer</code></td>
+		<td>Name of this node.  Expected to be unique within the tree.
+<p>Note that the name attribute really functions as an <em>ID</em> within
+the tree structure, and hence the uniqueness constraint is
+required.</p>
+<p>This may be changed in the future, but for now it is best to
+retain unique names within the tree structure, and use the
+<code>content</code> attribute for any non-unique node requirements.</p>
+<p>If you want to change the name, you probably want to call <a href="#treenode-rename"><code>rename</code></a>
+instead.</p></td>
+	</tr>
+	<tr id='treenode-content'>
+		<td><code><b>content</b>
+		<td><code></code></td>
+		<td>Content of this node.  Can be <code>nil</code>.  Note that there is no
+uniqueness constraint related to this attribute.</td>
+	</tr>
+	<tr id='treenode-parent'>
+		<td><code><b>parent</b>
+		<td><code><a href='#treenode'>TreeNode</a></code></td>
+		<td>Parent of this node.  Will be <code>nil</code> for a root node.</td>
+	</tr>
+</tbody></table>
+</section>
+
+
+
+
+</body></html>

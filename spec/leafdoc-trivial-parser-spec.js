@@ -13,7 +13,7 @@ var path$1 = require('path');
 var Handlebars = require('handlebars');
 
 var templateDir = 'basic';
-      
+
 // marked.setOptions({
 // 	highlight: function (code) {
 // 		return require('highlight').highlight(code).value;

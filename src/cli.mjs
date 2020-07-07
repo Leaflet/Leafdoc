@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env -S node --experimental-modules
 
 
 /*
@@ -15,10 +15,10 @@ Leafdoc includes a small command-line utility, useful when running from a consol
 */
 
 
-var fs = require('fs');
-var path = require('path');
-var minimist = require('minimist');
-var Leafdoc = require('./leafdoc');
+import fs from 'fs';
+import path from 'path';
+import minimist from 'minimist';
+import Leafdoc from './leafdoc.mjs';
 
 var argv = minimist(process.argv.slice(2), {
 	alias: {

@@ -1,0 +1,5 @@
+{
+    "templateDir": "./templates/basic",
+    "showInheritancesWhenEmpty": true,
+    "leadingCharacter": "🍂"
+}

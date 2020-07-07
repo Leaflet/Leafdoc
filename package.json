@@ -4,23 +4,23 @@
   "description": "A lightweight NaturalDocs-like LeafletJS-style documentation generator",
   "main": "dist/leafdoc.cjs.js",
   "browser": "dist/leafdoc.browser.js",
-  "module": "src/leafdoc.js",
+  "module": "src/leafdoc.mjs",
   "author": "Iván Sánchez Ortega <ivan@sanchezortega.es>",
   "license": "GPL-3.0",
   "bin": {
     "leafdoc": "src/cli.js"
   },
   "dependencies": {
-    "handlebars": "^4.0.11",
-    "marked": "^0.3.12",
-    "minimist": "^1.2.3",
+    "commonmark": "^0.29.1",
+    "handlebars": "^4.7.6",
+    "minimist": "^1.2.5",
     "multilang-extract-comments": "^0.3.2",
-    "unicode-7.0.0": "^0.1.5",
-    "xregexp": "^2.0.0"
+    "regenerate-unicode-properties": "^8.2.0",
+    "xregexp": "^4.3.0"
   },
   "scripts": {
-    "update-markdown-leafdoc": "src/cli.js -t templates/markdown src/cli.js src/leafdoc.js --verbose -o Leafdoc.md",
-    "update-html-leafdoc": "src/cli.js -t templates/basic src/leafdoc.js src/cli.js --verbose -o Leafdoc.html",
+    "update-markdown-leafdoc": "src/cli.mjs -t templates/markdown src/cli.js src/leafdoc.mjs --verbose -o Leafdoc.md",
+    "update-html-leafdoc": "src/cli.mjs -t templates/basic src/leafdoc.mjs src/cli.js --verbose -o Leafdoc.html",
     "prepublish": "npm run update-markdown-leafdoc && npm run update-html-leafdoc",
     "rollup": "rollup -c rollup.config.js",
     "test": "rollup -c rollup.config.js; jasmine",
@@ -32,13 +32,13 @@
     "url": "git://github.com/Leaflet/Leafdoc.git"
   },
   "devDependencies": {
-    "eslint": "^4.16.0",
-    "eslint-config-mourner": "^2.0.3",
-    "eslint-plugin-jasmine": "^2.9.1",
-    "jasmine": "^2.9.0",
-    "rollup": "^0.55.0",
-    "rollup-plugin-buble": "^0.18.0",
-    "rollup-plugin-eslint": "^4.0.0"
+    "@rollup/plugin-buble": "^0.21.3",
+    "eslint": "^7.4.0",
+    "eslint-config-mourner": "^3.0.0",
+    "eslint-plugin-jasmine": "^4.1.1",
+    "jasmine": "^3.5.0",
+    "rollup": "^2.20.0",
+    "rollup-plugin-eslint": "^7.0.0"
   },
   "eslintConfig": {
     "extends": "mourner",

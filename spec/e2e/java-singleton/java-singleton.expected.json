@@ -1,0 +1,95 @@
+{
+ "SingletonObject": {
+  "name": "SingletonObject",
+  "aka": [],
+  "comments": [
+   "Generic implementation of a singleton"
+  ],
+  "supersections": {
+   "property": {
+    "name": "property",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "Private": {
+      "name": "Private",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "SingletonObject": {
+        "name": "SingletonObject",
+        "aka": [],
+        "comments": [
+         "The insternal instance of the object."
+        ],
+        "params": {},
+        "type": "object",
+        "optional": false,
+        "defaultValue": null,
+        "id": "singletonobject-singletonobject"
+       }
+      },
+      "type": "property",
+      "id": "singletonobject-private"
+     }
+    },
+    "id": "singletonobject-property"
+   },
+   "method": {
+    "name": "method",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "Private": {
+      "name": "Private",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "SingletonObject": {
+        "name": "SingletonObject",
+        "aka": [],
+        "comments": [
+         "Instantiates the object, only called once."
+        ],
+        "params": {},
+        "type": "null",
+        "optional": false,
+        "defaultValue": null,
+        "id": "singletonobject-singletonobject"
+       }
+      },
+      "type": "method",
+      "id": "singletonobject-private"
+     },
+     "Public": {
+      "name": "Public",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "getInstance": {
+        "name": "getInstance",
+        "aka": [],
+        "comments": [
+         "Returns the singleton instance."
+        ],
+        "params": {},
+        "type": "SingletonObject",
+        "optional": false,
+        "defaultValue": null,
+        "id": "singletonobject-getinstance"
+       }
+      },
+      "type": "method",
+      "id": "singletonobject-public"
+     }
+    },
+    "id": "singletonobject-method"
+   }
+  },
+  "inherits": [],
+  "id": "singletonobject"
+ }
+}

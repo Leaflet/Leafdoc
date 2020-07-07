@@ -2,10 +2,10 @@
 import fs from 'fs';
 import path from 'path';
 
-import {getTemplate, setTemplateDir, setAKAs} from './template';
-import * as regexps from './regexps';
-import parserTrivial from './parsers/trivial.js';
-import parserMec from './parsers/multilang.js';
+import {getTemplate, setTemplateDir, setAKAs} from './template.mjs';
+import * as regexps from './regexps.mjs';
+import parserTrivial from './parsers/trivial.mjs';
+import parserMec from './parsers/multilang.mjs';
 
 
 // 🍂class Leafdoc; Represents the Leafdoc parser
@@ -191,8 +191,8 @@ Leafdoc.prototype.addFile = function (filename, isSource) {
 
 // 🍂method addBuffer(buf: Buffer, isSource?: Boolean, filename?: String): this
 // Parses the given buffer using [`addStr`](#leafdoc-addstr) underneath. Set `isSource` to `true` to parse Leafdoc directives inside comment blocks. Otherwise, the whole file is interpreted as Leafdoc directives.
-Leafdoc.prototype.addBuffer = function (buf, isSource) {
-	return this.addStr(buf.toString(), isSource);
+Leafdoc.prototype.addBuffer = function (buf, isSource, filename) {
+	return this.addStr(buf.toString(), isSource, filename);
 };
 
 // 🍂method addStr(str: String, isSource?: Boolean, filename?: String): this

@@ -160,7 +160,7 @@
 		<td>Adds a listener function (<code>fn</code>) to a particular DOM event type of the
 element <code>el</code>. You can optionally specify the context of the listener
 (object the <code>this</code> keyword will point to). You can also pass several
-space-separated types (e.g. <code>&#39;click dblclick&#39;</code>).</td>
+space-separated types (e.g. <code>'click dblclick'</code>).</td>
 	</tr>
 	<tr id='domevent-on'>
 		<td><code><b>on</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;Object&gt;</nobr> <i>eventMap</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
@@ -183,21 +183,21 @@ context to <code>off</code> in order to remove the listener.</td>
 		<td><code><b>stopPropagation</b>(<nobr>&lt;DOMEvent&gt;</nobr> <i>ev</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td>Stop the given event from propagation to parent elements. Used inside the listener functions:
-<pre><code class="lang-js">L.DomEvent.on(div, &#39;click&#39;, function (ev) {
-    L.DomEvent.stopPropagation(ev);
+<pre><code class="language-js">L.DomEvent.on(div, 'click', function (ev) {
+	L.DomEvent.stopPropagation(ev);
 });
 </code></pre></td>
 	</tr>
 	<tr id='domevent-disablescrollpropagation'>
 		<td><code><b>disableScrollPropagation</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>)</nobr></code></td>
 		<td><code>this</code></td>
-		<td>Adds <code>stopPropagation</code> to the element&#39;s <code>&#39;mousewheel&#39;</code> events (plus browser variants).</td>
+		<td>Adds <code>stopPropagation</code> to the element's <code>'mousewheel'</code> events (plus browser variants).</td>
 	</tr>
 	<tr id='domevent-disableclickpropagation'>
 		<td><code><b>disableClickPropagation</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>)</nobr></code></td>
 		<td><code>this</code></td>
-		<td>Adds <code>stopPropagation</code> to the element&#39;s <code>&#39;click&#39;</code>, <code>&#39;doubleclick&#39;</code>,
-<code>&#39;mousedown&#39;</code> and <code>&#39;touchstart&#39;</code> events (plus browser variants).</td>
+		<td>Adds <code>stopPropagation</code> to the element's <code>'click'</code>, <code>'doubleclick'</code>,
+<code>'mousedown'</code> and <code>'touchstart'</code> events (plus browser variants).</td>
 	</tr>
 	<tr id='domevent-preventdefault'>
 		<td><code><b>preventDefault</b>(<nobr>&lt;DOMEvent&gt;</nobr> <i>ev</i>)</nobr></code></td>
