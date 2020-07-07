@@ -50,6 +50,8 @@
       "sourceType": "module"
     },
     "rules": {
+    "prefer-arrow-callback": 0,
+
       "indent": [
         1,
         "tab",

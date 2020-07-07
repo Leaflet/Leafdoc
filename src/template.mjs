@@ -53,9 +53,8 @@ function replaceAKAs(str) {
 	return str;
 }
 
-
 Handlebars.registerHelper('markdown', function markdownHelper(str) {
-	if (!str) return;
+	if (!str) return '';
 	if (str instanceof Array) {
 		str = str.join('\n').trim();
 		// 		str = str.join(' ');
@@ -67,7 +66,7 @@ Handlebars.registerHelper('markdown', function markdownHelper(str) {
 });
 
 Handlebars.registerHelper('rawmarkdown', function rawmarkdownHelper(str) {
-	if (!str) { return; }
+	if (!str) { return ''; }
 	if (str instanceof Array) {
 		str = str.join('\n');
 	}
@@ -77,7 +76,7 @@ Handlebars.registerHelper('rawmarkdown', function rawmarkdownHelper(str) {
 
 // Automatically link to AKAs, mostly used on method/function/param/option data types.
 Handlebars.registerHelper('type', function typeHelper(str) {
-	if (!str) { return; }
+	if (!str) { return ''; }
 	if (str in _AKAs) {
 		const id = _AKAs[str];
 		return `<a href='#${  id  }'>${  str  }</a>`;
@@ -90,7 +89,6 @@ Handlebars.registerHelper('type', function typeHelper(str) {
 
 // JSON stringify the stuff.
 Handlebars.registerHelper('json', function jsonHelper(obj) {
-	console.log(obj);
 	return JSON.stringify(obj, undefined, 1);
 });
 
