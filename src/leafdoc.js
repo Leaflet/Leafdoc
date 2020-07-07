@@ -5,86 +5,87 @@ import path from 'path';
 import {getTemplate, setTemplateDir, setAKAs} from './template';
 import * as regexps from './regexps';
 import parserTrivial from './parsers/trivial.js';
-import parserCLike from './parsers/c-like.js';
 import parserMec from './parsers/multilang.js';
 
 
 // 🍂class Leafdoc; Represents the Leafdoc parser
-export default function Leafdoc(options) {
-	this._namespaces = {};
-	this._knownDocumentables = [
-		'example',
-		'constructor',
-		'destructor',
-		'factory',
-		'option',
-		'event',
-		'method',
-		'function',
-		'property'
-	];
+export default class Leafdoc {
+	constructor(options) {
+		this._namespaces = {};
+		this._knownDocumentables = [
+			'example',
+			'constructor',
+			'destructor',
+			'factory',
+			'option',
+			'event',
+			'method',
+			'function',
+			'property'
+		];
 
-	this._documentableLabels = {
-		'example': 'Usage example',
-		'factory': 'Creation',
-		'constructor': 'Constructor',
-		'destructor': 'Destructor',
-		'option': 'Options',
-		'event': 'Events',
-		'method': 'Methods',
-		'function': 'Functions',
-		'property': 'Properties'
-	};
+		this._documentableLabels = {
+			'example': 'Usage example',
+			'factory': 'Creation',
+			'constructor': 'Constructor',
+			'destructor': 'Destructor',
+			'option': 'Options',
+			'event': 'Events',
+			'method': 'Methods',
+			'function': 'Functions',
+			'property': 'Properties'
+		};
 
-	this._inheritableDocumentables = [
-		'method',
-		'function',
-		'event',
-		'option',
-		'property'
-	];
+		this._inheritableDocumentables = [
+			'method',
+			'function',
+			'event',
+			'option',
+			'property'
+		];
 
-	// Holds a list of miniclasses, with the miniclass as key and the real
-	// class as value.
-	// Maybe a better name would be "subnamespaces" or whatever.
-	this._miniclasses = {};
+		// Holds a list of miniclasses, with the miniclass as key and the real
+		// class as value.
+		// Maybe a better name would be "subnamespaces" or whatever.
+		this._miniclasses = {};
 
-	this._AKAs = {};
+		this._AKAs = {};
 
-	// 🍂section
-	// 🍂aka Leafdoc options
-	if (options) {
+		// 🍂section
+		// 🍂aka Leafdoc options
+		if (options) {
 		// 🍂option templateDir: String = 'templates/basic'
 		// Defines which subdirectory (relative to the directory the curent JS
 		// script is running) holds the handlebars template files for building up the HTML.
-		if (options.templateDir) {
-			setTemplateDir(options.templateDir);
-		}
-
-		// 🍂option showInheritancesWhenEmpty: Boolean = false
-		// When `true`, child classes/namespaces will display documentables from ancestors, even if the child class doesn't have any of such documentables.
-		// e.g. display inherited events even if the child doesn't define any new events.
-		this.showInheritancesWhenEmpty = options.showInheritancesWhenEmpty || false;
-
-		// 🍂option leadingCharacter: String = '🍂'
-		// Overrides the Leaf symbol as the leading character for documentation lines.
-		// See also [`setLeadingCharacter`](#leafdoc-setleadingcharacter).
-		if (options.leadingCharacter) {
-			this.setLeadingCharacter(options.leadingCharacter);
-		}
-
-		// 🍂option customDocumentables: Map = {}
-		// A key-value map. Each pair will be passed to [`registerDocumentable`](#leafdoc-registerdocumentable).
-		if (options.customDocumentables) {
-			for (var i in options.customDocumentables) {
-				this.registerDocumentable(i, options.customDocumentables[i]);
+			if (options.templateDir) {
+				setTemplateDir(options.templateDir);
 			}
-		}
 
-		// 🍂option verbose: Boolean = false
-		// Set to `true` to display more information as files are being read.
-		if (options.verbose) {
-			this._verbose = options.verbose;
+			// 🍂option showInheritancesWhenEmpty: Boolean = false
+			// When `true`, child classes/namespaces will display documentables from ancestors, even if the child class doesn't have any of such documentables.
+			// e.g. display inherited events even if the child doesn't define any new events.
+			this.showInheritancesWhenEmpty = options.showInheritancesWhenEmpty || false;
+
+			// 🍂option leadingCharacter: String = '🍂'
+			// Overrides the Leaf symbol as the leading character for documentation lines.
+			// See also [`setLeadingCharacter`](#leafdoc-setleadingcharacter).
+			if (options.leadingCharacter) {
+				this.setLeadingCharacter(options.leadingCharacter);
+			}
+
+			// 🍂option customDocumentables: Map = {}
+			// A key-value map. Each pair will be passed to [`registerDocumentable`](#leafdoc-registerdocumentable).
+			if (options.customDocumentables) {
+				for (var i in options.customDocumentables) {
+					this.registerDocumentable(i, options.customDocumentables[i]);
+				}
+			}
+
+			// 🍂option verbose: Boolean = false
+			// Set to `true` to display more information as files are being read.
+			if (options.verbose) {
+				this._verbose = options.verbose;
+			}
 		}
 	}
 }
@@ -183,21 +184,22 @@ Leafdoc.prototype.addDir = function (dirname, extensions) {
 // 🍂method addFile(filename: String, isSource?: Boolean): this
 // Parses the given file using [`addBuffer`](#leafdoc-addbuffer).
 Leafdoc.prototype.addFile = function (filename, isSource) {
-	return this.addBuffer(fs.readFileSync(filename), isSource);
+	return this.addBuffer(fs.readFileSync(filename), isSource, filename);
 };
 
 
 
-// 🍂method addBuffer(buf: Buffer, isSource?: Boolean): this
+// 🍂method addBuffer(buf: Buffer, isSource?: Boolean, filename?: String): this
 // Parses the given buffer using [`addStr`](#leafdoc-addstr) underneath. Set `isSource` to `true` to parse Leafdoc directives inside comment blocks. Otherwise, the whole file is interpreted as Leafdoc directives.
 Leafdoc.prototype.addBuffer = function (buf, isSource) {
 	return this.addStr(buf.toString(), isSource);
 };
 
-// 🍂method addStr(str: String, isSource?: Boolean): this
+// 🍂method addStr(str: String, isSource?: Boolean, filename?: String): this
 // Parses the given string for Leafdoc comments. The string is assumed to
-// be source code with comments, unless `isSource` is explicitly set to `false`.
-Leafdoc.prototype.addStr = function (str, isSource) {
+// be source code with comments (with the comment separators defiend by the filename extension),
+// unless `isSource` is explicitly set to `false`.
+Leafdoc.prototype.addStr = function (str, isSource, filename) {
 
 	// Leaflet files use DOS line feeds, which screw up things.
 	str = str.replace(/\r\n?/g, '\n');
@@ -224,28 +226,14 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 	var sectionIsUninheritable = false;
 
 	const parser = isSource ? parserMec : parserTrivial;
-// 	const parser = isSource ? parserCLike : parserTrivial;
 
-	const parsedBlocks = parser(str);
+	const parsedBlocks = parser(str, filename);
 
 	// 1: Fetch comment blocks (from the parser). For each block...
 	for (let i = 0, l = parsedBlocks.length; i < l; i++) {
 		const commentBlock = parsedBlocks[i];
 
 		var blockIsEmpty = true;
-		//         console.error('new block: ', commentBlock);
-		// 		console.log('new block');
-
-		// 		if (multilineComment) {
-		// 			console.log('multiline block: {{{\n', multilineComment , '}}}');
-		// 		} else {
-		// 			console.log('block comment: {{{\n', blockComment , '}}}');
-		// 		}
-
-		// 		// Which regex should we use to clean each line?
-		// 		var regex = isSource ?
-		// 			(multilineComment ? regexps.leadingLine : regexps.leadingBlock) :
-		// 			regexps.anyLine;
 
 		// Edge case: some comment blocks in markdown might choke up
 		if (!commentBlock) {
@@ -336,11 +324,11 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 			}
 
 
-			// 				console.log(scope, '-', directive, '-', content);
+			// console.log(scope, '-', directive, '-', content);
 
 			if (scope === 'ns') {
 				if (!namespaces.hasOwnProperty(ns)) {
-					// 						console.log('Defining class/namespace ', ns);
+					// console.log('Defining class/namespace ', ns);
 					namespaces[ns] = {
 						name: ns,
 						aka: [],
@@ -405,15 +393,15 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 				}
 				currentSection = currentNamespace.supersections[dt].sections[sec];
 
-				// 					console.log(currentSection);
-				// 					console.log(directive);
+				// console.log(currentSection);
+				// console.log(directive);
 
 				if (this._knownDocumentables.indexOf(directive) !== -1) {
 					// Documentables might have more than their name as content.
 					// All documentables will follow the syntax for functions,
 					//   with optional parameters, optional required flag, optional type, and optional default value.
 
-					// 						console.log(content, ', ', alt);
+					// console.log(content, ', ', alt);
 
 					let name, paramString, params = {}, type = null, defaultValue = null, optional = false;
 
@@ -435,7 +423,7 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 								while (match = regexps.functionParam.exec(paramString)) {
 									params[ match[1] ] = {name: match[1], type: match[2]};
 								}
-								// 									console.log("\"" + paramString + "\"\n\t", params);
+								// console.log("\"" + paramString + "\"\n\t", params);
 							}
 						}
 
@@ -483,7 +471,7 @@ Leafdoc.prototype.addStr = function (str, isSource) {
 				} else if (directive === 'aka') {
 					currentDocumentable.aka.push(content);
 				} else if (directive === 'comment') {
-					// 						console.log('Doing stuff with a method comments: ', content);
+					// console.log('Doing stuff with a method comments: ', content);
 					currentDocumentable.comments.push(content);
 				}
 
@@ -553,10 +541,10 @@ Leafdoc.prototype._stringifyNamespace = function (namespace, isMini) {
 		var supersectionHasSomething = namespace.supersections.hasOwnProperty(s);
 
 		if (s !== 'example' && this.showInheritancesWhenEmpty && !supersectionHasSomething) {
-			// 			console.log('checking for empty section with inherited stuff, ', namespace.name, s, ancestors);
+			// console.log('checking for empty section with inherited stuff, ', namespace.name, s, ancestors);
 			for (var i in ancestors) {
 				var ancestor = ancestors[i];
-				// 				console.log(ancestor, this._namespaces[ancestor].supersections.hasOwnProperty(s));
+				// console.log(ancestor, this._namespaces[ancestor].supersections.hasOwnProperty(s));
 				if (this._namespaces[ancestor].supersections.hasOwnProperty(s)) {
 
 					for (var sec in this._namespaces[ancestor].supersections[s].sections) {

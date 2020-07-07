@@ -15,7 +15,7 @@ Leafdoc includes a small command-line utility, useful when running from a consol
 */
 
 
-var fs = require("fs");
+var fs = require('fs');
 var path = require('path');
 var minimist = require('minimist');
 var Leafdoc = require('./leafdoc');

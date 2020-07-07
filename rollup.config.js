@@ -52,7 +52,7 @@ export default [
     
     // Experimental code-splitting build, for exposing all modules (for unit testing)
     {
-        input: [pkg.module, 'src/parsers/c-like.js', 'src/parsers/trivial.js'],
+        input: [pkg.module, 'src/parsers/multilang.js', 'src/parsers/trivial.js'],
         experimentalCodeSplitting: true,
         experimentalDynamicImport: true,
         output: {
