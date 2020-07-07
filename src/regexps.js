@@ -1,7 +1,7 @@
 
 // Regexps (maybe) shared between files.
 
-import {xRegExp} from 'XRegExp';
+import {XRegExp as xRegExp} from 'xregexp';
 import unicodeRegExpIDStart from 'unicode-7.0.0/properties/ID_Start/regex';
 import unicodeRegExpIDContinue from 'unicode-7.0.0/properties/ID_Continue/regex';
 

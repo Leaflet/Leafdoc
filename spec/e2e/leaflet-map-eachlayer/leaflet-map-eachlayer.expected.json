@@ -14,9 +14,7 @@
      "Methods for Layers and Controls": {
       "name": "Methods for Layers and Controls",
       "aka": [],
-      "comments": [
-       ""
-      ],
+      "comments": [],
       "uninheritable": false,
       "documentables": {
        "hasLayer": {
@@ -45,8 +43,7 @@
          "map.eachLayer(function(layer){",
          "    layer.bindPopup('Hello');",
          "});",
-         "```",
-         ""
+         "```"
         ],
         "params": {
          "fn": {

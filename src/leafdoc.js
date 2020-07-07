@@ -10,6 +10,20 @@ import parserMec from './parsers/multilang.js';
 
 // 🍂class Leafdoc; Represents the Leafdoc parser
 export default class Leafdoc {
+	/**
+	 * 🍂constructor Leafdoc(options: Leafdoc options); Constructor for a new Leafdoc parser
+	 * 🍂example
+	 *
+	 * Output Leafdoc's own documentation to the console with:
+	 *
+	 * ```
+	 * var LeafDoc = require('./src/leafdoc.js');
+	 * var doc = new LeafDoc();
+	 * 	doc.addFile('src/leafdoc.js');
+	 *
+	 * console.log( doc.outputStr() );
+	 * ```
+	 */
 	constructor(options) {
 		this._namespaces = {};
 		this._knownDocumentables = [
@@ -90,21 +104,7 @@ export default class Leafdoc {
 	}
 }
 
-/*
-🍂constructor Leafdoc(options: Leafdoc options); Constructor for a new Leafdoc parser
 
-🍂example
-
-Output Leafdoc's own documentation to the console with:
-
-```
-var LeafDoc = require('./src/leafdoc.js');
-var doc = new LeafDoc();
-	doc.addFile('src/leafdoc.js');
-
-console.log( doc.outputStr() );
-```
- */
 
 
 // 🍂method registerDocumentable (name: String, label?: String, inheritable?: Boolean): this
