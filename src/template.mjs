@@ -4,7 +4,7 @@
 import fs from 'fs';
 import path from 'path';
 import Handlebars from 'handlebars';
-import {Parser as CommonMarkParser, HtmlRenderer as CommonMarkHtmlRenderer} from 'commonmark/dist/commonmark.js';
+import MarkdownRenderer from 'markdown-it';
 export {Handlebars as engine};
 
 let templateDir = `${__dirname  }/../templates/basic`;
@@ -22,36 +22,21 @@ export function getTemplate(templateName) {
 	return templates[templateName];
 }
 
-
 let _AKAs = {};
 
 export function setAKAs(akas) {
-
 	// 	console.log('Template thing updating AKAs');
 	_AKAs = akas;
 }
 
-const markdownParser = new CommonMarkParser();
-const markdownRenderer = new CommonMarkHtmlRenderer();
+/// TODO: Allow setting markdown-it options (enable/disable tables, autolinks, abbrevs, etc)
+let markdownRenderer;
 function markdown(str) {
-	return markdownRenderer.render(markdownParser.parse(str));
+	if (!markdownRenderer) {
+		markdownRenderer = MarkdownRenderer(/* markdown-it options */);
+	}
+	return markdownRenderer.render(str);
 }
-
-// export Handlebars as engine;
-
-
-/// TODO: Catch all code blocks and check if the contents is a known class, namespace or AKA
-
-// marked.setOptions({
-// 	highlight: function (code) {
-// 		return require('highlight').highlight(code).value;
-// 	}
-// });
-
-
-
-
-/// TODO: Make the big markdown functions also automatically link to stuff.
 
 // Helper to replace AKAs in markdown links.
 function replaceAKAs(str) {
@@ -59,18 +44,17 @@ function replaceAKAs(str) {
 	for (const i in _AKAs) {
 
 		// [...](#a) → [...](#b)
-		str = str.replace(`(#${  i  })`, `(#${  _AKAs[i]  })`);
+		str = str.replace(`(#${i})`, `(#${  _AKAs[i]  })`);
 
 		// `a` → [`a`](#b)
-		str = str.replace(`\`${  i  }\``, `[\`${  i  }\`](#${  _AKAs[i]  })`);
+		str = str.replace(`\`${i}\``, `[\`${i}\`](#${  _AKAs[i]  })`);
 
 	}
 	return str;
 }
 
 
-
-Handlebars.registerHelper('markdown', (str) => {
+Handlebars.registerHelper('markdown', function markdownHelper(str) {
 	if (!str) return;
 	if (str instanceof Array) {
 		str = str.join('\n').trim();
@@ -82,7 +66,7 @@ Handlebars.registerHelper('markdown', (str) => {
 		.replace('</p>', '');
 });
 
-Handlebars.registerHelper('rawmarkdown', (str) => {
+Handlebars.registerHelper('rawmarkdown', function rawmarkdownHelper(str) {
 	if (!str) { return; }
 	if (str instanceof Array) {
 		str = str.join('\n');
@@ -92,7 +76,7 @@ Handlebars.registerHelper('rawmarkdown', (str) => {
 
 
 // Automatically link to AKAs, mostly used on method/function/param/option data types.
-Handlebars.registerHelper('type', (str) => {
+Handlebars.registerHelper('type', function typeHelper(str) {
 	if (!str) { return; }
 	if (str in _AKAs) {
 		const id = _AKAs[str];
@@ -105,12 +89,9 @@ Handlebars.registerHelper('type', (str) => {
 
 
 // JSON stringify the stuff.
-Handlebars.registerHelper('json', (obj) => {
+Handlebars.registerHelper('json', function jsonHelper(obj) {
 	console.log(obj);
 	return JSON.stringify(obj, undefined, 1);
 });
-
-
-
 
 

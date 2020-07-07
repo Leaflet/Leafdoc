@@ -11,8 +11,8 @@
     "leafdoc": "src/cli.js"
   },
   "dependencies": {
-    "commonmark": "^0.29.1",
     "handlebars": "^4.7.6",
+    "markdown-it": "^11.0.0",
     "minimist": "^1.2.5",
     "multilang-extract-comments": "^0.3.2",
     "regenerate-unicode-properties": "^8.2.0",
