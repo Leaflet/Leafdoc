@@ -4,10 +4,10 @@
 import fs from 'fs';
 import path from 'path';
 import Handlebars from 'handlebars';
-import { Parser as CommonMarkParser, HtmlRenderer as CommonMarkHtmlRenderer } from 'commonmark/dist/commonmark.js';
+import {Parser as CommonMarkParser, HtmlRenderer as CommonMarkHtmlRenderer} from 'commonmark/dist/commonmark.js';
 export {Handlebars as engine};
 
-let templateDir = __dirname + '/../templates/basic';
+let templateDir = `${__dirname  }/../templates/basic`;
 let templates = Object.create(null);
 
 export function setTemplateDir(newDir) {
@@ -17,17 +17,17 @@ export function setTemplateDir(newDir) {
 
 export function getTemplate(templateName) {
 	if (!templates[templateName]) {
-		templates[templateName] = Handlebars.compile(fs.readFileSync(path.join(templateDir, templateName + '.hbs')).toString());
+		templates[templateName] = Handlebars.compile(fs.readFileSync(path.join(templateDir, `${templateName  }.hbs`)).toString());
 	}
 	return templates[templateName];
 }
 
 
-var _AKAs = {};
+let _AKAs = {};
 
 export function setAKAs(akas) {
 
-// 	console.log('Template thing updating AKAs');
+	// 	console.log('Template thing updating AKAs');
 	_AKAs = akas;
 }
 
@@ -56,13 +56,13 @@ function markdown(str) {
 // Helper to replace AKAs in markdown links.
 function replaceAKAs(str) {
 	str = str.trim();
-	for (var i in _AKAs) {
+	for (const i in _AKAs) {
 
 		// [...](#a) → [...](#b)
-		str = str.replace('(#' + i + ')', '(#' + _AKAs[i] + ')');
+		str = str.replace(`(#${  i  })`, `(#${  _AKAs[i]  })`);
 
 		// `a` → [`a`](#b)
-		str = str.replace('`' + i + '`', '[`' + i + '`](#' + _AKAs[i] + ')');
+		str = str.replace(`\`${  i  }\``, `[\`${  i  }\`](#${  _AKAs[i]  })`);
 
 	}
 	return str;
@@ -70,7 +70,7 @@ function replaceAKAs(str) {
 
 
 
-Handlebars.registerHelper('markdown', function (str) {
+Handlebars.registerHelper('markdown', (str) => {
 	if (!str) return;
 	if (str instanceof Array) {
 		str = str.join('\n').trim();
@@ -82,7 +82,7 @@ Handlebars.registerHelper('markdown', function (str) {
 		.replace('</p>', '');
 });
 
-Handlebars.registerHelper('rawmarkdown', function (str) {
+Handlebars.registerHelper('rawmarkdown', (str) => {
 	if (!str) { return; }
 	if (str instanceof Array) {
 		str = str.join('\n');
@@ -92,11 +92,11 @@ Handlebars.registerHelper('rawmarkdown', function (str) {
 
 
 // Automatically link to AKAs, mostly used on method/function/param/option data types.
-Handlebars.registerHelper('type', function (str) {
+Handlebars.registerHelper('type', (str) => {
 	if (!str) { return; }
 	if (str in _AKAs) {
-		var id = _AKAs[str];
-		return '<a href=\'#' + id + '\'>' + str + '</a>';
+		const id = _AKAs[str];
+		return `<a href='#${  id  }'>${  str  }</a>`;
 	} else {
 		// Should be a built-in type
 		return str;
@@ -105,7 +105,7 @@ Handlebars.registerHelper('type', function (str) {
 
 
 // JSON stringify the stuff.
-Handlebars.registerHelper('json', function (obj) {
+Handlebars.registerHelper('json', (obj) => {
 	console.log(obj);
 	return JSON.stringify(obj, undefined, 1);
 });

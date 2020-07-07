@@ -3,7 +3,7 @@
 const trivialParser = require('../dist/split/trivial.js');
 
 
-describe('Trivial parser', function () {
+describe('Trivial parser', () => {
 	it('just passes the string around, wrapped in an array', () => {
 
 		expect(trivialParser('foobar')).toEqual(['foobar']);

@@ -5,12 +5,8 @@ import mec from 'multilang-extract-comments';
 // version of the comments data structure
 
 export default function multilangParser(str, filename) {
-	let mecBlocks = mec(str, {filename: filename || 'leafdoc_tmp.js'});
-	let blocks = Object.values(mecBlocks).map(function (mecBlock) {
-		return mecBlock.content.trim();
-	}).filter(function (block) {
-		return block && block !== '';
-	});
+	const mecBlocks = mec(str, {filename: filename || 'leafdoc_tmp.js'});
+	const blocks = Object.values(mecBlocks).map(mecBlock => mecBlock.content.trim()).filter(block => block && block !== '');
 
 	return blocks;
 }

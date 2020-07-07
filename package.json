@@ -24,8 +24,8 @@
     "prepublish": "npm run update-markdown-leafdoc && npm run update-html-leafdoc",
     "rollup": "rollup -c rollup.config.js",
     "test": "rollup -c rollup.config.js; jasmine",
-    "lint": "eslint src/ spec/",
-    "lintfix": "eslint src/ spec/ --fix"
+    "lint": "eslint src/ spec/*.js --ext=.js,.mjs",
+    "lintfix": "eslint src/ spec/*.js --fix --ext=.js,.mjs"
   },
   "repository": {
     "type": "git",

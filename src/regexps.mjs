@@ -31,14 +31,14 @@ export let leafDirective = redoLeafDirective('🍂');
 
 // Re-builds the 🍂 directive based on a different leading character
 export function redoLeafDirective(char) {
-	leafDirective = xRegExp('  \\s* ' + char + ' (?<directive> \\S+ ) (\\s+ (?<content> [^;\\n]+ )){0,1} ', 'gnx');
+	leafDirective = xRegExp(`  \\s* ${  char  } (?<directive> \\S+ ) (\\s+ (?<content> [^;\\n]+ )){0,1} `, 'gnx');
 	return leafDirective;
 }
 
 // Parses an identifier, allowing only unicode ID_Start and ID_Continue characters
 // An identifier allows dots in it, to allow for namespacing identifiers.
 // TODO: An identifier shall allow an underscore or dollar at the beginning, as JS does.
-var identifier = xRegExp.build('^({{ID_Start}}  ( {{ID_Continue}} | \\. | : )*)$', {
+const identifier = xRegExp.build('^({{ID_Start}}  ( {{ID_Continue}} | \\. | : )*)$', {
 	ID_Start: unicodeRegExpIDStart,	// eslint-disable-line camelcase
 	ID_Continue: unicodeRegExpIDContinue	// eslint-disable-line camelcase
 }, 'nx');
@@ -48,14 +48,14 @@ var identifier = xRegExp.build('^({{ID_Start}}  ( {{ID_Continue}} | \\. | : )*)$
 //   use unicode ID_Start and ID_Continue character sets via 'identifier' sub-regexp.
 // eslint-disable-next-line no-useless-escape
 export const functionDefinition = xRegExp.build('^ (?<name> {{identifier}} ) (?<required> (\\?{0,1}) ) \\s* (?<params> \\( .* \\) ){0,1}   \\s* ( \\: \\s* (?<type> .+? ) )? ( = \\s* (?<default> .+ ) \\s* ){0,1} \$', {
-	identifier: identifier
+	identifier
 }, 'nx');
 
 
 
 // var functionParam = xRegExp.build('^ \\s* (?<name> {{identifier}}) \\s* ( \\: \\s* (?<type> .+ ) \\s* ) $', {identifier: identifier}, 'nx');
 // var functionParam = xRegExp.build('\\s* (?<name> ( {{identifier}} | … ) \\?{0,1} ) \\s* ( \\: \\s* (?<type> [^,]+ ) \\s* ) (, | \\)) ', {identifier: identifier}, 'gnx');
-export const functionParam = xRegExp.build('\\s* (?<name> ( {{identifier}} | … ) \\?{0,1} ) \\s* ( \\: \\s* (?<type> [^,]+ ) \\s* )? (, | \\)) ', {identifier: identifier}, 'gnx');
+export const functionParam = xRegExp.build('\\s* (?<name> ( {{identifier}} | … ) \\?{0,1} ) \\s* ( \\: \\s* (?<type> [^,]+ ) \\s* )? (, | \\)) ', {identifier}, 'gnx');
 
 
 

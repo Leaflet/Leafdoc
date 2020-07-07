@@ -3,8 +3,8 @@
 const cLikeParser = require('../dist/split/multilang.js');
 
 
-describe('C-like parser', function () {
-	describe('when there are no comments', function () {
+describe('C-like parser', () => {
+	describe('when there are no comments', () => {
 
 		it('returns an empty array', () => {
 
@@ -23,7 +23,7 @@ var templateDir = 'basic';
 
 	});
 
-	describe('when there are single-line comments', function () {
+	describe('when there are single-line comments', () => {
 
 		it('returns one item of one line', () => {
 			expect(cLikeParser('//foobar')).toEqual(['foobar']);
@@ -73,7 +73,7 @@ lorem ipsum
 
 	});
 
-	describe('when there are block comments', function () {
+	describe('when there are block comments', () => {
 		it('returns one item of one line', () => {
 			expect(cLikeParser('/*foobar*/')).toEqual(['foobar']);
 			//expect(cLikeParser('var /*foobar*/ foo')).toEqual(['foobar']);
@@ -89,7 +89,7 @@ lorem ipsum
 			expect(cLikeParser('/*******foobar******/')).toEqual(['****foobar*****']);
 		});
 
-		it('parses asterisk-only blocks', function () {
+		it('parses asterisk-only blocks', () => {
 			expect(cLikeParser('/*************/')).toEqual(['*********']);
 		});
 
@@ -118,7 +118,7 @@ foo
 bar
 ****/
 something else
-`)).toEqual([ '*\nfoo\nbar\n**' ]);
+`)).toEqual(['*\nfoo\nbar\n**']);
 
 			expect(cLikeParser(`
 something 
@@ -189,7 +189,7 @@ bar2*/
 		});
 	});
 
-	it('Parses correctly Leaflet\'s eachLayer comment block', function () {
+	it('Parses correctly Leaflet\'s eachLayer comment block', () => {
 
 
 		expect(cLikeParser(`
@@ -210,7 +210,7 @@ map.eachLayer(function(layer){
 \`\`\``]);
 	});
 
-	it('Parses correctly Leaflet\'s Map leading comment block', function () {
+	it('Parses correctly Leaflet\'s Map leading comment block', () => {
 
 		expect(cLikeParser(`
 /*
@@ -249,7 +249,7 @@ var map = L.map('map', {
 
 	});
 
-	it('Parses correctly Leaflet\'s VML leading comment block', function () {
+	it('Parses correctly Leaflet\'s VML leading comment block', () => {
 
 		expect(cLikeParser(`
 /*
