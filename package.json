@@ -19,8 +19,8 @@
     "xregexp": "^4.3.0"
   },
   "scripts": {
-    "update-markdown-leafdoc": "src/cli.mjs -t templates/markdown src/cli.js src/leafdoc.mjs --verbose -o Leafdoc.md",
-    "update-html-leafdoc": "src/cli.mjs -t templates/basic src/leafdoc.mjs src/cli.js --verbose -o Leafdoc.html",
+    "update-markdown-leafdoc": "src/cli.mjs -t templates/markdown src/cli.mjs src/leafdoc.mjs --verbose -o Leafdoc.md",
+    "update-html-leafdoc": "src/cli.mjs -t templates/basic src/leafdoc.mjs src/cli.mjs --verbose -o Leafdoc.html",
     "prepublish": "npm run update-markdown-leafdoc && npm run update-html-leafdoc",
     "rollup": "rollup -c rollup.config.js",
     "test": "rollup -c rollup.config.js; jasmine",
@@ -50,8 +50,7 @@
       "sourceType": "module"
     },
     "rules": {
-    "prefer-arrow-callback": 0,
-
+      "prefer-arrow-callback": 0,
       "indent": [
         1,
         "tab",

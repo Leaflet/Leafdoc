@@ -31,8 +31,7 @@ export let leafDirective = redoLeafDirective('🍂');
 
 // Re-builds the 🍂 directive based on a different leading character
 export function redoLeafDirective(char) {
-	leafDirective = xRegExp(`  \\s* ${  char  } (?<directive> \\S+ ) (\\s+ (?<content> [^;\\n]+ )){0,1} `, 'gnx');
-	return leafDirective;
+	return xRegExp(`  \\s* ${  char  } (?<directive> \\S+ ) (\\s+ (?<content> [^;\\n]+ )){0,1} `, 'gnx');
 }
 
 // Parses an identifier, allowing only unicode ID_Start and ID_Continue characters
