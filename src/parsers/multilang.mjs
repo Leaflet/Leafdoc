@@ -8,7 +8,7 @@ import mec from 'multilang-extract-comments';
 
 export default function multilangParser(str, filename) {
 	// comment-patterns dependency of mec, doesn't have support for '.mjs' modules,
-	// see https://git.io/JJWUQ
+	// see https://github.com/nknapp/comment-patterns/pull/9
 	if (!filename || path.extname(filename) === '.mjs') {
 		filename = 'leafdoc_tmp.js';
 	}
