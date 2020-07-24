@@ -14,7 +14,7 @@
     "handlebars": "^4.7.6",
     "markdown-it": "^11.0.0",
     "minimist": "^1.2.5",
-    "multilang-extract-comments": "^0.3.2",
+    "multilang-extract-comments": "^0.3.3",
     "regenerate-unicode-properties": "^8.2.0",
     "xregexp": "^4.3.0"
   },
