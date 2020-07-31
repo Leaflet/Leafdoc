@@ -7,7 +7,7 @@ import Handlebars from 'handlebars';
 import MarkdownRenderer from 'markdown-it';
 export {Handlebars as engine};
 
-let templateDir = `${__dirname  }/../templates/basic`;
+let templateDir = path.join(path.resolve(), 'templates', 'basic');
 let templates = Object.create(null);
 
 export function setTemplateDir(newDir) {

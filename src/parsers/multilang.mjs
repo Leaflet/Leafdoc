@@ -1,4 +1,6 @@
 
+import path from 'path';
+
 import mec from 'multilang-extract-comments';
 
 // Generic parser, depends on multiline-extract-comments and returns a simplified

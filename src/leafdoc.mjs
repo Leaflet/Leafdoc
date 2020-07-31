@@ -260,7 +260,7 @@ export default class Leafdoc {
 
 				let match;
 				// In "param foo, bar", directive is "param" and content is "foo, bar"
-				while (match = regexps.leafDirective.exec(line)) {
+				while (match = regexps.getLeafDirective().exec(line)) {
 					if (match[2]) { match[2] = match[2].trim(); }
 					directives.push([match[1], match[2]]);	// [directive, content]
 					// console.log('directive match: ', match);
