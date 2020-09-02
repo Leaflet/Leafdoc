@@ -1,0 +1,47 @@
+
+@class Map
+@inherits Evented
+
+@method panTo(latlng: LatLng): this
+@method getCenter(): LatLng
+@method setZoom(zoom: Number): this
+@method getZoom(): Number
+
+
+@class Evented
+@inherits Class
+
+@method on(evtype: String, handler: Function): this
+@method off(evtype: String, handler: Function): this
+
+
+@class Class
+
+@property options: Object
+
+@method extend(Object): Class
+@method include(Object): Class
+@method initialize(Object): Class
+
+@class Layer
+@inherits Evented
+
+@method addTo(map: Map): this
+@method remove(map?: Map): this
+@method onAdd(): this
+@method onRemove(): this
+@method getAttribution(): String
+
+@class Marker
+@inherits Layer
+
+@class TileLayer
+@inherits GridLayer
+
+@method getTileUrl(coords: Object)
+
+@class GridLayer
+@inherits Layer
+
+@method createTile(coords: Object)
+

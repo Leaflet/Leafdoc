@@ -1,0 +1,116 @@
+digraph ClassDiagram {
+	node [shape=plaintext]
+	edge [arrowhead=onormal];
+
+Map [ label = <<TABLE CELLSPACING="0">
+	<TR><TD><B>Map</B></TD></TR>
+	<TR><TD><I>Methods</I><BR/>
+panTo(&lt;LatLng&gt; latlng):this
+<BR align="left" />
+getCenter():LatLng
+<BR align="left" />
+setZoom(&lt;Number&gt; zoom):this
+<BR align="left" />
+getZoom():Number
+<BR align="left" />
+
+</TD></TR>
+
+
+
+</TABLE>>]
+
+	Map -> Evented
+Evented [ label = <<TABLE CELLSPACING="0">
+	<TR><TD><B>Evented</B></TD></TR>
+	<TR><TD><I>Methods</I><BR/>
+on(&lt;String&gt; evtype, &lt;Function&gt; handler):this
+<BR align="left" />
+off(&lt;String&gt; evtype, &lt;Function&gt; handler):this
+<BR align="left" />
+
+</TD></TR>
+
+
+
+</TABLE>>]
+
+	Evented -> Class
+Class [ label = <<TABLE CELLSPACING="0">
+	<TR><TD><B>Class</B></TD></TR>
+	<TR><TD><I>Methods</I><BR/>
+extend(Object):Class
+<BR align="left" />
+include(Object):Class
+<BR align="left" />
+initialize(Object):Class
+<BR align="left" />
+
+</TD></TR>
+
+<TR><TD><I>Properties</I><BR/>
+options:Object<BR align="left" />
+
+</TD></TR>
+
+
+</TABLE>>]
+
+Layer [ label = <<TABLE CELLSPACING="0">
+	<TR><TD><B>Layer</B></TD></TR>
+	<TR><TD><I>Methods</I><BR/>
+addTo(&lt;Map&gt; map):this
+<BR align="left" />
+remove(&lt;Map&gt; map?):this
+<BR align="left" />
+onAdd():this
+<BR align="left" />
+onRemove():this
+<BR align="left" />
+getAttribution():String
+<BR align="left" />
+
+</TD></TR>
+
+
+
+</TABLE>>]
+
+	Layer -> Evented
+Marker [ label = <<TABLE CELLSPACING="0">
+	<TR><TD><B>Marker</B></TD></TR>
+	
+
+
+</TABLE>>]
+
+	Marker -> Layer
+TileLayer [ label = <<TABLE CELLSPACING="0">
+	<TR><TD><B>TileLayer</B></TD></TR>
+	<TR><TD><I>Methods</I><BR/>
+getTileUrl(&lt;Object&gt; coords):
+<BR align="left" />
+
+</TD></TR>
+
+
+
+</TABLE>>]
+
+	TileLayer -> GridLayer
+GridLayer [ label = <<TABLE CELLSPACING="0">
+	<TR><TD><B>GridLayer</B></TD></TR>
+	<TR><TD><I>Methods</I><BR/>
+createTile(&lt;Object&gt; coords):
+<BR align="left" />
+
+</TD></TR>
+
+
+
+</TABLE>>]
+
+	GridLayer -> Layer
+
+
+}

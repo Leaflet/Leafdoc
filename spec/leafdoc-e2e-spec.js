@@ -27,20 +27,22 @@ describe('e2e tests', () => {
 
 			const testFiles = fs.readdirSync(`./spec/e2e/${  dirName}`)
 				.filter(name => !name.match(/\.html$/))
+				.filter(name => !name.match(/\.dot$/))
 				.filter(name => !name.match(/\.json$/))
 				.sort();
 
 			// console.log(testFiles);
 
-			testFiles.forEach(filename => doc.addFile(`./spec/e2e/${  dirName  }/${  filename}`, true));
+			testFiles.forEach(filename => doc.addFile(`./spec/e2e/${  dirName  }/${  filename}`));
 
 			const outJson = doc.outputJSON();
 			const outHtml = doc.outputStr();
+			const outExt = options.outputExtension || "html";
 
 			fs.writeFileSync(`${dir + dirName  }.actual.json`, outJson);
-			fs.writeFileSync(`${dir + dirName  }.actual.html`, outHtml);
+			fs.writeFileSync(`${dir + dirName  }.actual.${ outExt}`, outHtml);
 
-			const expectedHtml = fs.readFileSync(`${dir + dirName  }.expected.html`).toString();
+			const expectedHtml = fs.readFileSync(`${dir + dirName  }.expected.${ outExt}`).toString();
 			const expectedJson = JSON.parse(fs.readFileSync(`${dir + dirName  }.expected.json`));
 
 			expect(JSON.parse(outJson)).toEqual(expectedJson);

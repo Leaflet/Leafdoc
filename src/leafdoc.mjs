@@ -171,7 +171,7 @@ export default class Leafdoc {
 				if (this._verbose) {
 					console.log('Leafdoc processing file: ', filename);
 				}
-				this.addFile(filename, path.extname(filename) !== '.leafdoc');
+				this.addFile(filename);
 			}
 		}
 		return this;
@@ -179,25 +179,23 @@ export default class Leafdoc {
 
 
 
-	// 🍂method addFile(filename: String, isSource?: Boolean): this
+	// 🍂method addFile(filename: String): this
 	// Parses the given file using [`addBuffer`](#leafdoc-addbuffer).
-	addFile(filename, isSource) {
-		return this.addBuffer(fs.readFileSync(filename), isSource, filename);
+	addFile(filename) {
+		return this.addBuffer(fs.readFileSync(filename), filename);
 	}
 
 
 
-	// 🍂method addBuffer(buf: Buffer, isSource?: Boolean, filename?: String): this
-	// Parses the given buffer using [`addStr`](#leafdoc-addstr) underneath. Set `isSource` to `true` to parse Leafdoc directives inside comment blocks. Otherwise, the whole file is interpreted as Leafdoc directives.
-	addBuffer(buf, isSource, filename) {
-		return this.addStr(buf.toString(), isSource, filename);
+	// 🍂method addBuffer(buf: Buffer, filename?: String): this
+	// Parses the given buffer using [`addStr`](#leafdoc-addstr) underneath.
+	addBuffer(buf, filename) {
+		return this.addStr(buf.toString(), filename);
 	}
 
-	// 🍂method addStr(str: String, isSource?: Boolean, filename?: String): this
-	// Parses the given string for Leafdoc comments. The string is assumed to
-	// be source code with comments (with the comment separators defiend by the filename extension),
-	// unless `isSource` is explicitly set to `false`.
-	addStr(str, isSource, filename) {
+	// 🍂method addStr(str: String, filename?: String): this
+	// Parses the given string for Leafdoc comments.
+	addStr(str, filename) {
 
 		// Leaflet files use DOS line feeds, which screw up things.
 		str = str.replace(/\r\n?/g, '\n');
@@ -223,7 +221,10 @@ export default class Leafdoc {
 		let sectionAKA = [];
 		let sectionIsUninheritable = false;
 
-		const parser = isSource ? parserMec : parserTrivial;
+console.log(path.extname(filename), filename);
+		const parser = path.extname(filename) === '.leafdoc' ?
+			parserTrivial :
+			parserMec;
 
 		const parsedBlocks = parser(str, filename);
 
@@ -581,7 +582,8 @@ export default class Leafdoc {
 			name: isMini ? undefined : namespace.name,
 			id: namespace.id,
 			comments: namespace.comments,
-			supersections: out
+			supersections: out,
+			inherits: namespace.inherits
 		});
 	}
 
@@ -599,13 +601,11 @@ export default class Leafdoc {
 			}
 		}
 
-
 		for (var s in supersection.sections) {
 			sections += this._stringifySection(supersection.sections[s], supersection.name, false);
 		}
 
 		const name = supersection.name;
-
 		const label = this._documentableLabels[name] || name;
 
 		// Calculate inherited documentables.
@@ -693,7 +693,7 @@ export default class Leafdoc {
 
 
 
-	_stringifySection(section, documentableType, inheritingNamespace) {
+	_stringifySection(section, documentableType, inheritingNamespace, supersectionLabel) {
 		const name = (section.name === '__default' || inheritingNamespace) ? '' : section.name;
 
 		// 	if (name) console.log('Named section:', section);
@@ -713,7 +713,7 @@ export default class Leafdoc {
 					params: oldDoc.params,
 					type: oldDoc.type,
 					defaultValue: oldDoc.defaultValue,
-					id: this._normalizeName(inheritingNamespace, oldDoc.name)
+					id: this._normalizeName(inheritingNamespace, oldDoc.name),
 				});
 			}
 
@@ -729,7 +729,8 @@ export default class Leafdoc {
 				documentables: docs
 			}),
 			isSecondarySection: (section.name !== '__default' && documentableType !== 'example' && !inheritingNamespace),
-			isInherited: !!inheritingNamespace
+			isInherited: !!inheritingNamespace,
+			supersectionLabel: this._documentableLabels[documentableType] || documentableType
 		});
 	}
 

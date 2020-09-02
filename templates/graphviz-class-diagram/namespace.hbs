@@ -1,0 +1,8 @@
+{{name}} [ label = <<TABLE CELLSPACING="0">
+	<TR><TD><B>{{name}}</B></TD></TR>
+	{{{supersections}}}
+</TABLE>>]
+
+{{#each inherits}}
+	{{../name}} -> {{this}}
+{{/each}}

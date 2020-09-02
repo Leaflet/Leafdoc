@@ -1,0 +1,6 @@
+{
+    "templateDir": "./templates/graphviz-class-diagram",
+    "showInheritancesWhenEmpty": true,
+    "leadingCharacter": "@",
+    "outputExtension": "dot"
+}

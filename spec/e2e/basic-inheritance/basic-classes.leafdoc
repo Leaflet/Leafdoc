@@ -1,0 +1,11 @@
+
+@class ChildClass
+@inherits ParentClass
+
+@method childMethod(foo: String): this
+
+
+@class ParentClass
+
+@method parentMethod(bar: Boolean): this
+

@@ -1,0 +1,98 @@
+{
+ "ChildClass": {
+  "name": "ChildClass",
+  "aka": [],
+  "comments": [
+   ""
+  ],
+  "supersections": {
+   "method": {
+    "name": "method",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "__default": {
+      "name": "__default",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "childMethod": {
+        "name": "childMethod",
+        "aka": [],
+        "comments": [
+         "",
+         ""
+        ],
+        "params": {
+         "foo": {
+          "name": "foo",
+          "type": "String"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "childclass-childmethod"
+       }
+      },
+      "type": "method",
+      "id": "childclass-method"
+     }
+    },
+    "id": "childclass-method"
+   }
+  },
+  "inherits": [
+   "ParentClass"
+  ],
+  "id": "childclass"
+ },
+ "ParentClass": {
+  "name": "ParentClass",
+  "aka": [],
+  "comments": [
+   ""
+  ],
+  "supersections": {
+   "method": {
+    "name": "method",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "__default": {
+      "name": "__default",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "parentMethod": {
+        "name": "parentMethod",
+        "aka": [],
+        "comments": [
+         "",
+         ""
+        ],
+        "params": {
+         "bar": {
+          "name": "bar",
+          "type": "Boolean"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "parentclass-parentmethod"
+       }
+      },
+      "type": "method",
+      "id": "parentclass-method"
+     }
+    },
+    "id": "parentclass-method"
+   }
+  },
+  "inherits": [],
+  "id": "parentclass"
+ }
+}
