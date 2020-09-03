@@ -404,6 +404,66 @@
      }
     },
     "id": "tilelayer-method"
+   },
+   "option": {
+    "name": "option",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "__default": {
+      "name": "__default",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "minZoom": {
+        "name": "minZoom",
+        "aka": [],
+        "comments": [],
+        "params": {},
+        "type": "Number",
+        "optional": false,
+        "defaultValue": "0",
+        "id": "tilelayer-minzoom"
+       },
+       "maxZoom": {
+        "name": "maxZoom",
+        "aka": [],
+        "comments": [],
+        "params": {},
+        "type": "Number",
+        "optional": false,
+        "defaultValue": "18",
+        "id": "tilelayer-maxzoom"
+       },
+       "zoomOffset": {
+        "name": "zoomOffset",
+        "aka": [],
+        "comments": [],
+        "params": {},
+        "type": "Number",
+        "optional": false,
+        "defaultValue": "0",
+        "id": "tilelayer-zoomoffset"
+       },
+       "zoomReverse": {
+        "name": "zoomReverse",
+        "aka": [],
+        "comments": [
+         ""
+        ],
+        "params": {},
+        "type": "Boolean",
+        "optional": false,
+        "defaultValue": "false",
+        "id": "tilelayer-zoomreverse"
+       }
+      },
+      "type": "option",
+      "id": "tilelayer-option"
+     }
+    },
+    "id": "tilelayer-option"
    }
   },
   "inherits": [
@@ -433,7 +493,6 @@
         "name": "createTile",
         "aka": [],
         "comments": [
-         "",
          ""
         ],
         "params": {
@@ -453,6 +512,81 @@
      }
     },
     "id": "gridlayer-method"
+   },
+   "option": {
+    "name": "option",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "__default": {
+      "name": "__default",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "tileSize": {
+        "name": "tileSize",
+        "aka": [],
+        "comments": [],
+        "params": {},
+        "type": "Number|Point",
+        "optional": false,
+        "defaultValue": "256",
+        "id": "gridlayer-tilesize"
+       },
+       "opacity": {
+        "name": "opacity",
+        "aka": [],
+        "comments": [],
+        "params": {},
+        "type": "Number",
+        "optional": false,
+        "defaultValue": "1.0",
+        "id": "gridlayer-opacity"
+       },
+       "minZoom": {
+        "name": "minZoom",
+        "aka": [],
+        "comments": [],
+        "params": {},
+        "type": "Number",
+        "optional": false,
+        "defaultValue": "0",
+        "id": "gridlayer-minzoom"
+       },
+       "maxZoom": {
+        "name": "maxZoom",
+        "aka": [],
+        "comments": [],
+        "params": {},
+        "type": "Number",
+        "optional": false,
+        "defaultValue": "undefined",
+        "id": "gridlayer-maxzoom"
+       },
+       "noWrap": {
+        "name": "noWrap",
+        "aka": [],
+        "comments": [
+         "",
+         "",
+         "",
+         "",
+         "",
+         ""
+        ],
+        "params": {},
+        "type": "Boolean",
+        "optional": false,
+        "defaultValue": "false",
+        "id": "gridlayer-nowrap"
+       }
+      },
+      "type": "option",
+      "id": "gridlayer-option"
+     }
+    },
+    "id": "gridlayer-option"
    }
   },
   "inherits": [

@@ -1,17 +1,7 @@
-<table><thead>
-	<tr>
-		<th>Factory</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	{{#each documentables}}
-	<tr id='{{id}}'>
-		<td><code><b>{{name}}</b>(
-		{{~#each params~}}
-			<nobr>{{#if type}}&lt;{{{type type}}}&gt; {{/if}}<i>{{name}}</i></nobr>
+{{#each documentables}}
+<b>{{name}}</b>(
+		{{~#each params~}}<BR align="left"/>&nbsp;&nbsp;
+			{{#if type}}&lt;{{this.type}}&gt; {{/if}}<i>{{name}}</i>
 			{{~#unless @last}}, {{/unless}}{{/each~}}
-		)</nobr></code></td>
-		<td>{{{markdown comments}}}</td>
-	</tr>
-	{{/each}}
-</tbody></table>
+		)<BR align="left"/>
+{{/each}}

@@ -40,8 +40,23 @@
 
 @method getTileUrl(coords: Object)
 
+@option minZoom: Number = 0
+@option maxZoom: Number = 18
+@option zoomOffset: Number = 0
+@option zoomReverse: Boolean = false
+
 @class GridLayer
 @inherits Layer
 
 @method createTile(coords: Object)
+
+@option tileSize: Number|Point = 256
+@option opacity: Number = 1.0
+@option minZoom: Number = 0
+@option maxZoom: Number = undefined
+@option noWrap: Boolean = false
+
+
+
+
 
