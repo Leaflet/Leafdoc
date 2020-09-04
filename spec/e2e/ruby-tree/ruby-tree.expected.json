@@ -1,0 +1,288 @@
+{
+ "TreeNode": {
+  "name": "TreeNode",
+  "aka": [],
+  "comments": [
+   "",
+   "This class models the nodes for an *N-ary* tree data structure. The",
+   "nodes are *named*, and have a place-holder for the node data (i.e.,",
+   "_content_ of the node). The node names are required to be *unique*",
+   "amongst the sibling/peer nodes. Note that the name is implicitly",
+   "used as an _ID_ within the data structure).",
+   "",
+   "The node's _content_ is *not* required to be unique across",
+   "different nodes in the tree, and can be +nil+ as well.",
+   "",
+   "The class provides various methods to navigate the tree, traverse",
+   "the structure, modify contents of the node, change position of the",
+   "node in the tree, and to make structural changes to the tree.",
+   "",
+   "A node can have any number of *child* nodes attached to it and",
+   "hence can be used to create N-ary trees.  Access to the child",
+   "nodes can be made in order (with the conventional left to right",
+   "access), or randomly.",
+   "",
+   "The node also provides direct access to its *parent* node as well",
+   "as other superior parents in the path to root of the tree.  In",
+   "addition, a node can also access its *sibling* nodes, if present.",
+   "",
+   "Note that while this implementation does not _explicitly_ support",
+   "directed graphs, the class itself makes no restrictions on",
+   "associating a node's *content* with multiple nodes in the tree.",
+   "However, having duplicate nodes within the structure is likely to",
+   "cause unpredictable behavior.",
+   ""
+  ],
+  "supersections": {
+   "example": {
+    "name": "example",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "__default": {
+      "name": "__default",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "__default": {
+        "name": "__default",
+        "aka": [],
+        "comments": [
+         "",
+         "{include:file:examples/example_basic.rb}"
+        ],
+        "params": {},
+        "type": null,
+        "optional": false,
+        "defaultValue": null
+       }
+      },
+      "type": "example",
+      "id": "treenode-example"
+     }
+    },
+    "id": "treenode-example"
+   },
+   "property": {
+    "name": "property",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "Core Attributes": {
+      "name": "Core Attributes",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "name": {
+        "name": "name",
+        "aka": [],
+        "comments": [
+         "",
+         "Name of this node.  Expected to be unique within the tree.",
+         "",
+         "Note that the name attribute really functions as an *ID* within",
+         "the tree structure, and hence the uniqueness constraint is",
+         "required.",
+         "",
+         "This may be changed in the future, but for now it is best to",
+         "retain unique names within the tree structure, and use the",
+         "`content` attribute for any non-unique node requirements.",
+         "",
+         "If you want to change the name, you probably want to call [`rename`](#treenode-rename)",
+         "instead."
+        ],
+        "params": {},
+        "type": "String|Integer",
+        "optional": false,
+        "defaultValue": null,
+        "id": "treenode-name"
+       },
+       "content": {
+        "name": "content",
+        "aka": [],
+        "comments": [
+         "Content of this node.  Can be `nil`.  Note that there is no",
+         "uniqueness constraint related to this attribute."
+        ],
+        "params": {},
+        "type": null,
+        "optional": false,
+        "defaultValue": null,
+        "id": "treenode-content"
+       },
+       "parent": {
+        "name": "parent",
+        "aka": [],
+        "comments": [
+         "Parent of this node.  Will be `nil` for a root node."
+        ],
+        "params": {},
+        "type": "TreeNode",
+        "optional": false,
+        "defaultValue": null,
+        "id": "treenode-parent"
+       }
+      },
+      "type": "property",
+      "id": "treenode-core-attributes"
+     }
+    },
+    "id": "treenode-property"
+   },
+   "method": {
+    "name": "method",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "Core Attributes": {
+      "name": "Core Attributes",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "root": {
+        "name": "root",
+        "aka": [],
+        "comments": [
+         "Gets the root node for the (sub)tree to which this node belongs.",
+         "A root node's root is itself."
+        ],
+        "params": {},
+        "type": "TreeNode",
+        "optional": false,
+        "defaultValue": null,
+        "id": "treenode-root"
+       },
+       "is_root": {
+        "name": "is_root",
+        "aka": [],
+        "comments": [
+         "Returns `true` if this is a root node.  Note that",
+         "orphaned children will also be reported as root nodes."
+        ],
+        "params": {},
+        "type": "Boolean",
+        "optional": true,
+        "defaultValue": null,
+        "id": "treenode-is_root"
+       }
+      },
+      "type": "method",
+      "id": "treenode-core-attributes"
+     },
+     "Node Creation": {
+      "name": "Node Creation",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "initialize": {
+        "name": "initialize",
+        "aka": [],
+        "comments": [
+         "Creates a new node with a name and optional content.",
+         "The node name is expected to be unique within the tree.",
+         "",
+         "The content can be of any type, and defaults to `nil`.",
+         "",
+         "Note: If the name is an `Integer`, then the semantics of {#[]} access",
+         "  method can be surprising, as an `Integer` parameter to that method",
+         "  normally acts as an index to the children array, and follows the",
+         "  _zero-based_ indexing convention."
+        ],
+        "params": {
+         "name": {
+          "name": "name",
+          "type": "String|Integer"
+         },
+         "content": {
+          "name": "content"
+         }
+        },
+        "type": "nil",
+        "optional": false,
+        "defaultValue": null,
+        "id": "treenode-initialize"
+       },
+       "add": {
+        "name": "add",
+        "aka": [],
+        "comments": [
+         "",
+         "Adds the specified child node to this node.",
+         "",
+         "This method can also be used for *grafting* a subtree into this",
+         "node's tree, if the specified child node is the root of a subtree (i.e.,",
+         "has child nodes under it).",
+         "",
+         "this node becomes parent of the node passed in as the argument, and",
+         "the child is added as the last child (\"right most\") in the current set of",
+         "children of this node.",
+         "",
+         "Additionally you can specify a insert position. The new node will be",
+         "inserted BEFORE that position. If you don't specify any position the node",
+         "will be just appended. This feature is provided to make implementation of",
+         "node movement within the tree very simple.",
+         "",
+         "If an insertion position is provided, it needs to be within the valid",
+         "range of:",
+         "",
+         "   -children.size..children.size",
+         "",
+         "This is to prevent `nil` nodes being created as children if a non-existent",
+         "position is used.",
+         "",
+         "If the new node being added has an existing parent node, then it will be",
+         "removed from this pre-existing parent prior to being added as a child to",
+         "this node. I.e., the child node will effectively be moved from its old",
+         "parent to this node. In this situation, after the operation is complete,",
+         "the node will no longer exist as a child for its old parent.",
+         "",
+         "Returns the added child node."
+        ],
+        "params": {
+         "child": {
+          "name": "child",
+          "type": "TreeNode"
+         },
+         "at_index": {
+          "name": "at_index",
+          "type": "Integer=1"
+         }
+        },
+        "type": "TreeNode",
+        "optional": false,
+        "defaultValue": null,
+        "id": "treenode-add"
+       },
+       "rename": {
+        "name": "rename",
+        "aka": [],
+        "comments": [
+         "Renames the node and updates the parent's reference to it. Returns the old name."
+        ],
+        "params": {
+         "new_name": {
+          "name": "new_name",
+          "type": "String|Integer"
+         }
+        },
+        "type": "String|Integer",
+        "optional": false,
+        "defaultValue": null,
+        "id": "treenode-rename"
+       }
+      },
+      "type": "method",
+      "id": "treenode-node-creation"
+     }
+    },
+    "id": "treenode-method"
+   }
+  },
+  "inherits": [],
+  "id": "treenode"
+ }
+}

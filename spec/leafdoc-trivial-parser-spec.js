@@ -3,7 +3,7 @@
 const trivialParser = require('../dist/split/trivial.js');
 
 
-describe('Trivial parser', function () {
+describe('Trivial parser', () => {
 	it('just passes the string around, wrapped in an array', () => {
 
 		expect(trivialParser('foobar')).toEqual(['foobar']);
@@ -13,7 +13,7 @@ var path$1 = require('path');
 var Handlebars = require('handlebars');
 
 var templateDir = 'basic';
-      
+
 // marked.setOptions({
 // 	highlight: function (code) {
 // 		return require('highlight').highlight(code).value;

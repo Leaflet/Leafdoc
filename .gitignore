@@ -3,3 +3,6 @@ node_modules
 
 *.actual.json
 *.actual.html
+*~
+dist
+yarn.lock

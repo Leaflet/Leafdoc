@@ -3,8 +3,7 @@
   "name": "DomEvent",
   "aka": [],
   "comments": [
-   "Utility functions to work with the [DOM events](https://developer.mozilla.org/docs/Web/API/Event), used by Leaflet internally.",
-   ""
+   "Utility functions to work with the [DOM events](https://developer.mozilla.org/docs/Web/API/Event), used by Leaflet internally."
   ],
   "supersections": {
    "function": {

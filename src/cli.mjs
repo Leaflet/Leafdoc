@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env -S node --experimental-modules
 
 
 /*
@@ -15,12 +15,12 @@ Leafdoc includes a small command-line utility, useful when running from a consol
 */
 
 
-var fs = require("fs");
-var path = require('path');
-var minimist = require('minimist');
-var Leafdoc = require('./leafdoc');
+import fs from 'fs';
+import path from 'path';
+import minimist from 'minimist';
+import Leafdoc from './leafdoc.mjs';
 
-var argv = minimist(process.argv.slice(2), {
+const argv = minimist(process.argv.slice(2), {
 	alias: {
 		// 🍂option template: String='templates/basic'; Akin to [Leafdoc.templateDir](#leafdoc.templatedir)
 		// 🍂option t; Alias of `template`
@@ -43,15 +43,15 @@ var argv = minimist(process.argv.slice(2), {
 	default: {verbose: false, template: 'templates/basic', character: '🍂'}
 });
 
-var doc = new Leafdoc({
+const doc = new Leafdoc({
 	verbose: argv.verbose,
 	templateDir: argv.template,
 	leadingCharacter: argv.character
 });
 
-argv._.forEach(function (filepath) {
+argv._.forEach((filepath) => {
 	try {
-		var stats = fs.lstatSync(filepath);
+		const stats = fs.lstatSync(filepath);
 
 		if (stats.isFile()) {
 			doc.addFile(filepath, path.extname(filepath) !== '.leafdoc');
@@ -65,7 +65,7 @@ argv._.forEach(function (filepath) {
 	}
 });
 
-var out;
+let out;
 if (argv.json) {
 	out = doc.outputJSON();
 } else {

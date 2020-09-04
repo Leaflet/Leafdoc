@@ -1,0 +1,463 @@
+{
+ "Map": {
+  "name": "Map",
+  "aka": [],
+  "comments": [
+   ""
+  ],
+  "supersections": {
+   "method": {
+    "name": "method",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "__default": {
+      "name": "__default",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "panTo": {
+        "name": "panTo",
+        "aka": [],
+        "comments": [],
+        "params": {
+         "latlng": {
+          "name": "latlng",
+          "type": "LatLng"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "map-panto"
+       },
+       "getCenter": {
+        "name": "getCenter",
+        "aka": [],
+        "comments": [],
+        "params": {},
+        "type": "LatLng",
+        "optional": false,
+        "defaultValue": null,
+        "id": "map-getcenter"
+       },
+       "setZoom": {
+        "name": "setZoom",
+        "aka": [],
+        "comments": [],
+        "params": {
+         "zoom": {
+          "name": "zoom",
+          "type": "Number"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "map-setzoom"
+       },
+       "getZoom": {
+        "name": "getZoom",
+        "aka": [],
+        "comments": [
+         "",
+         ""
+        ],
+        "params": {},
+        "type": "Number",
+        "optional": false,
+        "defaultValue": null,
+        "id": "map-getzoom"
+       }
+      },
+      "type": "method",
+      "id": "map-method"
+     }
+    },
+    "id": "map-method"
+   }
+  },
+  "inherits": [
+   "Evented"
+  ],
+  "id": "map"
+ },
+ "Evented": {
+  "name": "Evented",
+  "aka": [],
+  "comments": [
+   ""
+  ],
+  "supersections": {
+   "method": {
+    "name": "method",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "__default": {
+      "name": "__default",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "on": {
+        "name": "on",
+        "aka": [],
+        "comments": [],
+        "params": {
+         "evtype": {
+          "name": "evtype",
+          "type": "String"
+         },
+         "handler": {
+          "name": "handler",
+          "type": "Function"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "evented-on"
+       },
+       "off": {
+        "name": "off",
+        "aka": [],
+        "comments": [
+         "",
+         ""
+        ],
+        "params": {
+         "evtype": {
+          "name": "evtype",
+          "type": "String"
+         },
+         "handler": {
+          "name": "handler",
+          "type": "Function"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "evented-off"
+       }
+      },
+      "type": "method",
+      "id": "evented-method"
+     }
+    },
+    "id": "evented-method"
+   }
+  },
+  "inherits": [
+   "Class"
+  ],
+  "id": "evented"
+ },
+ "Class": {
+  "name": "Class",
+  "aka": [],
+  "comments": [
+   ""
+  ],
+  "supersections": {
+   "property": {
+    "name": "property",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "__default": {
+      "name": "__default",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "options": {
+        "name": "options",
+        "aka": [],
+        "comments": [
+         ""
+        ],
+        "params": {},
+        "type": "Object",
+        "optional": false,
+        "defaultValue": null,
+        "id": "class-options"
+       }
+      },
+      "type": "property",
+      "id": "class-property"
+     }
+    },
+    "id": "class-property"
+   },
+   "method": {
+    "name": "method",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "__default": {
+      "name": "__default",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "extend": {
+        "name": "extend",
+        "aka": [],
+        "comments": [],
+        "params": {
+         "Object": {
+          "name": "Object"
+         }
+        },
+        "type": "Class",
+        "optional": false,
+        "defaultValue": null,
+        "id": "class-extend"
+       },
+       "include": {
+        "name": "include",
+        "aka": [],
+        "comments": [],
+        "params": {
+         "Object": {
+          "name": "Object"
+         }
+        },
+        "type": "Class",
+        "optional": false,
+        "defaultValue": null,
+        "id": "class-include"
+       },
+       "initialize": {
+        "name": "initialize",
+        "aka": [],
+        "comments": [
+         ""
+        ],
+        "params": {
+         "Object": {
+          "name": "Object"
+         }
+        },
+        "type": "Class",
+        "optional": false,
+        "defaultValue": null,
+        "id": "class-initialize"
+       }
+      },
+      "type": "method",
+      "id": "class-method"
+     }
+    },
+    "id": "class-method"
+   }
+  },
+  "inherits": [],
+  "id": "class"
+ },
+ "Layer": {
+  "name": "Layer",
+  "aka": [],
+  "comments": [
+   ""
+  ],
+  "supersections": {
+   "method": {
+    "name": "method",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "__default": {
+      "name": "__default",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "addTo": {
+        "name": "addTo",
+        "aka": [],
+        "comments": [],
+        "params": {
+         "map": {
+          "name": "map",
+          "type": "Map"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "layer-addto"
+       },
+       "remove": {
+        "name": "remove",
+        "aka": [],
+        "comments": [],
+        "params": {
+         "map?": {
+          "name": "map?",
+          "type": "Map"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "layer-remove"
+       },
+       "onAdd": {
+        "name": "onAdd",
+        "aka": [],
+        "comments": [],
+        "params": {},
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "layer-onadd"
+       },
+       "onRemove": {
+        "name": "onRemove",
+        "aka": [],
+        "comments": [],
+        "params": {},
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "layer-onremove"
+       },
+       "getAttribution": {
+        "name": "getAttribution",
+        "aka": [],
+        "comments": [
+         ""
+        ],
+        "params": {},
+        "type": "String",
+        "optional": false,
+        "defaultValue": null,
+        "id": "layer-getattribution"
+       }
+      },
+      "type": "method",
+      "id": "layer-method"
+     }
+    },
+    "id": "layer-method"
+   }
+  },
+  "inherits": [
+   "Evented"
+  ],
+  "id": "layer"
+ },
+ "Marker": {
+  "name": "Marker",
+  "aka": [],
+  "comments": [
+   ""
+  ],
+  "supersections": {},
+  "inherits": [
+   "Layer"
+  ],
+  "id": "marker"
+ },
+ "TileLayer": {
+  "name": "TileLayer",
+  "aka": [],
+  "comments": [
+   ""
+  ],
+  "supersections": {
+   "method": {
+    "name": "method",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "__default": {
+      "name": "__default",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "getTileUrl": {
+        "name": "getTileUrl",
+        "aka": [],
+        "comments": [
+         ""
+        ],
+        "params": {
+         "coords": {
+          "name": "coords",
+          "type": "Object"
+         }
+        },
+        "type": null,
+        "optional": false,
+        "defaultValue": null,
+        "id": "tilelayer-gettileurl"
+       }
+      },
+      "type": "method",
+      "id": "tilelayer-method"
+     }
+    },
+    "id": "tilelayer-method"
+   }
+  },
+  "inherits": [
+   "GridLayer"
+  ],
+  "id": "tilelayer"
+ },
+ "GridLayer": {
+  "name": "GridLayer",
+  "aka": [],
+  "comments": [
+   ""
+  ],
+  "supersections": {
+   "method": {
+    "name": "method",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "__default": {
+      "name": "__default",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "createTile": {
+        "name": "createTile",
+        "aka": [],
+        "comments": [
+         "",
+         ""
+        ],
+        "params": {
+         "coords": {
+          "name": "coords",
+          "type": "Object"
+         }
+        },
+        "type": null,
+        "optional": false,
+        "defaultValue": null,
+        "id": "gridlayer-createtile"
+       }
+      },
+      "type": "method",
+      "id": "gridlayer-method"
+     }
+    },
+    "id": "gridlayer-method"
+   }
+  },
+  "inherits": [
+   "Layer"
+  ],
+  "id": "gridlayer"
+ }
+}

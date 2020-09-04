@@ -3,8 +3,8 @@
 // import commonjs from 'rollup-plugin-commonjs';
 // import builtins from 'rollup-plugin-node-builtins';
 // import globals from 'rollup-plugin-node-globals';
-import buble from 'rollup-plugin-buble';
-import eslint from 'rollup-plugin-eslint';
+import buble from '@rollup/plugin-buble';
+import {eslint} from 'rollup-plugin-eslint';
 import pkg from './package.json';
 
 export default [
@@ -52,7 +52,7 @@ export default [
     
     // Experimental code-splitting build, for exposing all modules (for unit testing)
     {
-        input: [pkg.module, 'src/parsers/c-like.js', 'src/parsers/trivial.js'],
+        input: [pkg.module, 'src/parsers/multilang.mjs', 'src/parsers/trivial.mjs'],
         experimentalCodeSplitting: true,
         experimentalDynamicImport: true,
         output: {

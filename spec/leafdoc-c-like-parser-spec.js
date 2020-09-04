@@ -1,10 +1,10 @@
 /*eslint-env node,jasmine */
 
-const cLikeParser = require('../dist/split/c-like.js');
+const cLikeParser = require('../dist/split/multilang.js');
 
 
-describe('C-like parser', function () {
-	describe('when there are no comments', function () {
+describe('C-like parser', () => {
+	describe('when there are no comments', () => {
 
 		it('returns an empty array', () => {
 
@@ -23,17 +23,17 @@ var templateDir = 'basic';
 
 	});
 
-	describe('when there are single-line comments', function () {
+	describe('when there are single-line comments', () => {
 
 		it('returns one item of one line', () => {
 			expect(cLikeParser('//foobar')).toEqual(['foobar']);
 			expect(cLikeParser('// foobar')).toEqual(['foobar']);
-			expect(cLikeParser('//  foobar')).toEqual([' foobar']);
+			expect(cLikeParser('//  foobar')).toEqual(['foobar']);
 			expect(cLikeParser('//\tfoobar')).toEqual(['foobar']);
-			expect(cLikeParser('//\t\tfoobar')).toEqual(['\tfoobar']);
+			expect(cLikeParser('//\t\tfoobar')).toEqual(['foobar']);
 			expect(cLikeParser(' // foobar')).toEqual(['foobar']);
 			expect(cLikeParser('      // foobar')).toEqual(['foobar']);
-			expect(cLikeParser('      //  foobar')).toEqual([' foobar']);
+			expect(cLikeParser('      //  foobar')).toEqual(['foobar']);
 
 			expect(cLikeParser(`
 something 
@@ -50,7 +50,7 @@ something else
 			expect(cLikeParser('   //foo\n   //bar')).toEqual(['foo\nbar']);
 			expect(cLikeParser('   // foo\n   // bar')).toEqual(['foo\nbar']);
 			expect(cLikeParser('\t\t//foo\n\t\t//bar')).toEqual(['foo\nbar']);
-			expect(cLikeParser('\t\t// \tfoo\n\t\t// \tbar')).toEqual(['\tfoo\n\tbar']);
+			expect(cLikeParser('\t\t// \tfoo\n\t\t// \tbar')).toEqual(['foo\n\tbar']);
 
 			expect(cLikeParser(`
 something 
@@ -73,24 +73,24 @@ lorem ipsum
 
 	});
 
-	describe('when there are block comments', function () {
+	describe('when there are block comments', () => {
 		it('returns one item of one line', () => {
 			expect(cLikeParser('/*foobar*/')).toEqual(['foobar']);
-			expect(cLikeParser('asdf/*foobar*/qwer')).toEqual(['foobar']);
+			//expect(cLikeParser('var /*foobar*/ foo')).toEqual(['foobar']);
 			expect(cLikeParser('asdf\n/*foobar*/\nqwer')).toEqual(['foobar']);
 			expect(cLikeParser('asdf\n\t/*foobar*/\n\tqwer')).toEqual(['foobar']);
 
 			expect(cLikeParser('/*foobar   */')).toEqual(['foobar']);
-			expect(cLikeParser('/*foobar  \n  */')).toEqual(['foobar\n']);
+			expect(cLikeParser('/*foobar  \n  */')).toEqual(['foobar']);
 
 			expect(cLikeParser('/**foobar*/')).toEqual(['foobar']);
-			expect(cLikeParser('/**foobar**/')).toEqual(['foobar']);
-			expect(cLikeParser('/*foobar**/')).toEqual(['foobar']);
-			expect(cLikeParser('/*******foobar******/')).toEqual(['foobar']);
+			expect(cLikeParser('/**foobar**/')).toEqual(['foobar*']);
+			expect(cLikeParser('/*foobar**/')).toEqual(['foobar*']);
+			expect(cLikeParser('/*******foobar******/')).toEqual(['****foobar*****']);
 		});
 
-		it('ignores asterisk-only blocks', function () {
-			expect(cLikeParser('/*************/')).toEqual([]);
+		it('parses asterisk-only blocks', () => {
+			expect(cLikeParser('/*************/')).toEqual(['*********']);
 		});
 
 		it('returns one item of two lines', () => {
@@ -100,7 +100,7 @@ something
 /* foo
 bar */
 something else
-`)).toEqual([' foo\nbar']);
+`)).toEqual(['foo\nbar']);
 
 			expect(cLikeParser(`
 something 
@@ -109,16 +109,16 @@ foo
 bar 
 */
 something else
-`)).toEqual(['\nfoo\nbar\n']);
+`)).toEqual(['foo\nbar']);
 
 			expect(cLikeParser(`
-something 
+something
 /****
 foo
-bar 
+bar
 ****/
 something else
-`)).toEqual(['\nfoo\nbar\n']);
+`)).toEqual(['*\nfoo\nbar\n**']);
 
 			expect(cLikeParser(`
 something 
@@ -127,7 +127,7 @@ something
  * bar 
  */
 something else
-`)).toEqual(['\nfoo\nbar\n']);
+`)).toEqual(['foo\nbar']);
 
 			expect(cLikeParser(`
 something 
@@ -136,7 +136,7 @@ something
  *bar 
  */
 something else
-`)).toEqual(['\nfoo\nbar\n']);
+`)).toEqual(['foo\nbar']);
 
 			expect(cLikeParser(`
 something 
@@ -145,7 +145,7 @@ something
  * bar 
  **/
 something else
-`)).toEqual(['\nfoo\nbar\n']);
+`)).toEqual(['foo\nbar']);
 
 		});
 
@@ -161,14 +161,14 @@ something else
 lorem ipsum
 /*foo2
 bar2*/
-`)).toEqual(['\nfoo\nbar\n', 'quux', 'foo2\nbar2']);
+`)).toEqual(['foo\nbar', 'quux', 'foo2\nbar2']);
 
 			expect(cLikeParser(`
 	/* foo
 	 * bar
 	 * baz
 	 */        
-        `)).toEqual(['foo\nbar\nbaz\n']);
+        `)).toEqual(['foo\nbar\nbaz']);
 
 
 			expect(cLikeParser(`
@@ -176,20 +176,20 @@ bar2*/
 	 *
 	 * bar
 	 */        
-        `)).toEqual(['foo\n\nbar\n']);
+        `)).toEqual(['foo\n\nbar']);
 
 			expect(cLikeParser(`
 	/* foo
 
 	 * bar
 	 */        
-        `)).toEqual(['foo\n\nbar\n']);
+        `)).toEqual(['foo\n\nbar']);
 
 
 		});
 	});
 
-	it('Parses correctly Leaflet\'s eachLayer comment block', function () {
+	it('Parses correctly Leaflet\'s eachLayer comment block', () => {
 
 
 		expect(cLikeParser(`
@@ -207,11 +207,10 @@ Iterates over the layers of the map, optionally specifying context of the iterat
 map.eachLayer(function(layer){
     layer.bindPopup('Hello');
 });
-\`\`\`
-`]);
+\`\`\``]);
 	});
 
-	it('Parses correctly Leaflet\'s Map leading comment block', function () {
+	it('Parses correctly Leaflet\'s Map leading comment block', () => {
 
 		expect(cLikeParser(`
 /*
@@ -232,8 +231,7 @@ map.eachLayer(function(layer){
  * \`\`\`
  *
  */
-`)).toEqual([`
-@class Map
+`)).toEqual([`@class Map
 @aka L.Map
 @inherits Evented
 
@@ -247,13 +245,11 @@ var map = L.map('map', {
 	center: [51.505, -0.09],
 	zoom: 13
 });
-\`\`\`
-
-`]);
+\`\`\``]);
 
 	});
 
-	it('Parses correctly Leaflet\'s VML leading comment block', function () {
+	it('Parses correctly Leaflet\'s VML leading comment block', () => {
 
 		expect(cLikeParser(`
 /*
@@ -264,14 +260,12 @@ var map = L.map('map', {
  * VML was deprecated in 2012, which means VML functionality exists only for backwards compatibility
  * with old versions of Internet Explorer.
  */
-`)).toEqual([`
-@class SVG
+`)).toEqual([`@class SVG
 
 Although SVG is not available on IE7 and IE8, these browsers support [VML](https://en.wikipedia.org/wiki/Vector_Markup_Language), and the SVG renderer will fall back to VML in this case.
 
 VML was deprecated in 2012, which means VML functionality exists only for backwards compatibility
-with old versions of Internet Explorer.
-`]);
+with old versions of Internet Explorer.`]);
 
 
 	});
