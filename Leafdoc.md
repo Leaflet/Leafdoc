@@ -2,8 +2,8 @@
 
 ## Command-line usage
 
-<p>Leafdoc includes a small command-line utility, useful when running from a console or a shell script, accepting some of the Leafdoc options. The syntax is:
-<code>leafdoc [options] [files]</code></p>
+<p>Leafdoc includes a small command-line utility, useful when running from a console or a shell script, accepting some of the Leafdoc options. The syntax is:</p>
+<p><code>leafdoc [options] [files]</code></p>
 
 
 ### Usage example
@@ -14,7 +14,7 @@
 
 
 
-<p><code>leafdoc -t templates/pretty -c &#39;@&#39; --verbose -o documentation.html src/*.js</code></p>
+<p><code>leafdoc -t templates/pretty -c '@' --verbose -o documentation.html src</code></p>
 
 
 
@@ -82,7 +82,14 @@
 		<td><code><b>o</b></code></td>
 		<td><code></code>
 		<td><code></code></td>
-		<td>Alias of <code>output</code></td>
+		<td>Alias of <code>output</code>
+Alias of <code>output</code></td>
+	</tr>
+	<tr id='command-line-usage-json'>
+		<td><code><b>json</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>Write the internal JSON representation of the documentation instead of a templated HTML file.</td>
 	</tr>
 </tbody></table>
 
@@ -103,12 +110,14 @@
 
 
 
-<p>Output Leafdoc&#39;s own documentation to the console with:</p>
-<pre><code>var LeafDoc = require(&#39;./src/leafdoc.js&#39;);
+<p>Output Leafdoc's own documentation to the console with:</p>
+<pre><code>var LeafDoc = require('./src/leafdoc.js');
 var doc = new LeafDoc();
-    doc.addFile(&#39;src/leafdoc.js&#39;);
+	doc.addFile('src/leafdoc.js');
+
 console.log( doc.outputStr() );
 </code></pre>
+
 
 
 
@@ -162,8 +171,8 @@ script is running) holds the handlebars template files for building up the HTML.
 		<td><code><b>showInheritancesWhenEmpty</b></code></td>
 		<td><code>Boolean</code>
 		<td><code>false</code></td>
-		<td>When <code>true</code>, child classes/namespaces will display documentables from ancestors, even if the child class doesn&#39;t have any of such documentables.
-e.g. display inherited events even if the child doesn&#39;t define any new events.</td>
+		<td>When <code>true</code>, child classes/namespaces will display documentables from ancestors, even if the child class doesn't have any of such documentables.
+e.g. display inherited events even if the child doesn't define any new events.</td>
 	</tr>
 	<tr id='leafdoc-leadingcharacter'>
 		<td><code><b>leadingCharacter</b></code></td>
@@ -218,16 +227,16 @@ Set <code>label</code> to the text for the sections in the generated docs.
 		<td><code><b>getTemplateEngine</b>()</nobr></code></td>
 		<td><code>Handlebars</code></td>
 		<td>Returns handlebars template engine used to render templates.
-You can use it for override helpers or register new.</td>
+You can use it for override helpers or register a new one.</td>
 	</tr>
 	<tr id='leafdoc-setleadingcharacter'>
 		<td><code><b>setLeadingCharacter</b>(<nobr>&lt;String&gt; <i>char</i></nobr>)</nobr></code></td>
 		<td><code>this</code></td>
-		<td>In the rare case you don&#39;t want to use &#x1f342; as the leading character for
+		<td>In the rare case you don't want to use 🍂 as the leading character for
 leaf directives, run this function with the desired character, e.g.
-<code>setLeadingCharacter(&#39;@&#39;);</code>
+<code>setLeadingCharacter('@');</code>
 The new leading character will apply only to files/dirs/strings parsed from
-that moment on, so it&#39;s a good idea to call this before anything else.</td>
+that moment on, so it's a good idea to call this before anything else.</td>
 	</tr>
 	<tr id='leafdoc-adddir'>
 		<td><code><b>addDir</b>(<nobr>&lt;String&gt; <i>dirname</i></nobr>, <nobr>&lt;String[]&gt; <i>extensions?</i></nobr>)</nobr></code></td>
@@ -238,26 +247,31 @@ Files with a <code>.leafdoc</code> extension will be treated as leafdoc-only
 instead of source.</td>
 	</tr>
 	<tr id='leafdoc-addfile'>
-		<td><code><b>addFile</b>(<nobr>&lt;String&gt; <i>filename</i></nobr>, <nobr>&lt;Boolean&gt; <i>isSource?</i></nobr>)</nobr></code></td>
+		<td><code><b>addFile</b>(<nobr>&lt;String&gt; <i>filename</i></nobr>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td>Parses the given file using <a href="#leafdoc-addbuffer"><code>addBuffer</code></a>.</td>
 	</tr>
 	<tr id='leafdoc-addbuffer'>
-		<td><code><b>addBuffer</b>(<nobr>&lt;Buffer&gt; <i>buf</i></nobr>, <nobr>&lt;Boolean&gt; <i>isSource?</i></nobr>)</nobr></code></td>
+		<td><code><b>addBuffer</b>(<nobr>&lt;Buffer&gt; <i>buf</i></nobr>, <nobr>&lt;String&gt; <i>filename?</i></nobr>)</nobr></code></td>
 		<td><code>this</code></td>
-		<td>Parses the given buffer using <a href="#leafdoc-addstr"><code>addStr</code></a> underneath. Set <code>isSource</code> to <code>true</code> to parse Leafdoc directives inside comment blocks. Otherwise, the whole file is interpreted as Leafdoc directives.</td>
+		<td>Parses the given buffer using <a href="#leafdoc-addstr"><code>addStr</code></a> underneath.</td>
 	</tr>
 	<tr id='leafdoc-addstr'>
-		<td><code><b>addStr</b>(<nobr>&lt;String&gt; <i>str</i></nobr>, <nobr>&lt;Boolean&gt; <i>isSource?</i></nobr>)</nobr></code></td>
+		<td><code><b>addStr</b>(<nobr>&lt;String&gt; <i>str</i></nobr>, <nobr>&lt;String&gt; <i>filename?</i></nobr>)</nobr></code></td>
 		<td><code>this</code></td>
-		<td>Parses the given string for Leafdoc comments. The string is assumed to
-be source code with comments, unless <code>isSource</code> is explicitly set to <code>false</code>.
+		<td>Parses the given string for Leafdoc comments.
 directive.</td>
 	</tr>
 	<tr id='leafdoc-outputstr'>
 		<td><code><b>outputStr</b>()</nobr></code></td>
 		<td><code>String</code></td>
 		<td>Outputs the documentation to a string.
+Use only after all the needed files have been parsed.</td>
+	</tr>
+	<tr id='leafdoc-outputjson'>
+		<td><code><b>outputJSON</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td>Outputs the internal documentation tree to a JSON blob, without any formatting.
 Use only after all the needed files have been parsed.</td>
 	</tr>
 </tbody></table>
