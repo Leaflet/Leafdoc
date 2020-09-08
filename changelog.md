@@ -1,4 +1,9 @@
 
+# 2.1.0(2020-09-08)
+
+* Implemented a new namespace-level directive: `relationship`
+* Relationships show as UML-class-diagram-like arrows (properly styled) in the `graphviz-class-diagram` templates.
+
 # 2.0.1 (2020-09-08)
 
 * Tweak the `bin` field in package.json
