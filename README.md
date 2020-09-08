@@ -98,16 +98,17 @@ the `🍂alternative` directive after to re-defining the documentable, e.g.:
   Adds the function `fn` as an event handler for the `type` event.
 
   🍂alternative
-  🍂method on(types: String, fn: Function): this
+  🍂method on(types: [String], fn: Function): this
   Given an array of event types (strings), attaches `fn` as an event handler to each of them.
   */
   ```
   In this example, the two alternatives are `on(type, fn)` and `on(fnMap)`. They will be shown as two different documentables.
 
-* `🍂inherits (parent)` means that a class or namespace inherits all documentables
+* `🍂inherits [parent]` means that a class or namespace inherits all documentables
 from another class or namespace.
+* `🍂relationship [relationshiptype] [namespace] ()` is specific to thegraphviz
 * `🍂uninheritable` is applied only to *sections*, and hides them from the
-documentation of children classes.
+* `🍂miniclass [name] [(parentname)]` defines a class/namespace that shall display *inside* the parent namespace (specified between parentheses); most useful for very concide classes/data structs that are useful only within the context of the parent namespace.
 
 ### Shorthand syntax
 
@@ -173,6 +174,44 @@ You can specify everything (name, optional, params, type, default), but no docum
 | factory     |   X    |      |         |
 | constructor |   X    |      |         |
 | factory     |   X    |      |         |
+
+### Relationships format
+
+Relationships are meaningful for class diagrams. They correspond with the UML class diagram
+
+The syntax is:
+```
+🍂relationship type namespace [ ,cardinalityFrom [ ,cardinalityTo [ ,label ]]]
+```
+
+The following relationship `type`s are implemented:
+- `associated`
+- `implements`
+- `dependsOn`
+- `aggregationOf`
+- `compositionOf`
+
+Note that class inheritance is a separate directive (`🍂inherits`) .
+
+`namespace` must be an identifier; `cardinalityFrom` and `cardinalityTo` must not have commas in them.
+
+Some examples of how `🍂relationship` works:
+
+```
+🍂namespace ConcreteClass
+🍂relationship implements AbstractClass
+```
+
+```
+🍂namespace Classroom
+🍂relationship aggregationOf Student, 0..n, 1..n
+🍂relationship aggregationOf Teacher, 1, 0..n
+```
+
+```
+🍂namespace Caller
+🍂relationship associated Callee ,, calls
+```
 
 
 ### Output customization
@@ -247,7 +286,7 @@ full text at https://www.gnu.org/licenses/gpl-3.0.html.
 
 ### I'm using Debian and I cannot see the leaf character!
 
-Run `apt-get install ttf-ancient-fonts` and don't ask why the fallback file for emojis is packaged as "ancient fonts".
+Run `apt-get install fonts-symbola`.
 
 ### I cannot type 🍂 in my keyboard!
 

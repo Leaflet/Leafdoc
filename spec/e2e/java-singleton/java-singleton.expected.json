@@ -90,6 +90,7 @@
    }
   },
   "inherits": [],
+  "relationships": [],
   "id": "singletonobject"
  }
 }

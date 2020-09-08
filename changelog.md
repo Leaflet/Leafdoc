@@ -1,4 +1,8 @@
 
+# 2.0.1 (2020-09-08)
+
+* Tweak the `bin` field in package.json
+
 # 2.0.0 (2020-09-04)
 
 * Support for multiple languages (tests now include java, ruby); this is done via deprecation of the comment block regexes in favour of `multilang-extract-comments`

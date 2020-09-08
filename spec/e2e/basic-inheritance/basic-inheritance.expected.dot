@@ -1,8 +1,8 @@
 digraph ClassDiagram {
 	node [shape=plaintext]
-	edge [arrowhead=onormal];
+	edge [arrowhead=empty];
 
-ChildClass [ label = <<TABLE CELLSPACING="0">
+"ChildClass" [ label = <<TABLE CELLSPACING="0">
 	<TR><TD><B>ChildClass</B></TD></TR>
 	<TR><TD><I>Methods</I><BR/>
 childMethod(&lt;String&gt; foo):this
@@ -13,8 +13,9 @@ childMethod(&lt;String&gt; foo):this
 
 </TABLE>>]
 
-	ChildClass -> ParentClass
-ParentClass [ label = <<TABLE CELLSPACING="0">
+	"ChildClass" -> "ParentClass"
+
+"ParentClass" [ label = <<TABLE CELLSPACING="0">
 	<TR><TD><B>ParentClass</B></TD></TR>
 	<TR><TD><I>Methods</I><BR/>
 parentMethod(&lt;Boolean&gt; bar):this
@@ -24,6 +25,7 @@ parentMethod(&lt;Boolean&gt; bar):this
 
 
 </TABLE>>]
+
 
 
 

@@ -1,8 +1,8 @@
 digraph ClassDiagram {
 	node [shape=plaintext]
-	edge [arrowhead=onormal];
+	edge [arrowhead=empty];
 
-Map [ label = <<TABLE CELLSPACING="0">
+"Map" [ label = <<TABLE CELLSPACING="0">
 	<TR><TD><B>Map</B></TD></TR>
 	<TR><TD><I>Methods</I><BR/>
 panTo(&lt;LatLng&gt; latlng):this
@@ -20,8 +20,9 @@ getZoom():Number
 
 </TABLE>>]
 
-	Map -> Evented
-Evented [ label = <<TABLE CELLSPACING="0">
+	"Map" -> "Evented"
+
+"Evented" [ label = <<TABLE CELLSPACING="0">
 	<TR><TD><B>Evented</B></TD></TR>
 	<TR><TD><I>Methods</I><BR/>
 on(&lt;String&gt; evtype, &lt;Function&gt; handler):this
@@ -35,8 +36,9 @@ off(&lt;String&gt; evtype, &lt;Function&gt; handler):this
 
 </TABLE>>]
 
-	Evented -> Class
-Class [ label = <<TABLE CELLSPACING="0">
+	"Evented" -> "Class"
+
+"Class" [ label = <<TABLE CELLSPACING="0">
 	<TR><TD><B>Class</B></TD></TR>
 	<TR><TD><I>Methods</I><BR/>
 extend(Object):Class
@@ -56,7 +58,8 @@ options:Object<BR align="left" />
 
 </TABLE>>]
 
-Layer [ label = <<TABLE CELLSPACING="0">
+
+"Layer" [ label = <<TABLE CELLSPACING="0">
 	<TR><TD><B>Layer</B></TD></TR>
 	<TR><TD><I>Methods</I><BR/>
 addTo(&lt;Map&gt; map):this
@@ -76,18 +79,32 @@ getAttribution():String
 
 </TABLE>>]
 
-	Layer -> Evented
-Marker [ label = <<TABLE CELLSPACING="0">
+	"Layer" -> "Evented"
+
+"Marker" [ label = <<TABLE CELLSPACING="0">
 	<TR><TD><B>Marker</B></TD></TR>
 	
 
 
 </TABLE>>]
 
-	Marker -> Layer
-TileLayer [ label = <<TABLE CELLSPACING="0">
+	"Marker" -> "Layer"
+
+"TileLayer" [ label = <<TABLE CELLSPACING="0">
 	<TR><TD><B>TileLayer</B></TD></TR>
-	<TR><TD><I>Methods</I><BR/>
+	<TR><TD><I>Options</I><BR/>
+minZoom:&lt;Number&gt; = 0
+<BR align="left" />
+maxZoom:&lt;Number&gt; = 18
+<BR align="left" />
+zoomOffset:&lt;Number&gt; = 0
+<BR align="left" />
+zoomReverse:&lt;Boolean&gt; = false
+<BR align="left" />
+
+</TD></TR>
+
+<TR><TD><I>Methods</I><BR/>
 getTileUrl(&lt;Object&gt; coords):
 <BR align="left" />
 
@@ -97,10 +114,25 @@ getTileUrl(&lt;Object&gt; coords):
 
 </TABLE>>]
 
-	TileLayer -> GridLayer
-GridLayer [ label = <<TABLE CELLSPACING="0">
+	"TileLayer" -> "GridLayer"
+
+"GridLayer" [ label = <<TABLE CELLSPACING="0">
 	<TR><TD><B>GridLayer</B></TD></TR>
-	<TR><TD><I>Methods</I><BR/>
+	<TR><TD><I>Options</I><BR/>
+tileSize:&lt;Number|Point&gt; = 256
+<BR align="left" />
+opacity:&lt;Number&gt; = 1.0
+<BR align="left" />
+minZoom:&lt;Number&gt; = 0
+<BR align="left" />
+maxZoom:&lt;Number&gt; = undefined
+<BR align="left" />
+noWrap:&lt;Boolean&gt; = false
+<BR align="left" />
+
+</TD></TR>
+
+<TR><TD><I>Methods</I><BR/>
 createTile(&lt;Object&gt; coords):
 <BR align="left" />
 
@@ -110,7 +142,8 @@ createTile(&lt;Object&gt; coords):
 
 </TABLE>>]
 
-	GridLayer -> Layer
+	"GridLayer" -> "Layer"
+
 
 
 }

@@ -194,7 +194,7 @@ export default class Leafdoc {
 	}
 
 	// 🍂method addStr(str: String, filename?: String): this
-	// Parses the given string for Leafdoc comments.
+	// Parses the given string for Leafdoc directives.
 	addStr(str, filename) {
 
 		// Leaflet files use DOS line feeds, which screw up things.
@@ -221,7 +221,6 @@ export default class Leafdoc {
 		let sectionAKA = [];
 		let sectionIsUninheritable = false;
 
-console.log(path.extname(filename), filename);
 		const parser = path.extname(filename) === '.leafdoc' ?
 			parserTrivial :
 			parserMec;
@@ -247,17 +246,8 @@ console.log(path.extname(filename), filename);
 			for (const i in lines) {
 				const line = lines[i];
 
-				// var match = regex.exec(line);	// Skips extra comment characters
-				// var lineStr = match[1];
-				// Might happen in some binary files
-				// console.log(line);
-				// break;
-				// }
 				let lineIsValid = false;
 				let parsedCharacters = 0;
-
-				// console.log('Line: ', i, line);
-				// var match = regex.exec(line);
 
 				let match;
 				// In "param foo, bar", directive is "param" and content is "foo, bar"
@@ -271,9 +261,7 @@ console.log(path.extname(filename), filename);
 				}
 
 				if (lineIsValid) {
-				// console.log('After having matched a line:', match);
 					const trailing = line.substr(parsedCharacters + 1).trim();
-					// console.log('After having matched a line:', trailing);
 					if (trailing) {
 						directives.push(['comment', trailing]);
 					}
@@ -285,15 +273,11 @@ console.log(path.extname(filename), filename);
 				}
 			}
 
-			// 	console.log('directives', directives);
-
 			for (const i in directives) {
 				const directive = directives[i][0],
 			    content = directives[i][1];
 
 				// 4: Parse 🍂 directives
-
-				// console.log(directive, '-', content);
 
 				if (directive === 'class' || directive === 'namespace') {
 					ns = content.trim();
@@ -322,7 +306,6 @@ console.log(path.extname(filename), filename);
 					dc = '';	// The name of the documentable will be set later
 				}
 
-
 				// console.log(scope, '-', directive, '-', content);
 
 				if (scope === 'ns') {
@@ -333,21 +316,32 @@ console.log(path.extname(filename), filename);
 							aka: [],
 							comments: [],
 							supersections: {},
-							inherits: []
+							inherits: [],
+							relationships: [],
 						};
 					}
 
+					currentNamespace = namespaces[ns];
+
 					if (directive === 'aka') {
-						namespaces[ns].aka.push(content);
+						currentNamespace.aka.push(content);
 					}
 					if (directive === 'comment') {
-						namespaces[ns].comments.push(content);
+						currentNamespace.comments.push(content);
 					}
 					if (directive === 'inherits') {
-						namespaces[ns].inherits.push(content);
+						currentNamespace.inherits.push(content);
 					}
-
-					currentNamespace = namespaces[ns];
+					if (directive === 'relationship') {
+						var split = regexps.relationshipDefinition.exec(content);
+						currentNamespace.relationships.push({
+							type: parts[1],
+							namespace: parts[2],
+							cardinalityFrom: parts[3],
+							cardinalityTo: parts[4],
+							label: parts[5],
+						});
+					}
 				}
 
 				if (scope === 'sec') {
@@ -583,7 +577,8 @@ console.log(path.extname(filename), filename);
 			id: namespace.id,
 			comments: namespace.comments,
 			supersections: out,
-			inherits: namespace.inherits
+			inherits: namespace.inherits,
+			relationships: namespace.relationships
 		});
 	}
 

@@ -81,6 +81,7 @@
   "inherits": [
    "Evented"
   ],
+  "relationships": [],
   "id": "map"
  },
  "Evented": {
@@ -153,6 +154,7 @@
   "inherits": [
    "Class"
   ],
+  "relationships": [],
   "id": "evented"
  },
  "Class": {
@@ -256,6 +258,7 @@
    }
   },
   "inherits": [],
+  "relationships": [],
   "id": "class"
  },
  "Layer": {
@@ -349,6 +352,7 @@
   "inherits": [
    "Evented"
   ],
+  "relationships": [],
   "id": "layer"
  },
  "Marker": {
@@ -361,6 +365,7 @@
   "inherits": [
    "Layer"
   ],
+  "relationships": [],
   "id": "marker"
  },
  "TileLayer": {
@@ -469,6 +474,7 @@
   "inherits": [
    "GridLayer"
   ],
+  "relationships": [],
   "id": "tilelayer"
  },
  "GridLayer": {
@@ -592,6 +598,7 @@
   "inherits": [
    "Layer"
   ],
+  "relationships": [],
   "id": "gridlayer"
  }
 }

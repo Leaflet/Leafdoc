@@ -42,7 +42,7 @@ export function redoLeafDirective(char) {
 // Parses an identifier, allowing only unicode ID_Start and ID_Continue characters
 // An identifier allows dots in it, to allow for namespacing identifiers.
 // TODO: An identifier shall allow an underscore or dollar at the beginning, as JS does.
-const identifier = xRegExp.build('^({{ID_Start}}  ( {{ID_Continue}} | \\. | : )*)$', {
+const identifier = xRegExp.build('^(({{ID_Start}} | _ | \$)  ( {{ID_Continue}} | \\. | : )*)$', {
 	ID_Start: unicodeRegExpIDStart,	// eslint-disable-line camelcase
 	ID_Continue: unicodeRegExpIDContinue	// eslint-disable-line camelcase
 }, 'nx');
@@ -65,4 +65,16 @@ export const functionParam = xRegExp.build('\\s* (?<name> ( {{identifier}} | …
 
 // Parses a miniclass name and its real class between parentheses.
 export const miniclassDefinition = xRegExp('^ (?<miniclass> .+ ) \\s* \\( (?<realclass> .+ ) \\) $', 'nx');
+
+
+
+// Parses a UML-like relationship definition
+export const relationshipDefinition = xRegExp(`^
+(?<type> \\S+ ) \\s*
+(?<namespace> \\S+ ) \\s*
+(?<cardinalityFrom> [^,\\s]* )? \\s*
+(, \\s* (?<cardinalityTo> [^,\\s]* )? \\s*
+ (, \\s* (?<label> .+ )? )?
+)? \\s* $`, 'nx');
+
 

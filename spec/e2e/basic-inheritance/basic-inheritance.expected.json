@@ -46,6 +46,7 @@
   "inherits": [
    "ParentClass"
   ],
+  "relationships": [],
   "id": "childclass"
  },
  "ParentClass": {
@@ -93,6 +94,7 @@
    }
   },
   "inherits": [],
+  "relationships": [],
   "id": "parentclass"
  }
 }
