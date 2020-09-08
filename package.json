@@ -8,7 +8,7 @@
   "author": "Iván Sánchez Ortega <ivan@sanchezortega.es>",
   "license": "GPL-3.0",
   "bin": {
-    "leafdoc": "src/cli.js"
+    "leafdoc": "src/cli.mjs"
   },
   "dependencies": {
     "handlebars": "^4.7.6",
