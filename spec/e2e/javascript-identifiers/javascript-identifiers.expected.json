@@ -1,0 +1,53 @@
+{
+ "$": {
+  "name": "$",
+  "aka": [],
+  "comments": [
+   "jQuery stuff."
+  ],
+  "supersections": {
+   "function": {
+    "name": "function",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "__default": {
+      "name": "__default",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "_each": {
+        "name": "_each",
+        "aka": [],
+        "comments": [
+         "Returns a random number between 0.0 and 1.0"
+        ],
+        "params": {
+         "arr": {
+          "name": "arr",
+          "type": "Array"
+         },
+         "fn": {
+          "name": "fn",
+          "type": "Function"
+         }
+        },
+        "type": "undefined",
+        "optional": false,
+        "defaultValue": null,
+        "id": "$-_each"
+       }
+      },
+      "type": "function",
+      "id": "$-function"
+     }
+    },
+    "id": "$-function"
+   }
+  },
+  "inherits": [],
+  "relationships": [],
+  "id": "$"
+ }
+}
