@@ -1,0 +1,32 @@
+
+@class ChildClass
+@inherits ParentClass
+
+@method childMethod(foo: String): this
+
+
+@class ParentClass
+
+@method parentMethod(bar: Boolean): this
+
+
+@class ConcreteClass
+@relationship implements AbstractClass
+
+@class AbstractClass
+
+
+@namespace Student
+@relationship associated ConcreteClass  ,, Meaningless connection to
+
+
+@namespace Teacher
+
+@namespace Classroom
+@relationship aggregationOf Student, 0..n, 1..n
+@relationship aggregationOf Teacher, 1   , 0..n
+
+
+
+
+

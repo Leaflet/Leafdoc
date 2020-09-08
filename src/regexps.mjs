@@ -71,10 +71,10 @@ export const miniclassDefinition = xRegExp('^ (?<miniclass> .+ ) \\s* \\( (?<rea
 // Parses a UML-like relationship definition
 export const relationshipDefinition = xRegExp(`^
 (?<type> \\S+ ) \\s*
-(?<namespace> \\S+ ) \\s*
-(?<cardinalityFrom> [^,\\s]* )? \\s*
-(, \\s* (?<cardinalityTo> [^,\\s]* )? \\s*
- (, \\s* (?<label> .+ )? )?
-)? \\s* $`, 'nx');
+(?<namespace> [^,\\s]+ ) \\s*
+(, \\s* (?<cardinalityFrom> [^,\\s]*) )? \\s*
+(, \\s* (?<cardinalityTo> [^,\\s]*) )? \\s*
+(, \\s* (?<label> .+ )? )?
+\\s* $`, 'nx');
 
 

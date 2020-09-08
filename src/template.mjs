@@ -93,3 +93,9 @@ Handlebars.registerHelper('json', function jsonHelper(obj) {
 });
 
 
+// Comparison helper. Inspired from https://github.com/helpers/handlebars-helpers
+Handlebars.registerHelper('equals', function equalityHelper(a, b) {
+	return a == b;
+});
+
+

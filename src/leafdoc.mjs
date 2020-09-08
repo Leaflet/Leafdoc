@@ -335,11 +335,11 @@ export default class Leafdoc {
 					if (directive === 'relationship') {
 						var split = regexps.relationshipDefinition.exec(content);
 						currentNamespace.relationships.push({
-							type: parts[1],
-							namespace: parts[2],
-							cardinalityFrom: parts[3],
-							cardinalityTo: parts[4],
-							label: parts[5],
+							type: split[1],
+							namespace: split[2],
+							cardinalityFrom: split[3],
+							cardinalityTo: split[4],
+							label: split[5],
 						});
 					}
 				}

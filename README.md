@@ -184,7 +184,7 @@ The syntax is:
 🍂relationship type namespace [ ,cardinalityFrom [ ,cardinalityTo [ ,label ]]]
 ```
 
-The following relationship `type`s are implemented:
+The following relationship `type`s are implemented for display in the `graphviz-class-diagram` templates:
 - `associated`
 - `implements`
 - `dependsOn`

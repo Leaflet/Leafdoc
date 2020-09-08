@@ -8,6 +8,26 @@
 	"{{../name}}" -> "{{this}}"
 {{/each}}
 
+{{#each relationships}}
+"{{../name}}" -> "{{namespace}}" [
+{{#if (equals type "associated")}}
+arrowhead = open
+{{else if (equals type "implements")}}
+arrowhead=empty, style=dashed
+{{else if (equals type "dependsOn")}}
+arrowhead=open, style=dashed
+{{else if (equals type "aggregationOf")}}
+arrowhead=odiamond
+{{else if (equals type "compositionOf")}}
+arrowhead=diamond
 {{else}}
-{{! Miniclasses don't have a name, skip them }}
+arrowhead=normal
+{{/if}}
+{{#if cardinalityFrom}}, headlabel="{{cardinalityFrom}}"{{/if}}
+{{#if cardinalityTo}}, taillabel="{{cardinalityTo}}"{{/if}}
+{{#if label}}, label="{{label}}"{{/if}}
+]
+{{/each}}
+{{else}}
+{{! Miniclasses don't have a name per se, skip them }}
 {{/if}}
