@@ -31,7 +31,7 @@ global.leafDirective = redoLeafDirective('🍂');
 
 export function getLeafDirective() {
 	return global.leafDirective;
-} 
+}
 
 // Re-builds the 🍂 directive based on a different leading character
 export function redoLeafDirective(char) {

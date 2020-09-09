@@ -37,7 +37,7 @@ describe('e2e tests', () => {
 
 			const outJson = doc.outputJSON();
 			const outHtml = doc.outputStr();
-			const outExt = options.outputExtension || "html";
+			const outExt = options.outputExtension || 'html';
 
 			fs.writeFileSync(`${dir + dirName  }.actual.json`, outJson);
 			fs.writeFileSync(`${dir + dirName  }.actual.${ outExt}`, outHtml);

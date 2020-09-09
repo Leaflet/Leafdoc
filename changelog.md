@@ -1,4 +1,8 @@
 
+# 2.2.1 (2020-09-09)
+
+* Fixed algorithm for preventing links inside links; revamped template AKA regexps.
+
 # 2.2.0 (2020-09-09)
 
 * Invert the UML-like arrows for composition and aggregation

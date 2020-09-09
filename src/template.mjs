@@ -41,18 +41,36 @@ function markdown(str) {
 // Helper to replace AKAs in markdown links.
 function replaceAKAs(str) {
 	str = str.trim();
-	for (const i in _AKAs) {
-		// [...](#a) → [...](#b)
-		str = str.replace(`(#${i})`, `(#${  _AKAs[i]  })`, 'g');
 
-		// `a` → [`a`](#b)
-		str = str.replace(new RegExp(`\`${i}\``, 'g'), `[\`${i}\`](#${  _AKAs[i]  })`);
-	}
+	// [...](#a) → [...](#b)
+	str = str.replace(/\[([^\[\]]*)\]\(#([^\(\)]*)\)/g, function (str, a, b) {
+		if (b in _AKAs) {
+			// console.log(' Replacing link AKA: ', `[${a}](#${[b]}) → [${a}](#${ _AKAs[b] })`);
+			return `[${a}](#${ _AKAs[b] })`;
+		} else {
+			// console.log(' Ignoring link AKA: ', `[${a}](#${[b]})`);
+			return str;
+		}
+	});
+
+	// `a` → [`a`](#b)
+	str = str.replace(/`([^`]*)`/g, function (str, a) {
+		if (a in _AKAs) {
+			// console.log(' Replacing code literal AKA: ', `\`${a}\` → [\`${a}\`](#${ _AKAs[a] })`);
+			return `[\`${a}\`](#${ _AKAs[a] })`;
+		} else {
+			// console.log(' Ignoring code literal AKA: ', '`' + a + '`');
+			return str;
+		}
+	});
 
 	// Remove links inside links (bug #63)
 	// [pre[`code`](trash)post](url) → [pre`code`post](url)
-	str = str.replace(/\[(.*)\[(.*)\]\(.*\)(.*)\]\((.*)\)/g,
-		function(str, pre, code, post, url){
+	// regexp is  [.*[`.*`](.*).*](.*) , but with each .* replaced with
+	// ([^`\[\]\(\)]*), i.e. a capture group of anything that is not ()[]` .
+	str = str.replace(/\[([^`\[\]\(\)]*)\[`([^`\[\]\(\)]*)`\]\([^`\[\]\(\)]*\)([^`\[\]\(\)]*)\]\(([^`\[\]\(\)]*)\)/g,
+		function (str, pre, code, post, url) {
+			//console.log(" Removing nested link: ", ` ${str} → [${pre}\`${code}\`${post}](${url})`);
 			return `[${pre}\`${code}\`${post}](${url})`;
 		}
 	);

@@ -779,7 +779,6 @@ export default class Leafdoc {
 	}
 
 	_assignAKAs(id, akas) {
-		this._AKAs[id] = id;
 		for (const i in akas) {
 			this._AKAs[akas[i].trim()] = id;
 		}
