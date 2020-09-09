@@ -42,14 +42,21 @@ function markdown(str) {
 function replaceAKAs(str) {
 	str = str.trim();
 	for (const i in _AKAs) {
-
 		// [...](#a) → [...](#b)
-		str = str.replace(`(#${i})`, `(#${  _AKAs[i]  })`);
+		str = str.replace(`(#${i})`, `(#${  _AKAs[i]  })`, 'g');
 
 		// `a` → [`a`](#b)
-		str = str.replace(`\`${i}\``, `[\`${i}\`](#${  _AKAs[i]  })`);
-
+		str = str.replace(new RegExp(`\`${i}\``, 'g'), `[\`${i}\`](#${  _AKAs[i]  })`);
 	}
+
+	// Remove links inside links (bug #63)
+	// [pre[`code`](trash)post](url) → [pre`code`post](url)
+	str = str.replace(/\[(.*)\[(.*)\]\(.*\)(.*)\]\((.*)\)/g,
+		function(str, pre, code, post, url){
+			return `[${pre}\`${code}\`${post}](${url})`;
+		}
+	);
+
 	return str;
 }
 

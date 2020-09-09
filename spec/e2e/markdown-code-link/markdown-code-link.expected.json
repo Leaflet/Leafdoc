@@ -1,0 +1,49 @@
+{
+ "KeyboardEvent": {
+  "name": "KeyboardEvent",
+  "aka": [],
+  "comments": [],
+  "supersections": {
+   "property": {
+    "name": "property",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "__default": {
+      "name": "__default",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "originalEvent": {
+        "name": "originalEvent",
+        "aka": [],
+        "comments": [
+         "",
+         "The original [DOM `KeyboardEvent`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent) that triggered this Leaflet event.",
+         "",
+         "A lone ref to `KeyboardEvent` here.",
+         "",
+         "Some other reference [to `KeyboardEvent` but in MDN](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent)."
+        ],
+        "params": {},
+        "type": "DOMEvent",
+        "optional": false,
+        "defaultValue": null,
+        "id": "keyboardevent-originalevent"
+       }
+      },
+      "type": "property",
+      "id": "keyboardevent-property"
+     }
+    },
+    "id": "keyboardevent-property"
+   }
+  },
+  "inherits": [
+   "Event"
+  ],
+  "relationships": [],
+  "id": "keyboardevent"
+ }
+}
