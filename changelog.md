@@ -1,5 +1,10 @@
 
-# 2.1.0(2020-09-08)
+# 2.2.0 (2020-09-09)
+
+* Invert the UML-like arrows for composition and aggregation
+* Prevent links inside links (#63)
+
+# 2.1.0 (2020-09-08)
 
 * Implemented a new namespace-level directive: `relationship`
 * Relationships show as UML-class-diagram-like arrows (properly styled) in the `graphviz-class-diagram` templates.
