@@ -259,7 +259,7 @@ instead of source.</td>
 	<tr id='leafdoc-addstr'>
 		<td><code><b>addStr</b>(<nobr>&lt;String&gt; <i>str</i></nobr>, <nobr>&lt;String&gt; <i>filename?</i></nobr>)</nobr></code></td>
 		<td><code>this</code></td>
-		<td>Parses the given string for Leafdoc comments.
+		<td>Parses the given string for Leafdoc directives.
 directive.</td>
 	</tr>
 	<tr id='leafdoc-outputstr'>
