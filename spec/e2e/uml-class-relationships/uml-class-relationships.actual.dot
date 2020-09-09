@@ -70,13 +70,13 @@ arrowhead = open
 
 
 "Classroom" -> "Student" [
-arrowhead=odiamond
+dir=both; arrowhead=none; arrowtail=odiamond
 , headlabel="0..n"
 , taillabel="1..n"
 
 ]
 "Classroom" -> "Teacher" [
-arrowhead=odiamond
+dir=both; arrowhead=none; arrowtail=odiamond
 , headlabel="1"
 , taillabel="0..n"
 

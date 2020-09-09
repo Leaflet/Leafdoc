@@ -1,1 +1,187 @@
-{}
+{
+ "ChildClass": {
+  "name": "ChildClass",
+  "aka": [],
+  "comments": [
+   ""
+  ],
+  "supersections": {
+   "method": {
+    "name": "method",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "__default": {
+      "name": "__default",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "childMethod": {
+        "name": "childMethod",
+        "aka": [],
+        "comments": [
+         "",
+         ""
+        ],
+        "params": {
+         "foo": {
+          "name": "foo",
+          "type": "String"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "childclass-childmethod"
+       }
+      },
+      "type": "method",
+      "id": "childclass-method"
+     }
+    },
+    "id": "childclass-method"
+   }
+  },
+  "inherits": [
+   "ParentClass"
+  ],
+  "relationships": [],
+  "id": "childclass"
+ },
+ "ParentClass": {
+  "name": "ParentClass",
+  "aka": [],
+  "comments": [
+   ""
+  ],
+  "supersections": {
+   "method": {
+    "name": "method",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "__default": {
+      "name": "__default",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "parentMethod": {
+        "name": "parentMethod",
+        "aka": [],
+        "comments": [
+         "",
+         ""
+        ],
+        "params": {
+         "bar": {
+          "name": "bar",
+          "type": "Boolean"
+         }
+        },
+        "type": "this",
+        "optional": false,
+        "defaultValue": null,
+        "id": "parentclass-parentmethod"
+       }
+      },
+      "type": "method",
+      "id": "parentclass-method"
+     }
+    },
+    "id": "parentclass-method"
+   }
+  },
+  "inherits": [],
+  "relationships": [],
+  "id": "parentclass"
+ },
+ "ConcreteClass": {
+  "name": "ConcreteClass",
+  "aka": [],
+  "comments": [
+   ""
+  ],
+  "supersections": {},
+  "inherits": [],
+  "relationships": [
+   {
+    "type": "implements",
+    "namespace": "AbstractClass"
+   }
+  ],
+  "id": "concreteclass"
+ },
+ "AbstractClass": {
+  "name": "AbstractClass",
+  "aka": [],
+  "comments": [
+   "",
+   ""
+  ],
+  "supersections": {},
+  "inherits": [],
+  "relationships": [],
+  "id": "abstractclass"
+ },
+ "Student": {
+  "name": "Student",
+  "aka": [],
+  "comments": [
+   "",
+   ""
+  ],
+  "supersections": {},
+  "inherits": [],
+  "relationships": [
+   {
+    "type": "associated",
+    "namespace": "ConcreteClass",
+    "cardinalityFrom": "",
+    "label": "Meaningless connection to"
+   }
+  ],
+  "id": "student"
+ },
+ "Teacher": {
+  "name": "Teacher",
+  "aka": [],
+  "comments": [
+   ""
+  ],
+  "supersections": {},
+  "inherits": [],
+  "relationships": [],
+  "id": "teacher"
+ },
+ "Classroom": {
+  "name": "Classroom",
+  "aka": [],
+  "comments": [
+   "",
+   "",
+   "",
+   "",
+   "",
+   ""
+  ],
+  "supersections": {},
+  "inherits": [],
+  "relationships": [
+   {
+    "type": "aggregationOf",
+    "namespace": "Student",
+    "cardinalityFrom": "0..n",
+    "cardinalityTo": "1..n"
+   },
+   {
+    "type": "aggregationOf",
+    "namespace": "Teacher",
+    "cardinalityFrom": "1",
+    "cardinalityTo": "0..n"
+   }
+  ],
+  "id": "classroom"
+ }
+}

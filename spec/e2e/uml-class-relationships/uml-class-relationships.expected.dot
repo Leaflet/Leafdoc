@@ -1,0 +1,86 @@
+digraph ClassDiagram {
+	node [shape=plaintext]
+	edge [arrowhead=empty];
+
+"ChildClass" [ label = <<TABLE CELLSPACING="0">
+	<TR><TD><B>ChildClass</B></TD></TR>
+	<TR><TD><I>Methods</I><BR/>
+childMethod(&lt;String&gt; foo):this
+<BR align="left" />
+
+</TD></TR>
+
+
+</TABLE>>]
+
+	"ChildClass" -> "ParentClass"
+
+"ParentClass" [ label = <<TABLE CELLSPACING="0">
+	<TR><TD><B>ParentClass</B></TD></TR>
+	<TR><TD><I>Methods</I><BR/>
+parentMethod(&lt;Boolean&gt; bar):this
+<BR align="left" />
+
+</TD></TR>
+
+
+</TABLE>>]
+
+
+"ConcreteClass" [ label = <<TABLE CELLSPACING="0">
+	<TR><TD><B>ConcreteClass</B></TD></TR>
+	
+</TABLE>>]
+
+
+"ConcreteClass" -> "AbstractClass" [
+arrowhead=empty, style=dashed
+
+
+
+]
+"AbstractClass" [ label = <<TABLE CELLSPACING="0">
+	<TR><TD><B>AbstractClass</B></TD></TR>
+	
+</TABLE>>]
+
+
+"Student" [ label = <<TABLE CELLSPACING="0">
+	<TR><TD><B>Student</B></TD></TR>
+	
+</TABLE>>]
+
+
+"Student" -> "ConcreteClass" [
+arrowhead = open
+
+
+, label="Meaningless connection to"
+]
+"Teacher" [ label = <<TABLE CELLSPACING="0">
+	<TR><TD><B>Teacher</B></TD></TR>
+	
+</TABLE>>]
+
+
+"Classroom" [ label = <<TABLE CELLSPACING="0">
+	<TR><TD><B>Classroom</B></TD></TR>
+	
+</TABLE>>]
+
+
+"Classroom" -> "Student" [
+dir=both; arrowhead=none; arrowtail=odiamond
+, headlabel="0..n"
+, taillabel="1..n"
+
+]
+"Classroom" -> "Teacher" [
+dir=both; arrowhead=none; arrowtail=odiamond
+, headlabel="1"
+, taillabel="0..n"
+
+]
+
+
+}

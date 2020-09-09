@@ -17,9 +17,9 @@ arrowhead=empty, style=dashed
 {{else if (equals type "dependsOn")}}
 arrowhead=open, style=dashed
 {{else if (equals type "aggregationOf")}}
-arrowhead=odiamond
+dir=both; arrowhead=none; arrowtail=odiamond
 {{else if (equals type "compositionOf")}}
-arrowhead=diamond
+dir=both; arrowhead=none; arrowtail=diamond
 {{else}}
 arrowhead=normal
 {{/if}}
