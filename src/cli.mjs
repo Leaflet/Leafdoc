@@ -49,7 +49,8 @@ const argv = minimist(process.argv.slice(2), {
 const doc = new Leafdoc({
 	verbose: argv.verbose,
 	templateDir: argv.template,
-	leadingCharacter: argv.character
+	leadingCharacter: argv.character,
+	showInheritancesWhenEmpty: argv.empty
 });
 
 argv._.forEach((filepath) => {
