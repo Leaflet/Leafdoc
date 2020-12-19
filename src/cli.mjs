@@ -37,6 +37,9 @@ const argv = minimist(process.argv.slice(2), {
 		// 🍂option json: Boolean=false; Write the internal JSON representation of the documentation instead of a templated HTML file.
 		// 🍂option o; Alias of `output`
 		j: 'json'
+		// 🍂option empty: Boolean=false; Akin to [Leafdoc.showInheritancesWhenEmpty](#leafdoc.showinheritanceswhenempty)
+		// 🍂option e; Alias of `empty`
+		e: 'json'
 	},
 	boolean: ['v', 'verbose', 'j', 'json'],
 	string: ['t', 'template', 'c', 'character'],
