@@ -1,0 +1,60 @@
+{
+ "GeoJSON": {
+  "name": "GeoJSON",
+  "aka": [
+   "GeoJson"
+  ],
+  "comments": [],
+  "supersections": {},
+  "inherits": [],
+  "relationships": [],
+  "id": "geojson"
+ },
+ "Marker": {
+  "name": "Marker",
+  "aka": [],
+  "comments": [],
+  "supersections": {
+   "method": {
+    "name": "method",
+    "aka": [],
+    "comments": [],
+    "sections": {
+     "Other methods": {
+      "name": "Other methods",
+      "aka": [],
+      "comments": [],
+      "uninheritable": false,
+      "documentables": {
+       "toGeoJSON": {
+        "name": "toGeoJSON",
+        "aka": [],
+        "comments": [
+         "`precision` is the number of decimal places for coordinates.",
+         "The default value is 6 places.",
+         "Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the marker (as a GeoJSON `Point` Feature)."
+        ],
+        "params": {
+         "precision?": {
+          "name": "precision?",
+          "type": "Number"
+         }
+        },
+        "type": "Object",
+        "optional": false,
+        "defaultValue": null,
+        "id": "marker-togeojson"
+       }
+      },
+      "type": "method",
+      "id": "marker-other-methods"
+     }
+    },
+    "id": "marker-method"
+   }
+  },
+  "inherits": [],
+  "relationships": [],
+  "id": "marker"
+ }
+}
