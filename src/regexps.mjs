@@ -35,7 +35,7 @@ export function getLeafDirective() {
 
 // Re-builds the 🍂 directive based on a different leading character
 export function redoLeafDirective(char) {
-	global.leafDirective = xRegExp(`  \\s* ${  char  } (?<directive> \\S+ ) (\\s+ (?<content> [^;\\n]+ )){0,1} `, 'gnx');
+	global.leafDirective = new RegExp(`\\s*${char}(?<directive>\\S+)(\\s+(?<content>.+?))?(?:; |$)`, 'g');
 	return global.leafDirective;
 }
 

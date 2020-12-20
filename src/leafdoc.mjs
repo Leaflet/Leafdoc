@@ -252,8 +252,13 @@ export default class Leafdoc {
 				let match;
 				// In "param foo, bar", directive is "param" and content is "foo, bar"
 				while (match = regexps.getLeafDirective().exec(line)) {
-					if (match[2]) { match[2] = match[2].trim(); }
-					directives.push([match[1], match[2]]);	// [directive, content]
+					if (match.groups.content) {
+						match.groups.content = match.groups.content.trim();
+					}
+					directives.push([
+						match.groups.directive,
+						match.groups.content
+					]);
 					// console.log('directive match: ', match);
 					blockIsEmpty = false;
 					lineIsValid = true;
@@ -261,7 +266,7 @@ export default class Leafdoc {
 				}
 
 				if (lineIsValid) {
-					const trailing = line.substr(parsedCharacters + 1).trim();
+					const trailing = line.substr(parsedCharacters).trim();
 					if (trailing) {
 						directives.push(['comment', trailing]);
 					}

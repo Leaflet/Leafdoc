@@ -14,6 +14,7 @@ describe('e2e tests', () => {
 
 	for (const i in dirs) {
 		const dirName = dirs[i];
+// 		if (dirName !== 'leaflet-vml') { continue; }
 		const dir = `./spec/e2e/${  dirName  }/`;
 
 		it(dirName, () => {
