@@ -1,4 +1,8 @@
 
+# 2.3.0 (2021-06-21)
+
+* Added --extensions option to CLI tool (by @delawen)
+
 # 2.2.1 (2020-09-09)
 
 * Fixed algorithm for preventing links inside links; revamped template AKA regexps.
