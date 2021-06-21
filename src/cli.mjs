@@ -39,7 +39,10 @@ const argv = minimist(process.argv.slice(2), {
 		j: 'json',
 		// 🍂option empty: Boolean=false; Akin to [Leafdoc.showInheritancesWhenEmpty](#leafdoc.showinheritanceswhenempty)
 		// 🍂option e; Alias of `empty`
-		e: 'empty'
+		e: 'empty',
+		// 🍂option extensions: String='.js,.leafdoc'; Defines the extensions of the files to process. Optional.
+		// 🍂option e; Alias of `extensions`
+		x: 'extensions'
 	},
 	boolean: ['v', 'verbose', 'j', 'json'],
 	string: ['t', 'template', 'c', 'character'],
@@ -62,7 +65,11 @@ argv._.forEach((filepath) => {
 		}
 
 		if (stats.isDirectory()) {
-			doc.addDir(filepath);
+			if(argv.extensions) {
+				doc.addDir(filepath, argv.extensions.split(','));
+			} else {
+				doc.addDir(filepath);
+			}
 		}
 	} catch (e) {
 		throw e;
