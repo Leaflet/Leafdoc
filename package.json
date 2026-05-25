@@ -17,9 +17,9 @@
     "templates"
   ],
   "dependencies": {
-    "handlebars": "^4.7.6",
-    "markdown-it": "^11.0.0",
-    "multilang-extract-comments": "^0.3.3"
+    "handlebars": "^4.7.9",
+    "markdown-it": "^14.2.0",
+    "multilang-extract-comments": "^0.4.0"
   },
   "scripts": {
     "update-markdown-leafdoc": "src/cli.js -t templates/markdown src/cli.js src/leafdoc.js --verbose -o Leafdoc.md",
