@@ -1,7 +1,7 @@
-/*eslint-env node,jasmine */
-
-import Leafdoc from '../src/leafdoc.js';
+import {describe, it} from 'node:test';
+import assert from 'node:assert/strict';
 import fs from 'fs';
+import Leafdoc from '../src/leafdoc.js';
 
 // Runs one test for each subdirectory in /spec/e2e,
 // comparing the output of running leafdoc to some expected HTML & JSON files
@@ -45,8 +45,8 @@ describe('e2e tests', () => {
 			const expectedHtml = fs.readFileSync(`${dir + dirName  }.expected.${ outExt}`).toString();
 			const expectedJson = JSON.parse(fs.readFileSync(`${dir + dirName  }.expected.json`));
 
-			expect(JSON.parse(outJson)).toEqual(expectedJson);
-			expect(outHtml).toEqual(expectedHtml);
+			assert.deepEqual(JSON.parse(outJson), expectedJson);
+			assert.deepEqual(outHtml, expectedHtml);
 		});
 	}
 

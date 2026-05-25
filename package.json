@@ -25,7 +25,7 @@
     "update-markdown-leafdoc": "src/cli.js -t templates/markdown src/cli.js src/leafdoc.js --verbose -o Leafdoc.md",
     "update-html-leafdoc": "src/cli.js -t templates/basic src/leafdoc.js src/cli.js --verbose -o Leafdoc.html",
     "prepublishOnly": "npm run update-markdown-leafdoc && npm run update-html-leafdoc",
-    "test": "jasmine",
+    "test": "node --test 'spec/*-spec.js'",
     "lint": "eslint src/ spec/*.js",
     "lintfix": "eslint src/ spec/*.js --fix"
   },
@@ -35,15 +35,10 @@
   },
   "devDependencies": {
     "eslint": "^7.4.0",
-    "eslint-config-mourner": "^3.0.0",
-    "eslint-plugin-jasmine": "^4.1.1",
-    "jasmine": "^5.1.0"
+    "eslint-config-mourner": "^3.0.0"
   },
   "eslintConfig": {
     "extends": "mourner",
-    "plugins": [
-      "jasmine"
-    ],
     "parserOptions": {
       "ecmaVersion": 2022,
       "sourceType": "module"

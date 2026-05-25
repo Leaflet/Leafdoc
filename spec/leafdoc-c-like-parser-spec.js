@@ -1,5 +1,5 @@
-/*eslint-env node,jasmine */
-
+import {describe, it} from 'node:test';
+import assert from 'node:assert/strict';
 import cLikeParser from '../src/parsers/multilang.js';
 
 
@@ -8,9 +8,9 @@ describe('C-like parser', () => {
 
 		it('returns an empty array', () => {
 
-			expect(cLikeParser('')).toEqual([]);
-			expect(cLikeParser('foobar')).toEqual([]);
-			expect(cLikeParser('1234')).toEqual([]);
+			assert.deepEqual(cLikeParser(''), []);
+			assert.deepEqual(cLikeParser('foobar'), []);
+			assert.deepEqual(cLikeParser('1234'), []);
 
 			const text = `
 var path$1 = require('path');
@@ -18,7 +18,7 @@ var Handlebars = require('handlebars');
 var templateDir = 'basic';
 `;
 
-			expect(cLikeParser(text)).toEqual([]);
+			assert.deepEqual(cLikeParser(text), []);
 		});
 
 	});
@@ -26,131 +26,131 @@ var templateDir = 'basic';
 	describe('when there are single-line comments', () => {
 
 		it('returns one item of one line', () => {
-			expect(cLikeParser('//foobar')).toEqual(['foobar']);
-			expect(cLikeParser('// foobar')).toEqual(['foobar']);
-			expect(cLikeParser('//  foobar')).toEqual(['foobar']);
-			expect(cLikeParser('//\tfoobar')).toEqual(['foobar']);
-			expect(cLikeParser('//\t\tfoobar')).toEqual(['foobar']);
-			expect(cLikeParser(' // foobar')).toEqual(['foobar']);
-			expect(cLikeParser('      // foobar')).toEqual(['foobar']);
-			expect(cLikeParser('      //  foobar')).toEqual(['foobar']);
+			assert.deepEqual(cLikeParser('//foobar'), ['foobar']);
+			assert.deepEqual(cLikeParser('// foobar'), ['foobar']);
+			assert.deepEqual(cLikeParser('//  foobar'), ['foobar']);
+			assert.deepEqual(cLikeParser('//\tfoobar'), ['foobar']);
+			assert.deepEqual(cLikeParser('//\t\tfoobar'), ['foobar']);
+			assert.deepEqual(cLikeParser(' // foobar'), ['foobar']);
+			assert.deepEqual(cLikeParser('      // foobar'), ['foobar']);
+			assert.deepEqual(cLikeParser('      //  foobar'), ['foobar']);
 
-			expect(cLikeParser(`
+			assert.deepEqual(cLikeParser(`
 something 
 // foobar
 something else
-`)).toEqual(['foobar']);
+`), ['foobar']);
 		});
 
 		it('returns one item of two lines', () => {
-			expect(cLikeParser('//foo\n//bar')).toEqual(['foo\nbar']);
-			expect(cLikeParser('//foo\n// bar')).toEqual(['foo\nbar']);
-			expect(cLikeParser('// foo\n//bar')).toEqual(['foo\nbar']);
-			expect(cLikeParser('// foo\n// bar')).toEqual(['foo\nbar']);
-			expect(cLikeParser('   //foo\n   //bar')).toEqual(['foo\nbar']);
-			expect(cLikeParser('   // foo\n   // bar')).toEqual(['foo\nbar']);
-			expect(cLikeParser('\t\t//foo\n\t\t//bar')).toEqual(['foo\nbar']);
-			expect(cLikeParser('\t\t// \tfoo\n\t\t// \tbar')).toEqual(['foo\n\tbar']);
+			assert.deepEqual(cLikeParser('//foo\n//bar'), ['foo\nbar']);
+			assert.deepEqual(cLikeParser('//foo\n// bar'), ['foo\nbar']);
+			assert.deepEqual(cLikeParser('// foo\n//bar'), ['foo\nbar']);
+			assert.deepEqual(cLikeParser('// foo\n// bar'), ['foo\nbar']);
+			assert.deepEqual(cLikeParser('   //foo\n   //bar'), ['foo\nbar']);
+			assert.deepEqual(cLikeParser('   // foo\n   // bar'), ['foo\nbar']);
+			assert.deepEqual(cLikeParser('\t\t//foo\n\t\t//bar'), ['foo\nbar']);
+			assert.deepEqual(cLikeParser('\t\t// \tfoo\n\t\t// \tbar'), ['foo\n\tbar']);
 
-			expect(cLikeParser(`
+			assert.deepEqual(cLikeParser(`
 something 
 // foo
 // bar
 something else
-`)).toEqual(['foo\nbar']);
+`), ['foo\nbar']);
 		});
 
 		it('returns several items', () => {
-			expect(cLikeParser(`
+			assert.deepEqual(cLikeParser(`
 something 
 // foo
 // bar
 something else
 // quux
 lorem ipsum
-`)).toEqual(['foo\nbar', 'quux']);
+`), ['foo\nbar', 'quux']);
 		});
 
 	});
 
 	describe('when there are block comments', () => {
 		it('returns one item of one line', () => {
-			expect(cLikeParser('/*foobar*/')).toEqual(['foobar']);
-			//expect(cLikeParser('var /*foobar*/ foo')).toEqual(['foobar']);
-			expect(cLikeParser('asdf\n/*foobar*/\nqwer')).toEqual(['foobar']);
-			expect(cLikeParser('asdf\n\t/*foobar*/\n\tqwer')).toEqual(['foobar']);
+			assert.deepEqual(cLikeParser('/*foobar*/'), ['foobar']);
+			//assert.deepEqual(cLikeParser('var /*foobar*/ foo'), ['foobar']);
+			assert.deepEqual(cLikeParser('asdf\n/*foobar*/\nqwer'), ['foobar']);
+			assert.deepEqual(cLikeParser('asdf\n\t/*foobar*/\n\tqwer'), ['foobar']);
 
-			expect(cLikeParser('/*foobar   */')).toEqual(['foobar']);
-			expect(cLikeParser('/*foobar  \n  */')).toEqual(['foobar']);
+			assert.deepEqual(cLikeParser('/*foobar   */'), ['foobar']);
+			assert.deepEqual(cLikeParser('/*foobar  \n  */'), ['foobar']);
 
-			expect(cLikeParser('/**foobar*/')).toEqual(['foobar']);
-			expect(cLikeParser('/**foobar**/')).toEqual(['foobar*']);
-			expect(cLikeParser('/*foobar**/')).toEqual(['foobar*']);
-			expect(cLikeParser('/*******foobar******/')).toEqual(['****foobar*****']);
+			assert.deepEqual(cLikeParser('/**foobar*/'), ['foobar']);
+			assert.deepEqual(cLikeParser('/**foobar**/'), ['foobar*']);
+			assert.deepEqual(cLikeParser('/*foobar**/'), ['foobar*']);
+			assert.deepEqual(cLikeParser('/*******foobar******/'), ['****foobar*****']);
 		});
 
 		it('parses asterisk-only blocks', () => {
-			expect(cLikeParser('/*************/')).toEqual(['*********']);
+			assert.deepEqual(cLikeParser('/*************/'), ['*********']);
 		});
 
 		it('returns one item of two lines', () => {
-			expect(cLikeParser('/*foo\nbar*/')).toEqual(['foo\nbar']);
-			expect(cLikeParser(`
+			assert.deepEqual(cLikeParser('/*foo\nbar*/'), ['foo\nbar']);
+			assert.deepEqual(cLikeParser(`
 something 
 /* foo
 bar */
 something else
-`)).toEqual(['foo\nbar']);
+`), ['foo\nbar']);
 
-			expect(cLikeParser(`
+			assert.deepEqual(cLikeParser(`
 something 
 /* 
 foo
 bar 
 */
 something else
-`)).toEqual(['foo\nbar']);
+`), ['foo\nbar']);
 
-			expect(cLikeParser(`
+			assert.deepEqual(cLikeParser(`
 something
 /****
 foo
 bar
 ****/
 something else
-`)).toEqual(['*\nfoo\nbar\n**']);
+`), ['*\nfoo\nbar\n**']);
 
-			expect(cLikeParser(`
+			assert.deepEqual(cLikeParser(`
 something 
 /**
  * foo
  * bar 
  */
 something else
-`)).toEqual(['foo\nbar']);
+`), ['foo\nbar']);
 
-			expect(cLikeParser(`
+			assert.deepEqual(cLikeParser(`
 something 
 /**
  *foo
  *bar 
  */
 something else
-`)).toEqual(['foo\nbar']);
+`), ['foo\nbar']);
 
-			expect(cLikeParser(`
+			assert.deepEqual(cLikeParser(`
 something 
 /**
  * foo
  * bar 
  **/
 something else
-`)).toEqual(['foo\nbar']);
+`), ['foo\nbar']);
 
 		});
 
 		it('returns several items', () => {
-			expect(cLikeParser(`
+			assert.deepEqual(cLikeParser(`
 something 
 /**
  * foo
@@ -161,29 +161,29 @@ something else
 lorem ipsum
 /*foo2
 bar2*/
-`)).toEqual(['foo\nbar', 'quux', 'foo2\nbar2']);
+`), ['foo\nbar', 'quux', 'foo2\nbar2']);
 
-			expect(cLikeParser(`
+			assert.deepEqual(cLikeParser(`
 	/* foo
 	 * bar
 	 * baz
 	 */        
-        `)).toEqual(['foo\nbar\nbaz']);
+        `), ['foo\nbar\nbaz']);
 
 
-			expect(cLikeParser(`
+			assert.deepEqual(cLikeParser(`
 	/* foo
 	 *
 	 * bar
 	 */        
-        `)).toEqual(['foo\n\nbar']);
+        `), ['foo\n\nbar']);
 
-			expect(cLikeParser(`
+			assert.deepEqual(cLikeParser(`
 	/* foo
 
 	 * bar
 	 */        
-        `)).toEqual(['foo\n\nbar']);
+        `), ['foo\n\nbar']);
 
 
 		});
@@ -192,7 +192,7 @@ bar2*/
 	it('Parses correctly Leaflet\'s eachLayer comment block', () => {
 
 
-		expect(cLikeParser(`
+		assert.deepEqual(cLikeParser(`
 	/* @method eachLayer(fn: Function, context?: Object): this
 	 * Iterates over the layers of the map, optionally specifying context of the iterator function.
 	 * \`\`\`
@@ -201,7 +201,7 @@ bar2*/
 	 * });
 	 * \`\`\`
 	 */        
-        `)).toEqual([`@method eachLayer(fn: Function, context?: Object): this
+        `), [`@method eachLayer(fn: Function, context?: Object): this
 Iterates over the layers of the map, optionally specifying context of the iterator function.
 \`\`\`
 map.eachLayer(function(layer){
@@ -212,7 +212,7 @@ map.eachLayer(function(layer){
 
 	it('Parses correctly Leaflet\'s Map leading comment block', () => {
 
-		expect(cLikeParser(`
+		assert.deepEqual(cLikeParser(`
 /*
  * @class Map
  * @aka L.Map
@@ -231,7 +231,7 @@ map.eachLayer(function(layer){
  * \`\`\`
  *
  */
-`)).toEqual([`@class Map
+`), [`@class Map
 @aka L.Map
 @inherits Evented
 
@@ -251,7 +251,7 @@ var map = L.map('map', {
 
 	it('Parses correctly Leaflet\'s VML leading comment block', () => {
 
-		expect(cLikeParser(`
+		assert.deepEqual(cLikeParser(`
 /*
  * @class SVG
  *
@@ -260,7 +260,7 @@ var map = L.map('map', {
  * VML was deprecated in 2012, which means VML functionality exists only for backwards compatibility
  * with old versions of Internet Explorer.
  */
-`)).toEqual([`@class SVG
+`), [`@class SVG
 
 Although SVG is not available on IE7 and IE8, these browsers support [VML](https://en.wikipedia.org/wiki/Vector_Markup_Language), and the SVG renderer will fall back to VML in this case.
 

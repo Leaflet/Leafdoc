@@ -1,12 +1,12 @@
-/*eslint-env node,jasmine */
-
+import {describe, it} from 'node:test';
+import assert from 'node:assert/strict';
 import trivialParser from '../src/parsers/trivial.js';
 
 
 describe('Trivial parser', () => {
 	it('just passes the string around, wrapped in an array', () => {
 
-		expect(trivialParser('foobar')).toEqual(['foobar']);
+		assert.deepEqual(trivialParser('foobar'), ['foobar']);
 
 		const text = `
 var path$1 = require('path');
@@ -29,7 +29,7 @@ var _AKAs = {};
 } */
 `;
 
-		expect(trivialParser(text)).toEqual([text]);
+		assert.deepEqual(trivialParser(text), [text]);
 	});
 
 });
