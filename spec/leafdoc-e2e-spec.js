@@ -1,8 +1,7 @@
 /*eslint-env node,jasmine */
 
-const Leafdoc = require('../');
-
-const fs = require('fs');
+import Leafdoc from '../src/leafdoc.js';
+import fs from 'fs';
 
 // Runs one test for each subdirectory in /spec/e2e,
 // comparing the output of running leafdoc to some expected HTML & JSON files

@@ -2,14 +2,20 @@
   "name": "leafdoc",
   "version": "2.3.0",
   "description": "A lightweight NaturalDocs-like LeafletJS-style documentation generator",
-  "main": "dist/leafdoc.cjs.js",
-  "browser": "dist/leafdoc.browser.js",
-  "module": "src/leafdoc.mjs",
+  "type": "module",
+  "exports": "./src/leafdoc.js",
   "author": "Iván Sánchez Ortega <ivan@sanchezortega.es>",
   "license": "GPL-3.0",
   "bin": {
-    "leafdoc": "src/cli.mjs"
+    "leafdoc": "src/cli.js"
   },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "src",
+    "templates"
+  ],
   "dependencies": {
     "handlebars": "^4.7.6",
     "markdown-it": "^11.0.0",
@@ -19,26 +25,22 @@
     "xregexp": "^4.3.0"
   },
   "scripts": {
-    "update-markdown-leafdoc": "src/cli.mjs -t templates/markdown src/cli.mjs src/leafdoc.mjs --verbose -o Leafdoc.md",
-    "update-html-leafdoc": "src/cli.mjs -t templates/basic src/leafdoc.mjs src/cli.mjs --verbose -o Leafdoc.html",
-    "prepublish": "npm run update-markdown-leafdoc && npm run update-html-leafdoc",
-    "rollup": "rollup -c rollup.config.js",
-    "test": "rollup -c rollup.config.js; jasmine",
-    "lint": "eslint src/ spec/*.js --ext=.js,.mjs",
-    "lintfix": "eslint src/ spec/*.js --fix --ext=.js,.mjs"
+    "update-markdown-leafdoc": "src/cli.js -t templates/markdown src/cli.js src/leafdoc.js --verbose -o Leafdoc.md",
+    "update-html-leafdoc": "src/cli.js -t templates/basic src/leafdoc.js src/cli.js --verbose -o Leafdoc.html",
+    "prepublishOnly": "npm run update-markdown-leafdoc && npm run update-html-leafdoc",
+    "test": "jasmine",
+    "lint": "eslint src/ spec/*.js",
+    "lintfix": "eslint src/ spec/*.js --fix"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/Leaflet/Leafdoc.git"
   },
   "devDependencies": {
-    "@rollup/plugin-buble": "^0.21.3",
     "eslint": "^7.4.0",
     "eslint-config-mourner": "^3.0.0",
     "eslint-plugin-jasmine": "^4.1.1",
-    "jasmine": "^3.5.0",
-    "rollup": "^2.20.0",
-    "rollup-plugin-eslint": "^7.0.0"
+    "jasmine": "^5.1.0"
   },
   "eslintConfig": {
     "extends": "mourner",
@@ -46,7 +48,7 @@
       "jasmine"
     ],
     "parserOptions": {
-      "ecmaVersion": 6,
+      "ecmaVersion": 2022,
       "sourceType": "module"
     },
     "rules": {

@@ -1,6 +1,6 @@
 /*eslint-env node,jasmine */
 
-const cLikeParser = require('../dist/split/multilang.js');
+import cLikeParser from '../src/parsers/multilang.js';
 
 
 describe('C-like parser', () => {

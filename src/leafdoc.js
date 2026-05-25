@@ -2,10 +2,10 @@
 import fs from 'fs';
 import path from 'path';
 
-import {getTemplate, setTemplateDir, setAKAs} from './template.mjs';
-import * as regexps from './regexps.mjs';
-import parserTrivial from './parsers/trivial.mjs';
-import parserMec from './parsers/multilang.mjs';
+import {getTemplate, setTemplateDir, setAKAs} from './template.js';
+import * as regexps from './regexps.js';
+import parserTrivial from './parsers/trivial.js';
+import parserMec from './parsers/multilang.js';
 
 
 // 🍂class Leafdoc; Represents the Leafdoc parser

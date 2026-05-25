@@ -1,6 +1,6 @@
 /*eslint-env node,jasmine */
 
-const trivialParser = require('../dist/split/trivial.js');
+import trivialParser from '../src/parsers/trivial.js';
 
 
 describe('Trivial parser', () => {
