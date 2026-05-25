@@ -1,80 +1,56 @@
 
 // Regexps (maybe) shared between files.
 
-import xRegExp from 'xregexp';
-import unicodeRegExpIDStart from 'regenerate-unicode-properties/Binary_Property/ID_Start.js';
-import unicodeRegExpIDContinue from 'regenerate-unicode-properties/Binary_Property/ID_Continue.js';
+// An identifier: a JS-like name allowing dot and colon for namespacing.
+// Uses native Unicode property escapes for ID_Start / ID_Continue.
+const identifier = String.raw`(?:[\p{ID_Start}_$][\p{ID_Continue}.:]*)`;
 
 // One or more lines starting with whitespace and two or more forward slashes,
-// or
-// whitespace-slash-asterisk whatever asterisk-slash.
-export const commentBlock = xRegExp('^(?<multiline> ( (?!\\n) \\s*\\/{2,}\\s*.*\\n )+ ) \
-| \
-(\\s*\\/\\* (?<block> [\\s\\S]*?) \\*\\/)  \
-', 'gmnx');
+// or whitespace-slash-asterisk whatever asterisk-slash.
+export const commentBlock = /^(?<multiline>(?:(?!\n)\s*\/{2,}\s*.*\n)+)|(?:\s*\/\*(?<block>[\s\S]*?)\*\/)/gm;
 
-export const leafdocFile = xRegExp('^(?<block> [\\s\\S]+ )$', 'gmnx');
-
+export const leafdocFile = /^(?<block>[\s\S]+)$/gm;
 
 // Inside each line of a comment /* */ block, skips the leading spaces / asterisk (if any)
-export const leadingBlock = xRegExp('^  ( \\s* \\* \\s? )?   (?<line> .* )  $', 'nx');
-
+export const leadingBlock = /^(?:\s*\*\s?)?(?<line>.*)$/;
 
 // Inside each line of a comment // block, skips the leading //
-export const leadingLine = xRegExp('^ \\s*/{0,4}\\s{0,1} (?<line> .* )  $', 'nx');
+export const leadingLine = /^\s*\/{0,4}\s?(?<line>.*)$/;
 
 // Inside .leafdoc files, match any line without skipping anything
-export const anyLine = xRegExp('^ (?<line> .* ) $', 'nx');
+export const anyLine = /^(?<line>.*)$/;
 
 // Parses a 🍂 directive, init'd at redoLeafDirective()
-global.leafDirective = redoLeafDirective('🍂');
+let leafDirective;
 
 export function getLeafDirective() {
-	return global.leafDirective;
+	return leafDirective;
 }
 
 // Re-builds the 🍂 directive based on a different leading character
 export function redoLeafDirective(char) {
-	global.leafDirective = new RegExp(`\\s*${char}(?<directive>\\S+)(\\s+(?<content>.+?))?(?:; |$)`, 'g');
-	return global.leafDirective;
+	leafDirective = new RegExp(`\\s*${char}(?<directive>\\S+)(?:\\s+(?<content>.+?))?(?:; |$)`, 'g');
+	return leafDirective;
 }
 
-// Parses an identifier, allowing only unicode ID_Start and ID_Continue characters
-// An identifier allows dots in it, to allow for namespacing identifiers.
-// TODO: An identifier shall allow an underscore or dollar at the beginning, as JS does.
-const identifier = xRegExp.build('^(({{ID_Start}} | _ | \$)  ( {{ID_Continue}} | \\. | : )*)$', {
-	ID_Start: unicodeRegExpIDStart,	// eslint-disable-line camelcase
-	ID_Continue: unicodeRegExpIDContinue	// eslint-disable-line camelcase
-}, 'nx');
+redoLeafDirective('🍂');
 
-// Parses a function name, its return type, and its parameters
-// Funny thing about functions is that not all printable characters are allowed. Thus,
-//   use unicode ID_Start and ID_Continue character sets via 'identifier' sub-regexp.
-// eslint-disable-next-line no-useless-escape
-export const functionDefinition = xRegExp.build('^ (?<name> {{identifier}} ) (?<required> (\\?{0,1}) ) \\s* (?<params> \\( .* \\) ){0,1}   \\s* ( \\: \\s* (?<type> .+? ) )? ( = \\s* (?<default> .+ ) \\s* ){0,1} \$', {
-	identifier
-}, 'nx');
+// Parses a function name, its return type, and its parameters.
+// Capture group order (matches the indexed access in leafdoc.js):
+//   1: name, 2: required, 3: params, 4: type, 5: default
+export const functionDefinition = new RegExp(
+	`^(?<name>${identifier})(?<required>\\??)\\s*(?<params>\\(.*\\))?\\s*(?::\\s*(?<type>.+?))?(?:=\\s*(?<default>.+)\\s*)?$`,
+	'u'
+);
 
-
-
-// var functionParam = xRegExp.build('^ \\s* (?<name> {{identifier}}) \\s* ( \\: \\s* (?<type> .+ ) \\s* ) $', {identifier: identifier}, 'nx');
-// var functionParam = xRegExp.build('\\s* (?<name> ( {{identifier}} | … ) \\?{0,1} ) \\s* ( \\: \\s* (?<type> [^,]+ ) \\s* ) (, | \\)) ', {identifier: identifier}, 'gnx');
-export const functionParam = xRegExp.build('\\s* (?<name> ( {{identifier}} | … ) \\?{0,1} ) \\s* ( \\: \\s* (?<type> [^,]+ ) \\s* )? (, | \\)) ', {identifier}, 'gnx');
-
-
+// Capture group order: 1: name, 2: type
+export const functionParam = new RegExp(
+	`\\s*(?<name>(?:${identifier}|…)\\??)\\s*(?::\\s*(?<type>[^,]+)\\s*)?(?:,|\\))`,
+	'gu'
+);
 
 // Parses a miniclass name and its real class between parentheses.
-export const miniclassDefinition = xRegExp('^ (?<miniclass> .+ ) \\s* \\( (?<realclass> .+ ) \\) $', 'nx');
-
-
+export const miniclassDefinition = /^(?<miniclass>.+)\s*\((?<realclass>.+)\)$/;
 
 // Parses a UML-like relationship definition
-export const relationshipDefinition = xRegExp(`^
-(?<type> \\S+ ) \\s*
-(?<namespace> [^,\\s]+ ) \\s*
-(, \\s* (?<cardinalityFrom> [^,\\s]*) )? \\s*
-(, \\s* (?<cardinalityTo> [^,\\s]*) )? \\s*
-(, \\s* (?<label> .+ )? )?
-\\s* $`, 'nx');
-
-
+export const relationshipDefinition = /^(?<type>\S+)\s*(?<namespace>[^,\s]+)\s*(?:,\s*(?<cardinalityFrom>[^,\s]*))?\s*(?:,\s*(?<cardinalityTo>[^,\s]*))?\s*(?:,\s*(?<label>.+)?)?\s*$/;
