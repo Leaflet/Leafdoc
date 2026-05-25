@@ -13,7 +13,7 @@ describe('e2e tests', () => {
 
 	for (const i in dirs) {
 		const dirName = dirs[i];
-// 		if (dirName !== 'leaflet-vml') { continue; }
+		// 		if (dirName !== 'leaflet-vml') { continue; }
 		const dir = `./spec/e2e/${  dirName  }/`;
 
 		it(dirName, () => {
@@ -21,7 +21,7 @@ describe('e2e tests', () => {
 			let options = {};
 			try {
 				options = JSON.parse(fs.readFileSync(`${dir  }leafdoc-options.json`));
-			} catch (ex) {}
+			} catch { /* options file is optional */ }
 
 			const doc = new Leafdoc(options);
 

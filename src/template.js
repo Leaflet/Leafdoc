@@ -17,7 +17,7 @@ export function setTemplateDir(newDir) {
 
 export function getTemplate(templateName) {
 	if (!templates[templateName]) {
-		templates[templateName] = Handlebars.compile(fs.readFileSync(path.join(templateDir, `${templateName  }.hbs`)).toString());
+		templates[templateName] = Handlebars.compile(fs.readFileSync(path.join(templateDir, `${templateName}.hbs`)).toString());
 	}
 	return templates[templateName];
 }
@@ -32,9 +32,7 @@ export function setAKAs(akas) {
 /// TODO: Allow setting markdown-it options (enable/disable tables, autolinks, abbrevs, etc)
 let markdownRenderer;
 function markdown(str) {
-	if (!markdownRenderer) {
-		markdownRenderer = MarkdownRenderer(/* markdown-it options */);
-	}
+	markdownRenderer ??= new MarkdownRenderer(/* markdown-it options */);
 	return markdownRenderer.render(str);
 }
 
@@ -43,42 +41,38 @@ function replaceAKAs(str) {
 	str = str.trim();
 
 	// [...](#a) → [...](#b)
-	str = str.replace(/\[([^\[\]]*)\]\(#([^\(\)]*)\)/g, function (str, a, b) {
+	str = str.replace(/\[([^[\]]*)\]\(#([^()]*)\)/g, (match, a, b) => {
 		if (b in _AKAs) {
 			// console.log(' Replacing link AKA: ', `[${a}](#${[b]}) → [${a}](#${ _AKAs[b] })`);
-			return `[${a}](#${ _AKAs[b] })`;
-		} else {
-			// console.log(' Ignoring link AKA: ', `[${a}](#${[b]})`);
-			return str;
+			return `[${a}](#${_AKAs[b]})`;
 		}
+		// console.log(' Ignoring link AKA: ', `[${a}](#${[b]})`);
+		return match;
 	});
 
 	// `a` → [`a`](#b)
-	str = str.replace(/`([^`]*)`/g, function (str, a) {
+	str = str.replace(/`([^`]*)`/g, (match, a) => {
 		if (a in _AKAs) {
 			// console.log(' Replacing code literal AKA: ', `\`${a}\` → [\`${a}\`](#${ _AKAs[a] })`);
-			return `[\`${a}\`](#${ _AKAs[a] })`;
-		} else {
-			// console.log(' Ignoring code literal AKA: ', '`' + a + '`');
-			return str;
+			return `[\`${a}\`](#${_AKAs[a]})`;
 		}
+		// console.log(' Ignoring code literal AKA: ', '`' + a + '`');
+		return match;
 	});
 
 	// Remove links inside links (bug #63)
 	// [pre[`code`](trash)post](url) → [pre`code`post](url)
 	// regexp is  [.*[`.*`](.*).*](.*) , but with each .* replaced with
-	// ([^`\[\]\(\)]*), i.e. a capture group of anything that is not ()[]` .
-	str = str.replace(/\[([^`\[\]\(\)]*)\[`([^`\[\]\(\)]*)`\]\([^`\[\]\(\)]*\)([^`\[\]\(\)]*)\]\(([^`\[\]\(\)]*)\)/g,
-		function (str, pre, code, post, url) {
-			//console.log(" Removing nested link: ", ` ${str} → [${pre}\`${code}\`${post}](${url})`);
-			return `[${pre}\`${code}\`${post}](${url})`;
-		}
+	// ([^`[]()]*), i.e. a capture group of anything that is not ()[]` .
+	// console.log(' Removing nested link: ', ` ${match} → [${pre}\`${code}\`${post}](${url})`);
+	str = str.replace(/\[([^`[\]()]*)\[`([^`[\]()]*)`\]\([^`[\]()]*\)([^`[\]()]*)\]\(([^`[\]()]*)\)/g,
+		(match, pre, code, post, url) => `[${pre}\`${code}\`${post}](${url})`
 	);
 
 	return str;
 }
 
-Handlebars.registerHelper('markdown', function markdownHelper(str) {
+Handlebars.registerHelper('markdown', (str) => {
 	if (!str) return '';
 	if (str instanceof Array) {
 		str = str.join('\n').trim();
@@ -90,7 +84,7 @@ Handlebars.registerHelper('markdown', function markdownHelper(str) {
 		.replace('</p>', '');
 });
 
-Handlebars.registerHelper('rawmarkdown', function rawmarkdownHelper(str) {
+Handlebars.registerHelper('rawmarkdown', (str) => {
 	if (!str) { return ''; }
 	if (str instanceof Array) {
 		str = str.join('\n');
@@ -100,27 +94,20 @@ Handlebars.registerHelper('rawmarkdown', function rawmarkdownHelper(str) {
 
 
 // Automatically link to AKAs, mostly used on method/function/param/option data types.
-Handlebars.registerHelper('type', function typeHelper(str) {
+Handlebars.registerHelper('type', (str) => {
 	if (!str) { return ''; }
 	if (str in _AKAs) {
 		const id = _AKAs[str];
-		return `<a href='#${  id  }'>${  str  }</a>`;
-	} else {
-		// Should be a built-in type
-		return str;
+		return `<a href='#${id}'>${str}</a>`;
 	}
+	// Should be a built-in type
+	return str;
 });
 
 
 // JSON stringify the stuff.
-Handlebars.registerHelper('json', function jsonHelper(obj) {
-	return JSON.stringify(obj, undefined, 1);
-});
+Handlebars.registerHelper('json', obj => JSON.stringify(obj, undefined, 1));
 
 
 // Comparison helper. Inspired from https://github.com/helpers/handlebars-helpers
-Handlebars.registerHelper('equals', function equalityHelper(a, b) {
-	return a == b;
-});
-
-
+Handlebars.registerHelper('equals', (a, b) => a === b);

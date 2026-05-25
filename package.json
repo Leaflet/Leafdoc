@@ -24,35 +24,18 @@
   "scripts": {
     "update-markdown-leafdoc": "src/cli.js -t templates/markdown src/cli.js src/leafdoc.js --verbose -o Leafdoc.md",
     "update-html-leafdoc": "src/cli.js -t templates/basic src/leafdoc.js src/cli.js --verbose -o Leafdoc.html",
-    "prepublishOnly": "npm run update-markdown-leafdoc && npm run update-html-leafdoc",
+    "prepublishOnly": "npm test && npm run update-markdown-leafdoc && npm run update-html-leafdoc",
+    "pretest": "npm run lint",
     "test": "node --test 'spec/*-spec.js'",
-    "lint": "eslint src/ spec/*.js",
-    "lintfix": "eslint src/ spec/*.js --fix"
+    "lint": "eslint src spec",
+    "lintfix": "eslint src spec --fix"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/Leaflet/Leafdoc.git"
   },
   "devDependencies": {
-    "eslint": "^7.4.0",
-    "eslint-config-mourner": "^3.0.0"
-  },
-  "eslintConfig": {
-    "extends": "mourner",
-    "parserOptions": {
-      "ecmaVersion": 2022,
-      "sourceType": "module"
-    },
-    "rules": {
-      "prefer-arrow-callback": 0,
-      "indent": [
-        1,
-        "tab",
-        {
-          "VariableDeclarator": 0,
-          "flatTernaryExpressions": true
-        }
-      ]
-    }
+    "eslint": "^10.4.0",
+    "eslint-config-mourner": "^4.1.0"
   }
 }

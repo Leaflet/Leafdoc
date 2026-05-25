@@ -25,22 +25,22 @@ const {values: argv, positionals} = parseArgs({
 	options: {
 		// 🍂option template: String='templates/basic'; Akin to [Leafdoc.templateDir](#leafdoc.templatedir)
 		// 🍂option t; Alias of `template`
-		template:   {type: 'string',  short: 't', default: 'templates/basic'},
+		template: {type: 'string',  short: 't', default: 'templates/basic'},
 		// 🍂option character: String='🍂'; Akin to [Leafdoc.leadingCharacter](#leafdoc.leadingcharacter)
 		// 🍂option c; Alias of `character`
-		character:  {type: 'string',  short: 'c', default: '🍂'},
+		character: {type: 'string',  short: 'c', default: '🍂'},
 		// 🍂option verbose: Boolean=false; Akin to [Leafdoc.verbose](#leafdoc.verbose)
 		// 🍂option v; Alias of `verbose`
-		verbose:    {type: 'boolean', short: 'v', default: false},
+		verbose: {type: 'boolean', short: 'v', default: false},
 		// 🍂option output: String=undefined; File to write the documentation to. If left empty, documentation will be outputted to `stdout` instead.
 		// 🍂option o; Alias of `output`
-		output:     {type: 'string',  short: 'o'},
+		output: {type: 'string',  short: 'o'},
 		// 🍂option json: Boolean=false; Write the internal JSON representation of the documentation instead of a templated HTML file.
 		// 🍂option j; Alias of `json`
-		json:       {type: 'boolean', short: 'j', default: false},
+		json: {type: 'boolean', short: 'j', default: false},
 		// 🍂option empty: Boolean=false; Akin to [Leafdoc.showInheritancesWhenEmpty](#leafdoc.showinheritanceswhenempty)
 		// 🍂option e; Alias of `empty`
-		empty:      {type: 'boolean', short: 'e', default: false},
+		empty: {type: 'boolean', short: 'e', default: false},
 		// 🍂option extensions: String='.js,.leafdoc'; Defines the extensions of the files to process. Optional.
 		// 🍂option x; Alias of `extensions`
 		extensions: {type: 'string',  short: 'x'}
