@@ -9,8 +9,6 @@ import Leafdoc from '../src/leafdoc.js';
 describe('e2e tests', () => {
 	const dirs = fs.readdirSync('./spec/e2e');
 
-	console.log('Founds e2e tests: ', dirs);
-
 	for (const i in dirs) {
 		const dirName = dirs[i];
 		// 		if (dirName !== 'leaflet-vml') { continue; }
