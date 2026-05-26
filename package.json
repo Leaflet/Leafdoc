@@ -26,7 +26,7 @@
     "update-html-leafdoc": "src/cli.js -t templates/basic src/leafdoc.js src/cli.js --verbose -o Leafdoc.html",
     "prepublishOnly": "npm test && npm run update-markdown-leafdoc && npm run update-html-leafdoc",
     "pretest": "npm run lint",
-    "test": "node --test 'spec/*-spec.js'",
+    "test": "node --test",
     "lint": "eslint src spec",
     "lintfix": "eslint src spec --fix"
   },

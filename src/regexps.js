@@ -2,7 +2,8 @@
 // Regexps (maybe) shared between files.
 
 // An identifier: a JS-like name allowing dot and colon for namespacing.
-// Uses native Unicode property escapes for ID_Start / ID_Continue.
+// Uses Unicode character class escapes for ID_Start / ID_Continue:
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Regular_expressions/Unicode_character_class_escape
 const identifier = String.raw`(?:[\p{ID_Start}_$][\p{ID_Continue}.:]*)`;
 
 // One or more lines starting with whitespace and two or more forward slashes,
