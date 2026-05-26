@@ -2,10 +2,10 @@
 import fs from 'fs';
 import path from 'path';
 
-import {getTemplate, setTemplateDir, setAKAs} from './template.mjs';
-import * as regexps from './regexps.mjs';
-import parserTrivial from './parsers/trivial.mjs';
-import parserMec from './parsers/multilang.mjs';
+import {getTemplate, setTemplateDir, setAKAs, engine} from './template.js';
+import * as regexps from './regexps.js';
+import parserTrivial from './parsers/trivial.js';
+import parserMec from './parsers/multilang.js';
 
 
 // 🍂class Leafdoc; Represents the Leafdoc parser
@@ -17,8 +17,8 @@ export default class Leafdoc {
 	 * Output Leafdoc's own documentation to the console with:
 	 *
 	 * ```
-	 * var LeafDoc = require('./src/leafdoc.js');
-	 * var doc = new LeafDoc();
+	 * import Leafdoc from 'leafdoc';
+	 * const doc = new Leafdoc();
 	 * 	doc.addFile('src/leafdoc.js');
 	 *
 	 * console.log( doc.outputStr() );
@@ -131,7 +131,7 @@ export default class Leafdoc {
 	// Returns handlebars template engine used to render templates.
 	// You can use it for override helpers or register a new one.
 	getTemplateEngine() {
-		return template.engine;
+		return engine;
 	}
 
 
@@ -251,7 +251,7 @@ export default class Leafdoc {
 
 				let match;
 				// In "param foo, bar", directive is "param" and content is "foo, bar"
-				while (match = regexps.getLeafDirective().exec(line)) {
+				while ((match = regexps.getLeafDirective().exec(line))) {
 					if (match.groups.content) {
 						match.groups.content = match.groups.content.trim();
 					}
@@ -280,7 +280,7 @@ export default class Leafdoc {
 
 			for (const i in directives) {
 				const directive = directives[i][0],
-			    content = directives[i][1];
+				content = directives[i][1];
 
 				// 4: Parse 🍂 directives
 
@@ -289,7 +289,7 @@ export default class Leafdoc {
 					sec = '__default';
 					scope = 'ns';
 				} else if (directive === 'miniclass') {
-					var split = regexps.miniclassDefinition.exec(content);
+					const split = regexps.miniclassDefinition.exec(content);
 
 					if (!split) {
 						console.error('Invalid miniclass definition: ', content);
@@ -314,7 +314,7 @@ export default class Leafdoc {
 				// console.log(scope, '-', directive, '-', content);
 
 				if (scope === 'ns') {
-					if (!namespaces.hasOwnProperty(ns)) {
+					if (!Object.hasOwn(namespaces, ns)) {
 					// console.log('Defining class/namespace ', ns);
 						namespaces[ns] = {
 							name: ns,
@@ -338,7 +338,7 @@ export default class Leafdoc {
 						currentNamespace.inherits.push(content);
 					}
 					if (directive === 'relationship') {
-						var split = regexps.relationshipDefinition.exec(content);
+						const split = regexps.relationshipDefinition.exec(content);
 						currentNamespace.relationships.push({
 							type: split[1],
 							namespace: split[2],
@@ -368,7 +368,7 @@ export default class Leafdoc {
 						console.error(commentBlock);
 					}
 
-					if (!currentNamespace.supersections.hasOwnProperty(dt)) {
+					if (!Object.hasOwn(currentNamespace.supersections, dt)) {
 						currentNamespace.supersections[dt] = {
 							name: dt,
 							aka: [],
@@ -376,7 +376,7 @@ export default class Leafdoc {
 							sections: {}
 						};
 					}
-					if (!currentNamespace.supersections[dt].sections.hasOwnProperty(sec)) {
+					if (!Object.hasOwn(currentNamespace.supersections[dt].sections, sec)) {
 						currentNamespace.supersections[dt].sections[sec] = {
 							name: sec,
 							aka: sectionAKA,
@@ -401,14 +401,15 @@ export default class Leafdoc {
 
 						// console.log(content, ', ', alt);
 
-						let name, paramString, params = {}, type = null, defaultValue = null, optional = false;
+						let name, paramString, type = null, defaultValue = null, optional = false;
+						const params = {};
 
 						if (content) {
 							const split = regexps.functionDefinition.exec(content);
 							if (!split) {
 								console.error(`Invalid ${  directive  } definition: `, content);
 							} else {
-								optional = split[2] == '?';
+								optional = split[2] === '?';
 								[, name,, paramString, type, defaultValue] = split;
 
 								// 							name = split[1];
@@ -418,8 +419,8 @@ export default class Leafdoc {
 
 								if (paramString) {
 									let match;
-									while (match = regexps.functionParam.exec(paramString)) {
-										params[ match[1] ] = {name: match[1], type: match[2]};
+									while ((match = regexps.functionParam.exec(paramString))) {
+										params[match[1]] = {name: match[1], type: match[2]};
 									}
 								// console.log("\"" + paramString + "\"\n\t", params);
 								}
@@ -438,7 +439,7 @@ export default class Leafdoc {
 							altAppliesTo = null;
 						}
 
-						if (!currentSection.documentables.hasOwnProperty(dc)) {
+						if (!Object.hasOwn(currentSection.documentables, dc)) {
 							currentSection.documentables[dc] = {
 								name,
 								aka: [],
@@ -460,7 +461,7 @@ export default class Leafdoc {
 					} else if (directive === 'param') {
 					// Params are param name, type.
 					/// TODO: Think about default values, or param explanation.
-						var split = content.split(':');
+						const split = content.split(':');
 						const paramName = split[0].trim();
 
 						const paramType = split[1] ? split[1].trim() : '';
@@ -522,7 +523,7 @@ export default class Leafdoc {
 
 	_stringifyNamespace(namespace, isMini) {
 
-		if (!isMini && this._miniclasses.hasOwnProperty(namespace.name)) { return ''; }
+		if (!isMini && Object.hasOwn(this._miniclasses, namespace.name)) { return ''; }
 
 		let out = '';
 
@@ -530,17 +531,17 @@ export default class Leafdoc {
 
 		/// Ensure explicit order of the supersections (known types of documentable:
 		/// example, factory, options, events, methods, properties
-		for (var i in this._knownDocumentables) {
+		for (const i in this._knownDocumentables) {
 			const s = this._knownDocumentables[i];
 
-			let supersectionHasSomething = namespace.supersections.hasOwnProperty(s);
+			let supersectionHasSomething = Object.hasOwn(namespace.supersections, s);
 
 			if (s !== 'example' && this.showInheritancesWhenEmpty && !supersectionHasSomething) {
 			// console.log('checking for empty section with inherited stuff, ', namespace.name, s, ancestors);
-				for (var i in ancestors) {
+				for (const i in ancestors) {
 					const ancestor = ancestors[i];
-					// console.log(ancestor, this._namespaces[ancestor].supersections.hasOwnProperty(s));
-					if (this._namespaces[ancestor].supersections.hasOwnProperty(s)) {
+					// console.log(ancestor, Object.hasOwn(this._namespaces[ancestor].supersections, s));
+					if (Object.hasOwn(this._namespaces[ancestor].supersections, s)) {
 
 						for (const sec in this._namespaces[ancestor].supersections[s].sections) {
 							if (!this._namespaces[ancestor].supersections[s].sections[sec].uninheritable) {
@@ -567,7 +568,7 @@ export default class Leafdoc {
 
 
 		if (!isMini) {
-			for (var i in this._miniclasses) {
+			for (const i in this._miniclasses) {
 				if (this._miniclasses[i] === namespace.name) {
 					out += this._stringifyNamespace(this._namespaces[i], true);
 				// 				console.log('out is now', out);
@@ -595,13 +596,13 @@ export default class Leafdoc {
 		if ('__default' in supersection.sections) {
 			const oldSections = supersection.sections;
 			supersection.sections = {__default: oldSections.__default};
-			for (var s in oldSections) {
+			for (const s in oldSections) {
 				if (s !== '__default')
 					supersection.sections[s] = oldSections[s];
 			}
 		}
 
-		for (var s in supersection.sections) {
+		for (const s in supersection.sections) {
 			sections += this._stringifySection(supersection.sections[s], supersection.name, false);
 		}
 
@@ -620,35 +621,34 @@ export default class Leafdoc {
 
 				// Build a list of the documentables which have been already outputted
 				const skip = [];
-				for (var s in supersection.sections) {
+				for (const s in supersection.sections) {
 					const section = supersection.sections[s];
-					for (var d in section.documentables) {
+					for (const d in section.documentables) {
 						skip.push(d);
 					}
 				}
 				// 			console.log('Will skip: ', skip);
 
-				for (var i in ancestors) {
-					const id = [];	// Inherited documentables
+				for (const i in ancestors) {
 					const parent = ancestors[i];
 
 					// 				console.log('Processing ancestor ', parent);
 
-					if (this._namespaces[parent].supersections.hasOwnProperty(name)) {
+					if (Object.hasOwn(this._namespaces[parent].supersections, name)) {
 						const parentSupersection = this._namespaces[parent].supersections[name];
-						for (var s in parentSupersection.sections) {
+						for (const s in parentSupersection.sections) {
 
 							const parentSection = parentSupersection.sections[s];
 							if (parentSection && !parentSection.uninheritable) {
 
-								var inheritedSection = {
+								const inheritedSection = {
 									name: parentSection.name === '__default' ? label : parentSection.name,
 									parent,
 									documentables: [],
 									id: parentSection.id
 								};
 
-								for (var d in parentSection.documentables) {
+								for (const d in parentSection.documentables) {
 								// 								console.log('Checking if should show inherited ', d);
 									if (skip.indexOf(d) === -1) {
 										skip.push(d);
@@ -669,8 +669,8 @@ export default class Leafdoc {
 				}
 
 				// Inherited sections have been calculated, template them away.
-				for (var i in inheritedSections) {
-					var inheritedSection = inheritedSections[i];
+				for (const i in inheritedSections) {
+					const inheritedSection = inheritedSections[i];
 					inheritances += (getTemplate('inherited'))({
 						name: inheritedSection.name,
 						ancestor: inheritedSection.parent,
@@ -693,7 +693,7 @@ export default class Leafdoc {
 
 
 
-	_stringifySection(section, documentableType, inheritingNamespace, supersectionLabel) {
+	_stringifySection(section, documentableType, inheritingNamespace) {
 		const name = (section.name === '__default' || inheritingNamespace) ? '' : section.name;
 
 		// 	if (name) console.log('Named section:', section);
@@ -779,7 +779,7 @@ export default class Leafdoc {
 
 	_normalizeName(namespace, name) {
 		let id = namespace + (name ? `-${  name}` : '');
-		id = id.trim().replace(/[\s\.]/g, '-');
+		id = id.trim().replace(/[\s.]/g, '-');
 		return id.toLowerCase();
 	}
 
@@ -799,7 +799,7 @@ export default class Leafdoc {
 			inheritancesSoFar = [];
 		}
 
-		if (this._namespaces.hasOwnProperty(classname)) {
+		if (Object.hasOwn(this._namespaces, classname)) {
 
 			for (const i in this._namespaces[classname].inherits) {
 				const parent = this._namespaces[classname].inherits[i];

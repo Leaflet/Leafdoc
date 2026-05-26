@@ -82,14 +82,43 @@
 		<td><code><b>o</b></code></td>
 		<td><code></code>
 		<td><code></code></td>
-		<td>Alias of <code>output</code>
-Alias of <code>output</code></td>
+		<td>Alias of <code>output</code></td>
 	</tr>
 	<tr id='command-line-usage-json'>
 		<td><code><b>json</b></code></td>
 		<td><code>Boolean</code>
 		<td><code>false</code></td>
 		<td>Write the internal JSON representation of the documentation instead of a templated HTML file.</td>
+	</tr>
+	<tr id='command-line-usage-j'>
+		<td><code><b>j</b></code></td>
+		<td><code></code>
+		<td><code></code></td>
+		<td>Alias of <code>json</code></td>
+	</tr>
+	<tr id='command-line-usage-empty'>
+		<td><code><b>empty</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>Akin to <a href="#leafdoc.showinheritanceswhenempty">Leafdoc.showInheritancesWhenEmpty</a></td>
+	</tr>
+	<tr id='command-line-usage-e'>
+		<td><code><b>e</b></code></td>
+		<td><code></code>
+		<td><code></code></td>
+		<td>Alias of <code>empty</code></td>
+	</tr>
+	<tr id='command-line-usage-extensions'>
+		<td><code><b>extensions</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;.js,.leafdoc&#x27;</code></td>
+		<td>Defines the extensions of the files to process. Optional.</td>
+	</tr>
+	<tr id='command-line-usage-x'>
+		<td><code><b>x</b></code></td>
+		<td><code></code>
+		<td><code></code></td>
+		<td>Alias of <code>extensions</code></td>
 	</tr>
 </tbody></table>
 
@@ -111,8 +140,8 @@ Alias of <code>output</code></td>
 
 
 <p>Output Leafdoc's own documentation to the console with:</p>
-<pre><code>var LeafDoc = require('./src/leafdoc.js');
-var doc = new LeafDoc();
+<pre><code>import Leafdoc from 'leafdoc';
+const doc = new Leafdoc();
 	doc.addFile('src/leafdoc.js');
 
 console.log( doc.outputStr() );
