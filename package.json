@@ -1,6 +1,6 @@
 {
   "name": "leafdoc",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "A lightweight NaturalDocs-like LeafletJS-style documentation generator",
   "type": "module",
   "exports": "./src/leafdoc.js",

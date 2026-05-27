@@ -1,4 +1,8 @@
 
+# 2.4.0 (2026-05-27)
+
+* Adapt to ES5 modules and conventions, bump dependencies (by @mourner)
+
 # 2.3.0 (2021-06-21)
 
 * Added --extensions option to CLI tool (by @delawen)
